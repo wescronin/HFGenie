@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dry-Fire Shot Timer</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Aladin&display=swap');
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #2f2f2f;
+      color: #fff;
+      text-align: center;
+    }
+    .container {
+      max-width: 90%;
+      margin: auto;
+      background-color: #3b3b3b;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    h1 {
+      font-family: 'Arial', sans-serif;
+      color: #1e90ff;
+      font-size: 3em;
+    }
+    h2 {
+      font-family: 'Aladin', cursive;
+      font-size: 1.5em;
+      color: #1e90ff;
+    }
+    button {
+      width: 40%;
+      padding: 12px;
+      margin: 10px;
+      border-radius: 5px;
+      background-color: #1e90ff;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+    button:hover {
+      background-color: #187bcd;
+    }
+    .adjust-button {
+      width: 50px;
+      height: 50px;
+      font-size: 1.5em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      border-radius: 8px;
+      background-color: #1e90ff;
+      color: white;
+      font-weight: bold;
+      margin: 5px;
+    }
+    .adjust-button:hover {
+      background-color: #187bcd;
+    }
+    .genie {
+      font-size: 1em;
+      color: #1e90ff;
+      font-family: 'Arial', sans-serif;
+    }
+    .footer a {
+      color: #1e90ff;
+      text-decoration: underline;
+    }
+    .small-text {
+      font-size: 0.8em;
+      color: #bbb;
+    }
+    span {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin: 0 10px;
+    }
+    input[type="number"] {
+      width: 80px;
+      padding: 10px;
+      margin: 10px;
+      font-size: 1.2em;
+      border-radius: 5px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Dry-Fire Shot Timer</h1>
+    <h2>🧞‍♂️ HF Genie</h2>
+    <button id="startBtn">Start</button>
+    <button id="stopBtn">Stop</button>
+    <p id="status">Press Start to Begin</p>
+
+    <div>
+      <h3>Par Time</h3>
+      <input type="number" id="parTimeInput" value="0.0" step="0.1" min="0" max="10" onchange="updateParTime()" />
+    </div>
+
+    <div>
+      <h3></h3>
+      <button onclick="toggleRepeat()">Toggle Repeat</button>
+      <p id="repeatStatus">OFF</p>
+      <h3>Delay Between Reps</h3>
+      <input type="number" id="repeatDelayInput" value="3.0" step="0.5" min="0" max="10" onchange="updateRepeatDelay()" />
+    </div>
+
+    <div>
+      <h3></h3>
+      <button onclick="toggleChaseClock()">Chase the Clock</button>
+      <p id="chaseClockStatus">OFF</p>
+      <p class="small-text">Chase the Clock: Every 5 repetitions, the par time decreases by 0.2 seconds.</p>
+    </div>
+  </div>
+  
+  <div class="container footer">
+    <a href="https://usuckatshooting.com" target="_blank">USuckAtShooting.com</a><br>
+    <a href="https://instagram.com/wes.cronin" target="_blank">Wes Cronin</a><br>
+    <a href="https://instagram.com/usuckatshooting" target="_blank">USuckAtShooting</a><br>
+    <a href="https://www.youtube.com/usuckatshooting" target="_blank">YouTube</a><br>
+    <a href="https://usuckatshooting.bigcartel.com/" target="_blank">Support Me</a>
+  </div>
+
+  <script>
+    let parTime = 0.0;
+    let repeatOn = false;
+    let repeatDelay = 3.0;
+    let chaseClockOn = false;
+    let reps = 0;
+    let timer;
+    let beepTimer;
+
+    function playAudio(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(utterance);
+    }
+
+    function playBeep() {
+      const beep = new Audio('https://www.soundjay.com/buttons/sounds/beep-04.mp3');
+      beep.play();
+    }
+
+    function startTimer() {
+      document.getElementById("status").textContent = "Stand By...";
+      playAudio("Stand by");
+
+      setTimeout(() => {
+        playBeep();
+        document.getElementById("status").textContent = "GO!";
+
+        if (parTime > 0) {
+          beepTimer = setTimeout(() => {
+            playBeep();
+          }, parTime * 1000);
+        }
+
+        if (repeatOn) scheduleNextRep();
+      }, 3000);
+    }
+
+    function stopTimer() {
+      // Reset repetitions and stop repeat
+      reps = 0;
+      repeatOn = false;
+      document.getElementById("repeatStatus").textContent = "OFF";
+      clearTimeout(timer);
+      clearTimeout(beepTimer);
+      document.getElementById("status").textContent = "Timer Restarted";
+    }
+
+    function updateParTime() {
+      parTime = parseFloat(document.getElementById("parTimeInput").value);
+      if (isNaN(parTime)) parTime = 0.0;
+      parTime = Math.max(0, Math.min(10, parTime));
+      document.getElementById("parTimeInput").value = parTime.toFixed(1);
+    }
+
+    function toggleRepeat() {
+      repeatOn = !repeatOn;
+      document.getElementById("repeatStatus").textContent = repeatOn ? "ON" : "OFF";
+    }
+
+    function updateRepeatDelay() {
+      repeatDelay = parseFloat(document.getElementById("repeatDelayInput").value);
+      if (isNaN(repeatDelay)) repeatDelay = 3.0;
+      repeatDelay = Math.max(0, Math.min(10, repeatDelay));
+      document.getElementById("repeatDelayInput").value = repeatDelay.toFixed(1);
+    }
+
+    function toggleChaseClock() {
+      chaseClockOn = !chaseClockOn;
+      document.getElementById("chaseClockStatus").textContent = chaseClockOn ? "ON" : "OFF";
+    }
+
+    function scheduleNextRep() {
+      reps++;  // Increment repetitions first
+
+      timer = setTimeout(() => {
+        if (chaseClockOn && reps % 5 === 0 && parTime > 0.2) {
+          parTime -= 0.2;
+          document.getElementById("parTimeInput").value = parTime.toFixed(1);
+        }
+        startTimer();
+      }, repeatDelay * 1000);
+    }
+
+    document.getElementById("startBtn").addEventListener("click", startTimer);
+    document.getElementById("stopBtn").addEventListener("click", stopTimer);
+  </script>
+</body>
+</html>
