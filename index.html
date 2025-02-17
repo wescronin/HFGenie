@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dry-Fire Shot Timer</title>
+  <title>Hit Factor Genie</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Aladin&display=swap');
     body {
@@ -16,199 +16,243 @@
       max-width: 90%;
       margin: auto;
       background-color: #3b3b3b;
-      padding: 20px;
+      padding: 10px;
       border-radius: 8px;
     }
     h1 {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Aladin', cursive;
       color: #1e90ff;
       font-size: 3em;
     }
-    h2 {
-      font-family: 'Aladin', cursive;
-      font-size: 1.5em;
+    h2, h3 {
       color: #1e90ff;
     }
-    button {
-      width: 40%;
-      padding: 12px;
-      margin: 10px;
+    input, button, select {
+      width: 80%;
+      padding: 10px;
+      margin: 5px 0;
       border-radius: 5px;
+    }
+    button {
       background-color: #1e90ff;
       color: white;
       font-weight: bold;
-      font-size: 1.2em;
     }
     button:hover {
       background-color: #187bcd;
     }
-    .adjust-button {
-      width: 50px;
-      height: 50px;
-      font-size: 1.5em;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border: none;
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      padding: 10px;
+      background: #34495e;
+      border-radius: 5px;
+      color: #ffbf00;
+      min-height: 50px;
+    }
+    .section {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #3b3b3b;
       border-radius: 8px;
-      background-color: #1e90ff;
+    }
+    .footer {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #222;
+      border-radius: 8px;
+      font-size: 14px;
       color: white;
-      font-weight: bold;
-      margin: 5px;
-    }
-    .adjust-button:hover {
-      background-color: #187bcd;
-    }
-    .genie {
-      font-size: 1em;
-      color: #1e90ff;
-      font-family: 'Arial', sans-serif;
     }
     .footer a {
-      color: #1e90ff;
+      color: lightgray;
       text-decoration: underline;
     }
-    .small-text {
-      font-size: 0.8em;
-      color: #bbb;
+    .dark-mode {
+      background-color: #fff;
+      color: #000;
     }
-    span {
-      font-size: 1.5em;
-      font-weight: bold;
-      margin: 0 10px;
+    .dark-mode .container, .dark-mode .section, .dark-mode .footer {
+      background-color: #ddd;
     }
-    input[type="number"] {
-      width: 80px;
-      padding: 10px;
+
+    /* Sleek Toggle Switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 30px;
       margin: 10px;
-      font-size: 1.2em;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #444;
+      transition: 0.4s;
+      border-radius: 30px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #1e90ff;
+    }
+    input:checked + .slider:before {
+      transform: translateX(30px);
+    }
+
+    /* Info Toggle Styling */
+    .info-toggle {
+      background: #555;
+      color: white;
+      padding: 5px 10px;
       border-radius: 5px;
-      text-align: center;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 10px;
+      display: inline-block;
+    }
+    .info-content {
+      display: none;
+      margin-top: 10px;
+      background: #444;
+      padding: 10px;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Dry-Fire Shot Timer</h1>
-    <h2>🧞‍♂️ HF Genie</h2>
-    <button id="startBtn">Start</button>
-    <button id="stopBtn">Stop</button>
-    <p id="status">Press Start to Begin</p>
+    <h1>Hit Factor Genie 🧞‍♂️</h1>
+    <a href="https://usuckatshooting.com" target="_blank" style="color: lightgray;">Powered By USuckAtShooting</a><br>
+    
+    <!-- Dark Mode Toggle Switch -->
+    <label class="switch">
+      <input type="checkbox" id="toggleDarkMode">
+      <span class="slider"></span>
+    </label>
 
-    <div>
-      <h3>Par Time</h3>
-      <input type="number" id="parTimeInput" value="0.0" step="0.1" min="0" max="10" onchange="updateParTime()" />
-    </div>
+    <input type="number" id="highHitFactor" placeholder="Current High Hit Factor">
+    <input type="number" id="roundCount" placeholder="Stage Round Count">
+    <button id="calculateBtn">Calculate</button>
+    <div id="result" class="result"></div>
 
-    <div>
-      <h3></h3>
-      <button onclick="toggleRepeat()">Toggle Repeat</button>
-      <p id="repeatStatus">OFF</p>
-      <h3>Delay Between Reps</h3>
-      <input type="number" id="repeatDelayInput" value="3.0" step="0.5" min="0" max="10" onchange="updateRepeatDelay()" />
-    </div>
-
-    <div>
-      <h3></h3>
-      <button onclick="toggleChaseClock()">Chase the Clock</button>
-      <p id="chaseClockStatus">OFF</p>
-      <p class="small-text">Chase the Clock: Every 5 repetitions, the par time decreases by 0.2 seconds.</p>
-    </div>
+    <!-- HHF Info Toggle -->
+    <div class="info-toggle" onclick="toggleInfo()">▼ Learn More</div>
+    <div id="infoContent" class="info-content">
+  <p>HF Genie's Math follows Eric Grauffel's Method.</p>
+  <p>This tool helps you use the current High Hit Factor (HHF) to determine how many points you can afford to drop on a stage. With that insight, you can strategically decide where to push speed and where to play it safe — and in some scenarios, plan Charlies on tougher targets like partials, no shoots, and swingers.</p>
+  <p>How to find the HHF:<p>
+  <p>You can ask the Range Officer for the fastest time on that stage. By estimating the hits, you'll get a good sense of the HHF.</p>
+  <p>At major matches with scores posted from the previous day or live scoring updates, you'll have access to the HHF.</p>
+   </div>
   </div>
   
-  <div class="container footer">
+  <div class="section">
+    <h2>Hit Factor Calculator</h2>
+    <input type="number" id="points" placeholder="Points">
+    <input type="number" id="time" placeholder="Time (sec)">
+    <button id="basicCalcBtn">Calculate</button>
+    <div id="basicResult" class="result"></div>
+  </div>
+  
+  <div class="section">
+    <h3>Advanced Hit Factor Calculator</h3>
+    <select id="scoring">
+      <option value="minor">Minor</option>
+      <option value="major">Major</option>
+    </select>
+    <input type="number" id="alpha" placeholder="Alphas">
+    <input type="number" id="charlie" placeholder="Charlies">
+    <input type="number" id="delta" placeholder="Deltas">
+    <input type="number" id="miss" placeholder="Misses">
+    <input type="number" id="penalty" placeholder="No Shoot / Penalties">
+    <input type="number" id="advTime" placeholder="Time (sec)">
+    <button id="advCalcBtn">Calculate</button>
+    <div id="advResult" class="result"></div>
+  </div>
+  
+  <div class="footer">
+    <p>HF Genie Math follows Eric Grauffel's Method</p>
     <a href="https://usuckatshooting.com" target="_blank">USuckAtShooting.com</a><br>
     <a href="https://instagram.com/wes.cronin" target="_blank">Wes Cronin</a><br>
     <a href="https://instagram.com/usuckatshooting" target="_blank">USuckAtShooting</a><br>
     <a href="https://www.youtube.com/usuckatshooting" target="_blank">YouTube</a><br>
     <a href="https://usuckatshooting.bigcartel.com/" target="_blank">Support Me</a>
   </div>
-
+  
   <script>
-    let parTime = 0.0;
-    let repeatOn = false;
-    let repeatDelay = 3.0;
-    let chaseClockOn = false;
-    let reps = 0;
-    let timer;
-    let beepTimer;
+    // Dark Mode Toggle
+    document.getElementById("toggleDarkMode").addEventListener("change", function() {
+      document.body.classList.toggle("dark-mode");
+    });
 
-    function playAudio(text) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      speechSynthesis.speak(utterance);
+    // Hit Factor Calculator (General)
+    document.getElementById("calculateBtn").addEventListener("click", function() {
+      let highHitFactor = parseFloat(document.getElementById("highHitFactor").value) || 0;
+      let roundCount = parseInt(document.getElementById("roundCount").value) || 0;
+      
+      if (roundCount < 1) {
+        document.getElementById("result").innerHTML = "Please enter valid numbers.";
+        return;
+      }
+      
+      let makeupShotTime = (15 / highHitFactor).toFixed(2);
+      let charliesAllowed = Math.floor(roundCount * 0.20);
+      let deltasAllowed = Math.floor(roundCount * 0.05);
+      
+      document.getElementById("result").innerHTML = `
+        Allowed Charlies: <b>${charliesAllowed}</b><br>
+        Allowed Deltas: <b>${deltasAllowed}</b><br>
+        Make up a miss with an Alpha in less than: <b>${makeupShotTime} seconds</b>
+      `;
+    });
+
+    // Basic Hit Factor Calculator
+    document.getElementById("basicCalcBtn").addEventListener("click", function() {
+      let points = parseFloat(document.getElementById("points").value) || 0;
+      let time = parseFloat(document.getElementById("time").value) || 1;
+      document.getElementById("basicResult").innerHTML = `Hit Factor: <b>${(points / time).toFixed(2)}</b>`;
+    });
+
+    // Advanced Hit Factor Calculator
+    document.getElementById("advCalcBtn").addEventListener("click", function() {
+      let scoring = document.getElementById("scoring").value;
+      let alphaPoints = scoring === "major" ? 5 : 5;
+      let charliePoints = scoring === "major" ? 4 : 3;
+      let deltaPoints = scoring === "major" ? 2 : 1;
+      let alpha = parseInt(document.getElementById("alpha").value) || 0;
+      let charlie = parseInt(document.getElementById("charlie").value) || 0;
+      let delta = parseInt(document.getElementById("delta").value) || 0;
+      let miss = parseInt(document.getElementById("miss").value) || 0;
+      let penalty = parseInt(document.getElementById("penalty").value) || 0;
+      let advTime = parseFloat(document.getElementById("advTime").value) || 1;
+      let points = (alpha * alphaPoints) + (charlie * charliePoints) + (delta * deltaPoints) - (miss * 10) - (penalty * 10);
+      document.getElementById("advResult").innerHTML = `Hit Factor: <b>${(points / advTime).toFixed(2)}</b>`;
+    });
+
+    // Info Toggle for HHF
+    function toggleInfo() {
+      var info = document.getElementById("infoContent");
+      info.style.display = (info.style.display === "none" || info.style.display === "") ? "block" : "none";
     }
-
-    function playBeep() {
-      const beep = new Audio('https://www.soundjay.com/buttons/sounds/beep-04.mp3');
-      beep.play();
-    }
-
-    function startTimer() {
-      document.getElementById("status").textContent = "Stand By...";
-      playAudio("Stand by");
-
-      setTimeout(() => {
-        playBeep();
-        document.getElementById("status").textContent = "GO!";
-
-        if (parTime > 0) {
-          beepTimer = setTimeout(() => {
-            playBeep();
-          }, parTime * 1000);
-        }
-
-        if (repeatOn) scheduleNextRep();
-      }, 3000);
-    }
-
-    function stopTimer() {
-      // Reset repetitions and stop repeat
-      reps = 0;
-      repeatOn = false;
-      document.getElementById("repeatStatus").textContent = "OFF";
-      clearTimeout(timer);
-      clearTimeout(beepTimer);
-      document.getElementById("status").textContent = "Timer Restarted";
-    }
-
-    function updateParTime() {
-      parTime = parseFloat(document.getElementById("parTimeInput").value);
-      if (isNaN(parTime)) parTime = 0.0;
-      parTime = Math.max(0, Math.min(10, parTime));
-      document.getElementById("parTimeInput").value = parTime.toFixed(1);
-    }
-
-    function toggleRepeat() {
-      repeatOn = !repeatOn;
-      document.getElementById("repeatStatus").textContent = repeatOn ? "ON" : "OFF";
-    }
-
-    function updateRepeatDelay() {
-      repeatDelay = parseFloat(document.getElementById("repeatDelayInput").value);
-      if (isNaN(repeatDelay)) repeatDelay = 3.0;
-      repeatDelay = Math.max(0, Math.min(10, repeatDelay));
-      document.getElementById("repeatDelayInput").value = repeatDelay.toFixed(1);
-    }
-
-    function toggleChaseClock() {
-      chaseClockOn = !chaseClockOn;
-      document.getElementById("chaseClockStatus").textContent = chaseClockOn ? "ON" : "OFF";
-    }
-
-    function scheduleNextRep() {
-      reps++;  // Increment repetitions first
-
-      timer = setTimeout(() => {
-        if (chaseClockOn && reps % 5 === 0 && parTime > 0.2) {
-          parTime -= 0.2;
-          document.getElementById("parTimeInput").value = parTime.toFixed(1);
-        }
-        startTimer();
-      }, repeatDelay * 1000);
-    }
-
-    document.getElementById("startBtn").addEventListener("click", startTimer);
-    document.getElementById("stopBtn").addEventListener("click", stopTimer);
   </script>
 </body>
 </html>
