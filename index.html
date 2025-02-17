@@ -215,13 +215,15 @@
       }
       
       let makeupShotTime = (15 / highHitFactor).toFixed(2);
+      let makeupDeltaTime = (4 / highHitFactor).toFixed(2); // 4 points needed to make up a Delta with an Alpha
       let charliesAllowed = Math.floor(roundCount * 0.20);
       let deltasAllowed = Math.floor(roundCount * 0.05);
       
       document.getElementById("result").innerHTML = `
         Allowed Charlies: <b>${charliesAllowed}</b><br>
         Allowed Deltas: <b>${deltasAllowed}</b><br>
-        Make up a miss with an Alpha in less than: <b>${makeupShotTime} seconds</b>
+        Make up a miss with an Alpha in less than: <b>${makeupShotTime} seconds ━ </b>
+        Make up a Delta with an Alpha in less than: <b>${makeupDeltaTime} seconds</b>
       `;
     });
 
