@@ -209,28 +209,49 @@
       document.body.classList.toggle("dark-mode");
     });
 
-    // Hit Factor Calculator (General)
-    document.getElementById("calculateBtn").addEventListener("click", function() {
-      let highHitFactor = parseFloat(document.getElementById("highHitFactor").value) || 0;
-      let roundCount = parseInt(document.getElementById("roundCount").value) || 0;
-      
-      if (roundCount < 1) {
-        document.getElementById("result").innerHTML = "Please enter valid numbers.";
-        return;
-      }
-      
-      let makeupShotTime = (15 / highHitFactor).toFixed(2);
-      let makeupDeltaTime = (4 / highHitFactor).toFixed(2); // 4 points needed to make up a Delta with an Alpha
-      let charliesAllowed = Math.floor(roundCount * 0.20);
-      let deltasAllowed = Math.floor(roundCount * 0.05);
-      
-      document.getElementById("result").innerHTML = `
-        Allowed Charlies: <b>${charliesAllowed}</b><br>
-        Allowed Deltas: <b>${deltasAllowed}</b><br>
-        Make up a miss with an Alpha in less than: <b>${makeupShotTime} seconds ━ </b>
-        Make up a Delta with an Alpha in less than: <b>${makeupDeltaTime} seconds</b>
-      `;
-    });
+   document.getElementById("calculateBtn").addEventListener("click", function () {
+  let highHitFactor = parseFloat(document.getElementById("highHitFactor").value) || 0;
+  let roundCount = parseInt(document.getElementById("roundCount").value) || 0;
+
+  if (roundCount < 1 || highHitFactor < 0) {
+    document.getElementById("result").innerHTML = "Please enter valid numbers.";
+    return;
+  }
+
+  let charliesAllowed = 0;
+  let deltasAllowed = 0;
+  let warning = "";
+
+  if (highHitFactor <= 4.4) {
+    // 100% Alphas, no Charlies or Deltas allowed
+    charliesAllowed = 0;
+    deltasAllowed = 0;
+  } else if (highHitFactor > 4.4 && highHitFactor < 7.9) {
+    // 10% Charlies and 1% Deltas allowed
+    charliesAllowed = Math.floor(roundCount * 0.10);
+    deltasAllowed = Math.floor(roundCount * 0.01);
+  } else if (highHitFactor >= 7.9 && highHitFactor < 11.9) {
+    // 20% Charlies and 5% Deltas allowed
+    charliesAllowed = Math.floor(roundCount * 0.20);
+    deltasAllowed = Math.floor(roundCount * 0.05);
+  } else if (highHitFactor >= 11.9) {
+    // 50% Alphas, 50% Charlies allowed with a warning
+    charliesAllowed = Math.floor(roundCount * 0.50);
+    deltasAllowed = 0; // No Deltas allowed in this case
+    warning = "Warning: High Hit Factor stage. Prioritize speed, but ensure accuracy on close targets.";
+  }
+
+  let makeupShotTime = (15 / highHitFactor).toFixed(2); // Time to make up a miss with an Alpha
+  let makeupDeltaTime = (4 / highHitFactor).toFixed(2); // Time to make up a Delta with an Alpha
+
+  document.getElementById("result").innerHTML = `
+    Allowed Charlies: <b>${charliesAllowed}</b><br>
+    Allowed Deltas: <b>${deltasAllowed}</b><br>
+    Make up a miss with an Alpha in less than: <b>${makeupShotTime} seconds</b><br>
+    Make up a Delta with an Alpha in less than: <b>${makeupDeltaTime} seconds</b><br>
+    ${warning ? `<br><b>${warning}</b>` : ""}
+  `;
+});
 
     // Basic Hit Factor Calculator
     document.getElementById("basicCalcBtn").addEventListener("click", function() {
