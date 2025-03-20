@@ -30,17 +30,39 @@
     }
     h2, h3 {
       color: #1e90ff;
+      font-size: 24px;
+    }
+    .input-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .input-group label {
+      width: 150px;
+      text-align: left;
+      margin-right: 10px;
+      font-size: 14px;
+      color: #ccc;
     }
     input, button, select {
-      width: 80%;
+      width: 100%;
       padding: 10px;
       margin: 5px 0;
       border-radius: 5px;
+      border: none;
+    }
+    input {
+      background-color: #444;
+      color: #fff;
+    }
+    input::placeholder {
+      color: #bbb;
     }
     button {
       background-color: #1e90ff;
       color: white;
       font-weight: bold;
+      cursor: pointer;
     }
     button:hover {
       background-color: #187bcd;
@@ -139,6 +161,7 @@
       background: #444;
       padding: 10px;
       border-radius: 5px;
+      text-align: left;
     }
   </style>
 </head>
@@ -159,14 +182,54 @@
     <div id="result" class="result"></div>
 
     <!-- HHF Info Toggle -->
-    <div class="info-toggle" onclick="toggleInfo()">▼ Learn More</div>
-    <div id="infoContent" class="info-content">
-  <p>HF Genie's Math follows Eric Grauffel's Method.</p>
-  <p>This tool helps you use the current High Hit Factor (HHF) to determine how many points you can afford to drop on a stage. With that insight, you can strategically decide where to push speed and where to play it safe — and in some scenarios, plan Charlies on tougher targets like partials, no shoots, and swingers.</p>
-  <p>How to find the HHF:<p>
-  <p>You can ask the Range Officer for the fastest time on that stage. By estimating the hits, you'll get a good sense of the HHF.</p>
-  <p>At major matches with scores posted from the previous day or live scoring updates, you'll have access to the HHF.</p>
-   </div>
+    <div class="info-toggle" onclick="toggleInfo('hhfInfoContent')">▼ Learn More</div>
+    <div id="hhfInfoContent" class="info-content">
+      <p>HF Genie's Math follows Eric Grauffel's Method.</p>
+      <p>This tool helps you use the current High Hit Factor (HHF) to determine how many points you can afford to drop on a stage. With that insight, you can strategically decide where to push speed and where to play it safe — and in some scenarios, plan Charlies on tougher targets like partials, no shoots, and swingers.</p>
+      <p>How to find the HHF:<p>
+      <p>You can ask the Range Officer for the fastest time on that stage. By estimating the hits, you'll get a good sense of the HHF.</p>
+      <p>At major matches with scores posted from the previous day or live scoring updates, you'll have access to the HHF.</p>
+    </div>
+  </div>
+
+  <!-- Points Down Translated to Time Section -->
+  <div class="section">
+    <h3>Points Down as Time</h3>
+    <div class="input-group">
+      <label for="hitFactor">Hit Factor (HF):</label>
+      <input type="number" id="hitFactor" placeholder="Enter Hit Factor" min="0">
+    </div>
+    <div class="input-group">
+      <label for="charlies">Charlies:</label>
+      <input type="number" id="charlies" placeholder="Enter Charlies" min="0">
+    </div>
+    <div class="input-group">
+      <label for="deltas">Deltas:</label>
+      <input type="number" id="deltas" placeholder="Enter Deltas" min="0">
+    </div>
+    <div class="input-group">
+      <label for="mikes">Mikes:</label>
+      <input type="number" id="mikes" placeholder="Enter Mikes" min="0">
+    </div>
+    <div class="input-group">
+      <label for="noShoots">No-Shoots:</label>
+      <input type="number" id="noShoots" placeholder="Enter No-Shoots" min="0">
+    </div>
+    <div class="input-group">
+      <label for="penalties">Penalties:</label>
+      <input type="number" id="penalties" placeholder="Enter Penalties" min="0">
+    </div>
+    <button id="penaltyCalcBtn">Calculate Penalty</button>
+    <div id="penaltyResult" class="result"></div>
+
+    <!-- Points Down Info Toggle -->
+    <div class="info-toggle" onclick="toggleInfo('pointsDownInfoContent')">▼ Learn More</div>
+    <div id="pointsDownInfoContent" class="info-content">
+      <p>This tool helps you understand how points dropped (e.g., Charlies, Deltas, Mikes, No-Shoots, and Penalties) affect your performance based on the Hit Factor (HF).</p>
+      <p>For example, shooting 1 Charlie (down 2 points) on a 2HF stage is equal to adding 1 second to a clean run (all Alphas).</p>
+      <p>By entering your HF and the number of penalties, you can see how much time you lose due to points dropped.</p>
+      <p>This data is grounded in mathematics. Hit Factor is calculated as points divided by time, representing points per second. This calculator was inspired by a chart shared by Brantley Merriam.</p>
+    </div>
   </div>
   
   <div class="section">
@@ -179,16 +242,37 @@
   
   <div class="section">
     <h3>Advanced Hit Factor Calculator</h3>
-    <select id="scoring">
-      <option value="minor">Minor</option>
-      <option value="major">Major</option>
-    </select>
-    <input type="number" id="alpha" placeholder="Alphas">
-    <input type="number" id="charlie" placeholder="Charlies">
-    <input type="number" id="delta" placeholder="Deltas">
-    <input type="number" id="miss" placeholder="Misses">
-    <input type="number" id="penalty" placeholder="No Shoot / Penalties">
-    <input type="number" id="advTime" placeholder="Time (sec)">
+    <div class="input-group">
+      <label for="scoring">Scoring:</label>
+      <select id="scoring">
+        <option value="minor">Minor</option>
+        <option value="major">Major</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="alpha">Alphas:</label>
+      <input type="number" id="alpha" placeholder="Enter Alphas" min="0">
+    </div>
+    <div class="input-group">
+      <label for="charlie">Charlies:</label>
+      <input type="number" id="charlie" placeholder="Enter Charlies" min="0">
+    </div>
+    <div class="input-group">
+      <label for="delta">Deltas:</label>
+      <input type="number" id="delta" placeholder="Enter Deltas" min="0">
+    </div>
+    <div class="input-group">
+      <label for="miss">Misses:</label>
+      <input type="number" id="miss" placeholder="Enter Misses" min="0">
+    </div>
+    <div class="input-group">
+      <label for="penalty">No-Shoots / Penalties:</label>
+      <input type="number" id="penalty" placeholder="Enter Penalties" min="0">
+    </div>
+    <div class="input-group">
+      <label for="advTime">Time (sec):</label>
+      <input type="number" id="advTime" placeholder="Enter Time" min="0">
+    </div>
     <button id="advCalcBtn">Calculate</button>
     <div id="advResult" class="result"></div>
   </div>
@@ -209,49 +293,46 @@
       document.body.classList.toggle("dark-mode");
     });
 
-   document.getElementById("calculateBtn").addEventListener("click", function () {
-  let highHitFactor = parseFloat(document.getElementById("highHitFactor").value) || 0;
-  let roundCount = parseInt(document.getElementById("roundCount").value) || 0;
+    // Existing Calculate Button Logic
+    document.getElementById("calculateBtn").addEventListener("click", function () {
+      let highHitFactor = parseFloat(document.getElementById("highHitFactor").value) || 0;
+      let roundCount = parseInt(document.getElementById("roundCount").value) || 0;
 
-  if (roundCount < 1 || highHitFactor < 0) {
-    document.getElementById("result").innerHTML = "Please enter valid numbers.";
-    return;
-  }
+      if (roundCount < 1 || highHitFactor < 0) {
+        document.getElementById("result").innerHTML = "Please enter valid numbers.";
+        return;
+      }
 
-  let charliesAllowed = 0;
-  let deltasAllowed = 0;
-  let warning = "";
+      let charliesAllowed = 0;
+      let deltasAllowed = 0;
+      let warning = "";
 
-  if (highHitFactor <= 4.4) {
-    // 100% Alphas, no Charlies or Deltas allowed
-    charliesAllowed = 0;
-    deltasAllowed = 0;
-  } else if (highHitFactor > 4.4 && highHitFactor < 7.9) {
-    // 10% Charlies and 1% Deltas allowed
-    charliesAllowed = Math.floor(roundCount * 0.10);
-    deltasAllowed = Math.floor(roundCount * 0.01);
-  } else if (highHitFactor >= 7.9 && highHitFactor < 11.9) {
-    // 20% Charlies and 5% Deltas allowed
-    charliesAllowed = Math.floor(roundCount * 0.20);
-    deltasAllowed = Math.floor(roundCount * 0.05);
-  } else if (highHitFactor >= 11.9) {
-    // 50% Alphas, 50% Charlies allowed with a warning
-    charliesAllowed = Math.floor(roundCount * 0.50);
-    deltasAllowed = 0; // No Deltas allowed in this case
-    warning = "Warning: High Hit Factor stage. Prioritize speed, but ensure accuracy on close targets.";
-  }
+      if (highHitFactor <= 4.4) {
+        charliesAllowed = 0;
+        deltasAllowed = 0;
+      } else if (highHitFactor > 4.4 && highHitFactor < 7.9) {
+        charliesAllowed = Math.floor(roundCount * 0.10);
+        deltasAllowed = Math.floor(roundCount * 0.01);
+      } else if (highHitFactor >= 7.9 && highHitFactor < 11.9) {
+        charliesAllowed = Math.floor(roundCount * 0.20);
+        deltasAllowed = Math.floor(roundCount * 0.05);
+      } else if (highHitFactor >= 11.9) {
+        charliesAllowed = Math.floor(roundCount * 0.50);
+        deltasAllowed = 0;
+        warning = "Warning: High Hit Factor stage. Prioritize speed, but ensure accuracy on close targets.";
+      }
 
-  let makeupShotTime = (15 / highHitFactor).toFixed(2); // Time to make up a miss with an Alpha
-  let makeupDeltaTime = (4 / highHitFactor).toFixed(2); // Time to make up a Delta with an Alpha
+      let makeupShotTime = (15 / highHitFactor).toFixed(2);
+      let makeupDeltaTime = (4 / highHitFactor).toFixed(2);
 
-  document.getElementById("result").innerHTML = `
-    Allowed Charlies: <b>${charliesAllowed}</b><br>
-    Allowed Deltas: <b>${deltasAllowed}</b><br>
-    Make up a miss with an Alpha in less than: <b>${makeupShotTime} seconds</b><br>
-    Make up a Delta with an Alpha in less than: <b>${makeupDeltaTime} seconds</b><br>
-    ${warning ? `<br><b>${warning}</b>` : ""}
-  `;
-});
+      document.getElementById("result").innerHTML = `
+        Allowed Charlies: <b>${charliesAllowed}</b><br>
+        Allowed Deltas: <b>${deltasAllowed}</b><br>
+        Make up a miss with an Alpha in less than: <b>${makeupShotTime} seconds</b><br>
+        Make up a Delta with an Alpha in less than: <b>${makeupDeltaTime} seconds</b><br>
+        ${warning ? `<br><b>${warning}</b>` : ""}
+      `;
+    });
 
     // Basic Hit Factor Calculator
     document.getElementById("basicCalcBtn").addEventListener("click", function() {
@@ -276,9 +357,40 @@
       document.getElementById("advResult").innerHTML = `Hit Factor: <b>${(points / advTime).toFixed(2)}</b>`;
     });
 
-    // Info Toggle for HHF
-    function toggleInfo() {
-      var info = document.getElementById("infoContent");
+    // Penalty Calculator Logic
+    document.getElementById("penaltyCalcBtn").addEventListener("click", function () {
+      let hitFactor = parseFloat(document.getElementById("hitFactor").value) || 0;
+      let charlies = parseFloat(document.getElementById("charlies").value) || 0;
+      let deltas = parseFloat(document.getElementById("deltas").value) || 0;
+      let mikes = parseFloat(document.getElementById("mikes").value) || 0;
+      let noShoots = parseFloat(document.getElementById("noShoots").value) || 0;
+      let penalties = parseFloat(document.getElementById("penalties").value) || 0;
+
+      // Ensure no negative values
+      if (hitFactor < 0 || charlies < 0 || deltas < 0 || mikes < 0 || noShoots < 0 || penalties < 0) {
+        document.getElementById("penaltyResult").innerHTML = "Please enter non-negative values.";
+        return;
+      }
+
+      if (hitFactor <= 0) {
+        document.getElementById("penaltyResult").innerHTML = "Please enter a valid Hit Factor.";
+        return;
+      }
+
+      // Calculate total points dropped
+      let pointsDropped = (charlies * 2) + (deltas * 3) + (mikes * 10) + (noShoots * 10) + (penalties * 10);
+      let equivalentTime = (pointsDropped / hitFactor).toFixed(2);
+
+      document.getElementById("penaltyResult").innerHTML = `
+        <strong>Total Points Dropped:</strong> ${pointsDropped}<br>
+        <strong>Equivalent Time Loss:</strong> ${equivalentTime} seconds<br>
+        <em>This means shooting with these penalties is equivalent to shooting clean but ${equivalentTime} seconds slower.</em>
+      `;
+    });
+
+    // Info Toggle Function
+    function toggleInfo(id) {
+      var info = document.getElementById(id);
       info.style.display = (info.style.display === "none" || info.style.display === "") ? "block" : "none";
     }
   </script>
