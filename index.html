@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Hit Factor Genie</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Aladin&display=swap');
@@ -15,22 +15,29 @@
       background-color: #2f2f2f;
       color: #fff;
       text-align: center;
+      padding: 10px;
     }
     .container {
       max-width: 90%;
       margin: auto;
       background-color: #3b3b3b;
-      padding: 10px;
+      padding: 20px;
       border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      margin-bottom: 20px;
     }
     h1 {
       font-family: 'Aladin', cursive;
       color: #1e90ff;
       font-size: 3em;
+      margin-bottom: 10px;
     }
     h2, h3 {
       color: #1e90ff;
       font-size: 24px;
+      margin-top: 0;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #1e90ff;
     }
     .input-group {
       display: flex;
@@ -46,14 +53,24 @@
     }
     input, button, select {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin: 5px 0;
       border-radius: 5px;
       border: none;
+      box-sizing: border-box;
     }
     input {
       background-color: #444;
       color: #fff;
+      font-size: 16px;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
     input::placeholder {
       color: #bbb;
@@ -63,6 +80,8 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
     }
     button:hover {
       background-color: #187bcd;
@@ -70,17 +89,20 @@
     .result {
       margin-top: 20px;
       font-size: 18px;
-      padding: 10px;
+      padding: 15px;
       background: #34495e;
       border-radius: 5px;
       color: #ffbf00;
       min-height: 50px;
+      border: 1px solid #1e90ff;
     }
     .section {
       margin-top: 30px;
       padding: 20px;
       background-color: #3b3b3b;
       border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      border: 1px solid #444;
     }
     .footer {
       margin-top: 30px;
@@ -89,6 +111,7 @@
       border-radius: 8px;
       font-size: 14px;
       color: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
     .footer a {
       color: lightgray;
@@ -101,8 +124,6 @@
     .dark-mode .container, .dark-mode .section, .dark-mode .footer {
       background-color: #ddd;
     }
-
-    /* Sleek Toggle Switch */
     .switch {
       position: relative;
       display: inline-block;
@@ -143,32 +164,60 @@
     input:checked + .slider:before {
       transform: translateX(30px);
     }
-
-    /* Info Toggle Styling */
     .info-toggle {
       background: #555;
       color: white;
-      padding: 5px 10px;
+      padding: 8px 15px;
       border-radius: 5px;
       cursor: pointer;
       font-size: 14px;
-      margin-top: 10px;
+      margin-top: 15px;
       display: inline-block;
+      transition: background-color 0.3s;
+    }
+    .info-toggle:hover {
+      background: #666;
     }
     .info-content {
       display: none;
-      margin-top: 10px;
+      margin-top: 15px;
       background: #444;
-      padding: 10px;
+      padding: 15px;
       border-radius: 5px;
       text-align: left;
+      line-height: 1.6;
+    }
+    .powered-by {
+      color: lightgray;
+      margin-bottom: 15px;
+      display: block;
+    }
+    @media (max-width: 600px) {
+      .container, .section {
+        width: 95%;
+        padding: 15px;
+      }
+      h1 {
+        font-size: 2.5em;
+      }
+      h2, h3 {
+        font-size: 20px;
+      }
+      .input-group {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .input-group label {
+        width: 100%;
+        margin-bottom: 5px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Hit Factor Genie 🧞‍♂️</h1>
-    <a href="https://usuckatshooting.com" target="_blank" style="color: lightgray;">Powered By USuckAtShooting</a><br>
+    <a href="https://usuckatshooting.com" target="_blank" class="powered-by">Powered By USuckAtShooting</a>
     
     <!-- Dark Mode Toggle Switch -->
     <label class="switch">
@@ -176,8 +225,8 @@
       <span class="slider"></span>
     </label>
 
-    <input type="number" id="highHitFactor" placeholder="Current High Hit Factor">
-    <input type="number" id="roundCount" placeholder="Stage Round Count">
+    <input type="number" id="highHitFactor" placeholder="Current High Hit Factor" inputmode="decimal">
+    <input type="number" id="roundCount" placeholder="Stage Round Count" inputmode="numeric">
     <button id="calculateBtn">Calculate</button>
     <div id="result" class="result"></div>
 
@@ -192,32 +241,86 @@
     </div>
   </div>
 
-  <!-- Points Down Translated to Time Section -->
+  <!-- Estimated High Hit Factor Predictor (Now 2nd) -->
+  <div class="section">
+    <h3>Estimated High Hit Factor Predictor</h3>
+    <div class="input-group">
+      <label for="currentHHF">Hit Factor:</label>
+      <input type="number" id="currentHHF" placeholder="Enter HF" min="0" inputmode="decimal" step="0.01">
+    </div>
+    <div class="input-group">
+      <label for="shooterPercentage">% of Winner:</label>
+      <input type="number" id="shooterPercentage" placeholder="80" min="1" max="99" inputmode="numeric">
+    </div>
+    <button id="estimateHHFBtn">Predict Winner's HF</button>
+    <div id="estimateHHFResult" class="result"></div>
+
+    <!-- Updated Info Toggle -->
+    <div class="info-toggle" onclick="toggleInfo('estimateHHFInfoContent')">▼ "Measure the gap, close the gap" - Learn How</div>
+    <div id="estimateHHFInfoContent" class="info-content">
+      <div style="text-align: center; margin-bottom: 10px;">
+        <h4 style="color: #1e90ff; margin: 5px 0;">"Measure the gap, close the gap"</h4>
+        <p style="font-style: italic; margin: 0;">Use your consistent performance to predict stage potential</p>
+      </div>
+      
+      <p><strong>How It Works:</strong> When a shooter consistently scores 75-85% of the winner's HF, we can calculate what 100% would be.</p>
+      
+      <div style="background: #444; padding: 10px; border-radius: 5px; margin: 10px 0; border-left: 3px solid #1e90ff;">
+        <p><strong>Example:</strong> Hit Factor: <span style="color: #ffbf00;">6.8</span> at 80% → Winner's HF ≈ <span style="color: #ffbf00;">8.5</span></p>
+      </div>
+      
+      <p><strong>Key Insights:</strong></p>
+      <ul style="padding-left: 20px; margin: 10px 0;">
+        <li>You need <strong>+1.7 HF</strong> to match the winner</li>
+        <li>This means either:
+          <ul style="padding-left: 15px;">
+            <li>25% faster with equal points, <strong>or</strong></li>
+            <li>25% more points (like converting 2 Charlies to Alphas)</li>
+          </ul>
+        </li>
+        <li>Every 0.5s saved = must keep 4.25 points</li>
+        <li>Every Charlie (-2pts) = 0.24s time penalty</li>
+      </ul>
+      
+      <p><strong>Next Steps:</strong> Plug the predicted HHF into the HF Genie calculator to:</p>
+      <ul style="padding-left: 20px; margin: 10px 0;">
+        <li>See your allowed Charlies/Deltas</li>
+        <li>Calculate exact miss penalties</li>
+        <li>Optimize your speed/accuracy balance</li>
+      </ul>
+      
+      <p style="background: #1e90ff20; padding: 8px; border-radius: 3px; border-left: 3px solid #1e90ff; margin: 15px 0 5px 0;">
+        <strong>Pro Tip:</strong> Use the lowest consistent percentage (e.g., 75%) for conservative estimates.
+      </p>
+    </div>
+  </div>
+
+  <!-- Points Down as Time (Now 3rd) -->
   <div class="section">
     <h3>Points Down as Time</h3>
     <div class="input-group">
       <label for="hitFactor">Hit Factor (HF):</label>
-      <input type="number" id="hitFactor" placeholder="Enter Hit Factor" min="0">
+      <input type="number" id="hitFactor" placeholder="Enter Hit Factor" min="0" inputmode="decimal">
     </div>
     <div class="input-group">
       <label for="charlies">Charlies:</label>
-      <input type="number" id="charlies" placeholder="Enter Charlies" min="0">
+      <input type="number" id="charlies" placeholder="Enter Charlies" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
       <label for="deltas">Deltas:</label>
-      <input type="number" id="deltas" placeholder="Enter Deltas" min="0">
+      <input type="number" id="deltas" placeholder="Enter Deltas" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
       <label for="mikes">Mikes:</label>
-      <input type="number" id="mikes" placeholder="Enter Mikes" min="0">
+      <input type="number" id="mikes" placeholder="Enter Mikes" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
       <label for="noShoots">No-Shoots:</label>
-      <input type="number" id="noShoots" placeholder="Enter No-Shoots" min="0">
+      <input type="number" id="noShoots" placeholder="Enter No-Shoots" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
       <label for="penalties">Penalties:</label>
-      <input type="number" id="penalties" placeholder="Enter Penalties" min="0">
+      <input type="number" id="penalties" placeholder="Enter Penalties" min="0" inputmode="numeric">
     </div>
     <button id="penaltyCalcBtn">Calculate Penalty</button>
     <div id="penaltyResult" class="result"></div>
@@ -226,22 +329,15 @@
     <div class="info-toggle" onclick="toggleInfo('pointsDownInfoContent')">▼ Learn More</div>
     <div id="pointsDownInfoContent" class="info-content">
       <p>This tool helps you understand how points dropped (e.g., Charlies, Deltas, Mikes, No-Shoots, and Penalties) affect your performance based on the Hit Factor (HF).</p>
-      <p>For example, shooting 1 Charlie (down 2 points) on a 2HF stage is equivalent to adding 1 second to your total time. A clean run (with all Alphas) shot 1 second slower would result in the same Hit Factor.</p>
+      <p>For example, shooting 1 Charlie (down 2 points) on a 2HF stage is equal to adding 1 second to a clean run (all Alphas).</p>
       <p>By entering your HF and the number of penalties, you can see how much time you lose due to points dropped.</p>
       <p>This data is grounded in mathematics. Hit Factor is calculated as points divided by time, representing points per second. This calculator was inspired by a chart shared by Brantley Merriam.</p>
     </div>
   </div>
   
+  <!-- Hit Factor Calculator (Now 4th) -->
   <div class="section">
     <h2>Hit Factor Calculator</h2>
-    <input type="number" id="points" placeholder="Points">
-    <input type="number" id="time" placeholder="Time (sec)">
-    <button id="basicCalcBtn">Calculate</button>
-    <div id="basicResult" class="result"></div>
-  </div>
-  
-  <div class="section">
-    <h3>Advanced Hit Factor Calculator</h3>
     <div class="input-group">
       <label for="scoring">Scoring:</label>
       <select id="scoring">
@@ -251,27 +347,27 @@
     </div>
     <div class="input-group">
       <label for="alpha">Alphas:</label>
-      <input type="number" id="alpha" placeholder="Enter Alphas" min="0">
+      <input type="number" id="alpha" placeholder="Enter Alphas" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
       <label for="charlie">Charlies:</label>
-      <input type="number" id="charlie" placeholder="Enter Charlies" min="0">
+      <input type="number" id="charlie" placeholder="Enter Charlies" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
       <label for="delta">Deltas:</label>
-      <input type="number" id="delta" placeholder="Enter Deltas" min="0">
+      <input type="number" id="delta" placeholder="Enter Deltas" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
       <label for="miss">Misses:</label>
-      <input type="number" id="miss" placeholder="Enter Misses" min="0">
+      <input type="number" id="miss" placeholder="Enter Misses" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
       <label for="penalty">No-Shoots / Penalties:</label>
-      <input type="number" id="penalty" placeholder="Enter Penalties" min="0">
+      <input type="number" id="penalty" placeholder="Enter Penalties" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
       <label for="advTime">Time (sec):</label>
-      <input type="number" id="advTime" placeholder="Enter Time" min="0">
+      <input type="number" id="advTime" placeholder="Enter Time" min="0" inputmode="decimal">
     </div>
     <button id="advCalcBtn">Calculate</button>
     <div id="advResult" class="result"></div>
@@ -293,7 +389,7 @@
       document.body.classList.toggle("dark-mode");
     });
 
-    // Existing Calculate Button Logic
+    // Main Calculator Logic
     document.getElementById("calculateBtn").addEventListener("click", function () {
       let highHitFactor = parseFloat(document.getElementById("highHitFactor").value) || 0;
       let roundCount = parseInt(document.getElementById("roundCount").value) || 0;
@@ -334,14 +430,7 @@
       `;
     });
 
-    // Basic Hit Factor Calculator
-    document.getElementById("basicCalcBtn").addEventListener("click", function() {
-      let points = parseFloat(document.getElementById("points").value) || 0;
-      let time = parseFloat(document.getElementById("time").value) || 1;
-      document.getElementById("basicResult").innerHTML = `Hit Factor: <b>${(points / time).toFixed(2)}</b>`;
-    });
-
-    // Advanced Hit Factor Calculator
+    // Hit Factor Calculator (formerly Advanced)
     document.getElementById("advCalcBtn").addEventListener("click", function() {
       let scoring = document.getElementById("scoring").value;
       let alphaPoints = scoring === "major" ? 5 : 5;
@@ -366,7 +455,6 @@
       let noShoots = parseFloat(document.getElementById("noShoots").value) || 0;
       let penalties = parseFloat(document.getElementById("penalties").value) || 0;
 
-      // Ensure no negative values
       if (hitFactor < 0 || charlies < 0 || deltas < 0 || mikes < 0 || noShoots < 0 || penalties < 0) {
         document.getElementById("penaltyResult").innerHTML = "Please enter non-negative values.";
         return;
@@ -377,14 +465,39 @@
         return;
       }
 
-      // Calculate total points dropped
       let pointsDropped = (charlies * 2) + (deltas * 3) + (mikes * 10) + (noShoots * 10) + (penalties * 10);
       let equivalentTime = (pointsDropped / hitFactor).toFixed(2);
 
       document.getElementById("penaltyResult").innerHTML = `
         <strong>Total Points Dropped:</strong> ${pointsDropped}<br>
         <strong>Equivalent Time Loss:</strong> ${equivalentTime} seconds<br>
-        <em>Shooting these points down is equivalent to adding ${equivalentTime} seconds to your total time. A clean run (with all Alphas) shot ${equivalentTime} seconds slower would result in the same Hit Factor.</em>
+        <em>This means shooting with these penalties is equivalent to shooting clean but ${equivalentTime} seconds slower.</em>
+      `;
+    });
+
+    // Estimated High Hit Factor Calculator Logic
+    document.getElementById("estimateHHFBtn").addEventListener("click", function() {
+      const shooterHF = parseFloat(document.getElementById("currentHHF").value) || 0;
+      const percentage = parseFloat(document.getElementById("shooterPercentage").value) || 0;
+
+      // Validation
+      if (shooterHF <= 0 || percentage <= 0 || percentage >= 100) {
+        document.getElementById("estimateHHFResult").innerHTML = 
+          "Please enter valid numbers (0 < % < 100).";
+        return;
+      }
+
+      // Calculate true HHF and improvement needed
+      const trueHHF = (shooterHF / (percentage / 100)).toFixed(2);
+      const hfDifference = (trueHHF - shooterHF).toFixed(2);
+      const percentImprovement = ((100 / percentage) * 100 - 100).toFixed(0);
+
+      // Display results with strategic insights
+      document.getElementById("estimateHHFResult").innerHTML = `
+        <strong>Predicted HHF:</strong> ${trueHHF}<br>
+        <strong>To match winner:</strong> +${hfDifference} HF needed<br>
+        <strong>Improvement:</strong> ${percentImprovement}% faster/more points<br>
+        <em>Plug ${trueHHF} into the HF Genie calculator for stage strategy!</em>
       `;
     });
 
@@ -393,6 +506,20 @@
       var info = document.getElementById(id);
       info.style.display = (info.style.display === "none" || info.style.display === "") ? "block" : "none";
     }
+
+    // Prevent zooming on input focus for mobile
+    document.addEventListener('DOMContentLoaded', function() {
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        document.querySelectorAll('input').forEach(input => {
+          input.addEventListener('focus', function() {
+            document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');
+          });
+          input.addEventListener('blur', function() {
+            document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+          });
+        });
+      }
+    });
   </script>
 </body>
 </html>
