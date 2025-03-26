@@ -10,59 +10,87 @@
   <title>Hit Factor Genie</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Aladin&display=swap');
+    * {
+      box-sizing: border-box;
+    }
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background-color: #2f2f2f;
       color: #fff;
       text-align: center;
       padding: 10px;
+      margin: 0;
+      -webkit-text-size-adjust: 100%;
+      line-height: 1.5;
     }
     .container {
-      max-width: 90%;
-      margin: auto;
+      max-width: 100%;
+      margin: 0 auto 20px;
       background-color: #3b3b3b;
-      padding: 20px;
+      padding: 15px;
       border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .sponsor-container {
+      background: #444;
+      padding: 0px;
       margin-bottom: 20px;
+      border-radius: 4px;
+      text-align: center;
+    }
+    .sponsor-label {
+      font-size: 12px;
+      color: #bbb;
+      margin-bottom: 5px;
+      display: block;
+    }
+    .sponsor-link {
+      display: block;
+      margin: 0 auto;
+      max-width: 200px;
+    }
+    .sponsor-img {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
     }
     h1 {
       font-family: 'Aladin', cursive;
       color: #1e90ff;
-      font-size: 3em;
-      margin-bottom: 10px;
+      font-size: 2.2rem;
+      margin: 5px 0 10px;
+      line-height: 1.2;
     }
     h2, h3 {
       color: #1e90ff;
-      font-size: 24px;
-      margin-top: 0;
-      padding-bottom: 10px;
+      font-size: 1.3rem;
+      margin: 0 0 10px;
+      padding-bottom: 8px;
       border-bottom: 2px solid #1e90ff;
     }
     .input-group {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      text-align: left;
     }
     .input-group label {
-      width: 150px;
-      text-align: left;
-      margin-right: 10px;
+      display: block;
+      margin-bottom: 5px;
       font-size: 14px;
       color: #ccc;
     }
     input, button, select {
       width: 100%;
-      padding: 12px;
-      margin: 5px 0;
-      border-radius: 5px;
+      padding: 12px 15px;
+      margin: 0;
+      border-radius: 6px;
       border: none;
-      box-sizing: border-box;
+      font-size: 16px;
+      -webkit-appearance: none;
     }
     input {
       background-color: #444;
       color: #fff;
-      font-size: 16px;
+      border: 1px solid #555;
     }
     input[type="number"] {
       -moz-appearance: textfield;
@@ -74,62 +102,82 @@
     }
     input::placeholder {
       color: #bbb;
+      opacity: 1;
     }
     button {
       background-color: #1e90ff;
       color: white;
       font-weight: bold;
       cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s;
+      transition: background-color 0.2s;
+      margin-top: 8px;
+      border: none;
     }
-    button:hover {
+    button:active {
       background-color: #187bcd;
+      transform: translateY(1px);
     }
     .result {
-      margin-top: 20px;
-      font-size: 18px;
-      padding: 15px;
+      margin: 15px 0 0;
+      font-size: 16px;
+      padding: 12px;
       background: #34495e;
-      border-radius: 5px;
+      border-radius: 6px;
       color: #ffbf00;
       min-height: 50px;
       border: 1px solid #1e90ff;
+      text-align: left;
     }
     .section {
-      margin-top: 30px;
-      padding: 20px;
+      margin: 20px auto;
+      padding: 15px;
       background-color: #3b3b3b;
       border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       border: 1px solid #444;
+      max-width: 100%;
     }
     .footer {
-      margin-top: 30px;
-      padding: 20px;
+      margin: 25px auto 10px;
+      padding: 15px;
       background-color: #222;
       border-radius: 8px;
       font-size: 14px;
       color: white;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      max-width: 100%;
     }
     .footer a {
       color: lightgray;
       text-decoration: underline;
+      display: inline-block;
+      margin: 3px 0;
     }
     .dark-mode {
-      background-color: #fff;
-      color: #000;
+      background-color: #f5f5f5;
+      color: #333;
     }
-    .dark-mode .container, .dark-mode .section, .dark-mode .footer {
-      background-color: #ddd;
+    .dark-mode .container, 
+    .dark-mode .section, 
+    .dark-mode .footer {
+      background-color: #e0e0e0;
+      color: #333;
+    }
+    .dark-mode input {
+      background-color: #fff;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+    .dark-mode .result {
+      background: #d0e0f0;
+      color: #d35400;
     }
     .switch {
       position: relative;
       display: inline-block;
-      width: 60px;
-      height: 30px;
-      margin: 10px;
+      width: 52px;
+      height: 26px;
+      margin: 10px 0 15px;
     }
     .switch input {
       opacity: 0;
@@ -144,78 +192,87 @@
       right: 0;
       bottom: 0;
       background-color: #444;
-      transition: 0.4s;
-      border-radius: 30px;
+      transition: 0.2s;
+      border-radius: 26px;
     }
     .slider:before {
       position: absolute;
       content: "";
-      height: 22px;
-      width: 22px;
-      left: 4px;
-      bottom: 4px;
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
       background-color: white;
-      transition: 0.4s;
+      transition: 0.2s;
       border-radius: 50%;
     }
     input:checked + .slider {
       background-color: #1e90ff;
     }
     input:checked + .slider:before {
-      transform: translateX(30px);
+      transform: translateX(26px);
     }
     .info-toggle {
       background: #555;
       color: white;
-      padding: 8px 15px;
-      border-radius: 5px;
+      padding: 8px 12px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 14px;
-      margin-top: 15px;
+      margin: 15px 0 0;
       display: inline-block;
-      transition: background-color 0.3s;
+      transition: background-color 0.2s;
+      width: 100%;
+      text-align: center;
     }
-    .info-toggle:hover {
+    .info-toggle:active {
       background: #666;
     }
     .info-content {
       display: none;
-      margin-top: 15px;
+      margin-top: 12px;
       background: #444;
-      padding: 15px;
-      border-radius: 5px;
+      padding: 12px;
+      border-radius: 6px;
       text-align: left;
-      line-height: 1.6;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+    .dark-mode .info-content {
+      background: #ddd;
+      color: #333;
     }
     .powered-by {
       color: lightgray;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
       display: block;
+      font-size: 14px;
     }
-    @media (max-width: 600px) {
+    @media (min-width: 500px) {
       .container, .section {
-        width: 95%;
-        padding: 15px;
+        max-width: 450px;
       }
+    }
+    @media (min-width: 768px) {
       h1 {
-        font-size: 2.5em;
+        font-size: 2.5rem;
       }
-      h2, h3 {
-        font-size: 20px;
-      }
-      .input-group {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .input-group label {
-        width: 100%;
-        margin-bottom: 5px;
+      .container, .section {
+        padding: 20px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Sponsor Spot -->
+<div class="sponsor-container">
+  <span class="sponsor-label"></span>
+  <a href="https://usuckatshooting.com/partner-with-us/" target="_blank" class="sponsor-link">
+    <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1833.png?w=1024" class="sponsor-img">
+  </a>
+</div>
+    
     <h1>Hit Factor Genie 🧞‍♂️</h1>
     <a href="https://usuckatshooting.com" target="_blank" class="powered-by">Powered By USuckAtShooting</a>
     
@@ -225,8 +282,14 @@
       <span class="slider"></span>
     </label>
 
-    <input type="number" id="highHitFactor" placeholder="Current High Hit Factor" inputmode="decimal">
-    <input type="number" id="roundCount" placeholder="Stage Round Count" inputmode="numeric">
+    <div class="input-group">
+      <label for="highHitFactor">Current High Hit Factor</label>
+      <input type="number" id="highHitFactor" placeholder="Enter value" inputmode="decimal">
+    </div>
+    <div class="input-group">
+      <label for="roundCount">Stage Round Count</label>
+      <input type="number" id="roundCount" placeholder="Enter count" inputmode="numeric">
+    </div>
     <button id="calculateBtn">Calculate</button>
     <div id="result" class="result"></div>
 
@@ -242,15 +305,15 @@
     </div>
   </div>
 
-  <!-- Estimated High Hit Factor Predictor (Now 2nd) -->
+  <!-- Estimated High Hit Factor Predictor -->
   <div class="section">
     <h3>Estimated High Hit Factor Predictor</h3>
     <div class="input-group">
-      <label for="currentHHF">Hit Factor:</label>
+      <label for="currentHHF">Hit Factor</label>
       <input type="number" id="currentHHF" placeholder="Enter HF" min="0" inputmode="decimal" step="0.01">
     </div>
     <div class="input-group">
-      <label for="shooterPercentage">% of Winner:</label>
+      <label for="shooterPercentage">% of Winner</label>
       <input type="number" id="shooterPercentage" placeholder="80" min="1" max="99" inputmode="numeric">
     </div>
     <button id="estimateHHFBtn">Predict Winner's HF</button>
@@ -296,32 +359,32 @@
     </div>
   </div>
 
-  <!-- Points Down as Time (Now 3rd) -->
+  <!-- Points Down as Time -->
   <div class="section">
     <h3>Points Down as Time</h3>
     <div class="input-group">
-      <label for="hitFactor">Hit Factor (HF):</label>
+      <label for="hitFactor">Hit Factor (HF)</label>
       <input type="number" id="hitFactor" placeholder="Enter Hit Factor" min="0" inputmode="decimal">
     </div>
     <div class="input-group">
-      <label for="charlies">Charlies:</label>
-      <input type="number" id="charlies" placeholder="Enter Charlies" min="0" inputmode="numeric">
+      <label for="charlies">Charlies</label>
+      <input type="number" id="charlies" placeholder="Enter count" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
-      <label for="deltas">Deltas:</label>
-      <input type="number" id="deltas" placeholder="Enter Deltas" min="0" inputmode="numeric">
+      <label for="deltas">Deltas</label>
+      <input type="number" id="deltas" placeholder="Enter count" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
-      <label for="mikes">Mikes:</label>
-      <input type="number" id="mikes" placeholder="Enter Mikes" min="0" inputmode="numeric">
+      <label for="mikes">Mikes</label>
+      <input type="number" id="mikes" placeholder="Enter count" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
-      <label for="noShoots">No-Shoots:</label>
-      <input type="number" id="noShoots" placeholder="Enter No-Shoots" min="0" inputmode="numeric">
+      <label for="noShoots">No-Shoots</label>
+      <input type="number" id="noShoots" placeholder="Enter count" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
-      <label for="penalties">Penalties:</label>
-      <input type="number" id="penalties" placeholder="Enter Penalties" min="0" inputmode="numeric">
+      <label for="penalties">Penalties</label>
+      <input type="number" id="penalties" placeholder="Enter count" min="0" inputmode="numeric">
     </div>
     <button id="penaltyCalcBtn">Calculate Penalty</button>
     <div id="penaltyResult" class="result"></div>
@@ -336,59 +399,74 @@
     </div>
   </div>
   
-  <!-- Hit Factor Calculator (Now 4th) -->
+  <!-- Hit Factor Calculator -->
   <div class="section">
     <h2>Hit Factor Calculator</h2>
     <div class="input-group">
-      <label for="scoring">Scoring:</label>
+      <label for="scoring">Scoring</label>
       <select id="scoring">
         <option value="minor">Minor</option>
         <option value="major">Major</option>
       </select>
     </div>
     <div class="input-group">
-      <label for="alpha">Alphas:</label>
-      <input type="number" id="alpha" placeholder="Enter Alphas" min="0" inputmode="numeric">
+      <label for="alpha">Alphas</label>
+      <input type="number" id="alpha" placeholder="Enter count" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
-      <label for="charlie">Charlies:</label>
-      <input type="number" id="charlie" placeholder="Enter Charlies" min="0" inputmode="numeric">
+      <label for="charlie">Charlies</label>
+      <input type="number" id="charlie" placeholder="Enter count" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
-      <label for="delta">Deltas:</label>
-      <input type="number" id="delta" placeholder="Enter Deltas" min="0" inputmode="numeric">
+      <label for="delta">Deltas</label>
+      <input type="number" id="delta" placeholder="Enter count" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
-      <label for="miss">Misses:</label>
-      <input type="number" id="miss" placeholder="Enter Misses" min="0" inputmode="numeric">
+      <label for="miss">Misses</label>
+      <input type="number" id="miss" placeholder="Enter count" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
-      <label for="penalty">No-Shoots / Penalties:</label>
-      <input type="number" id="penalty" placeholder="Enter Penalties" min="0" inputmode="numeric">
+      <label for="penalty">No-Shoots / Penalties</label>
+      <input type="number" id="penalty" placeholder="Enter count" min="0" inputmode="numeric">
     </div>
     <div class="input-group">
-      <label for="advTime">Time (sec):</label>
-      <input type="number" id="advTime" placeholder="Enter Time" min="0" inputmode="decimal">
+      <label for="advTime">Time (sec)</label>
+      <input type="number" id="advTime" placeholder="Enter time" min="0" inputmode="decimal">
     </div>
     <button id="advCalcBtn">Calculate</button>
     <div id="advResult" class="result"></div>
   </div>
   
   <div class="footer">
-    <p>HF Genie Math follows Eric Grauffel's Method</p>
-    <a href="https://dryfire-timer.netlify.app/" target="blank">Dry-Fire Timer<a><br>
-    <a href="https://usuckatshooting.com" target="_blank">USuckAtShooting.com</a><br>
-    <a href="https://instagram.com/wes.cronin" target="_blank">Wes Cronin</a><br>
-    <a href="https://instagram.com/usuckatshooting" target="_blank">USuckAtShooting</a><br>
-    <a href="https://www.youtube.com/usuckatshooting" target="_blank">YouTube</a><br>
-    <a href="https://usuckatshooting.bigcartel.com/" target="_blank">Support Me / Shirts</a>
+    <div class="footer">
+  <p>HF Genie Math follows Eric Grauffel's Method</p>
+  <a href="https://dryfire-timer.netlify.app/" target="_blank">Dry-Fire Timer</a>
+  <div class="footer-divider"></div>
+  <a href="https://usuckatshooting.com" target="_blank">USuckAtShooting.com</a>
+  <div class="footer-divider"></div>
+  <a href="https://instagram.com/wes.cronin" target="_blank">Wes Cronin</a>
+  <div class="footer-divider"></div>
+  <a href="https://instagram.com/usuckatshooting" target="_blank">USuckAtShooting</a>
+  <div class="footer-divider"></div>
+  <a href="https://www.youtube.com/usuckatshooting" target="_blank">YouTube</a>
+  <div class="footer-divider"></div>
+  <a href="https://usuckatshooting.bigcartel.com/" target="_blank">Support Me / Shirts</a>
+</div>
   </div>
   
   <script>
     // Dark Mode Toggle
     document.getElementById("toggleDarkMode").addEventListener("change", function() {
       document.body.classList.toggle("dark-mode");
+      // Save preference to localStorage
+      localStorage.setItem('darkMode', this.checked);
     });
+
+    // Check for saved dark mode preference
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.getElementById('toggleDarkMode').checked = true;
+      document.body.classList.add('dark-mode');
+    }
 
     // Main Calculator Logic
     document.getElementById("calculateBtn").addEventListener("click", function () {
@@ -431,7 +509,7 @@
       `;
     });
 
-    // Hit Factor Calculator (formerly Advanced)
+    // Hit Factor Calculator
     document.getElementById("advCalcBtn").addEventListener("click", function() {
       let scoring = document.getElementById("scoring").value;
       let alphaPoints = scoring === "major" ? 5 : 5;
