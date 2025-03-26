@@ -10,180 +10,243 @@
   <title>Hit Factor Genie</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Aladin&display=swap');
+    :root {
+      --primary: #1e90ff;
+      --primary-dark: #187bcd;
+      --bg: #2f2f2f;
+      --card: #3b3b3b;
+      --text: #fff;
+      --border: #555;
+      --highlight: #ffbf00;
+    }
+    
+    .dark-mode {
+      --bg: #f5f5f5;
+      --card: #e0e0e0;
+      --text: #333;
+      --border: #ddd;
+      --highlight: #d35400;
+    }
+    
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
+    
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background-color: #2f2f2f;
-      color: #fff;
+      background-color: var(--bg);
+      color: var(--text);
       text-align: center;
       padding: 10px;
-      margin: 0;
+      line-height: 1.6;
       -webkit-text-size-adjust: 100%;
-      line-height: 1.5;
+      -webkit-tap-highlight-color: transparent;
     }
-    .container {
+    
+    .container, .section {
       max-width: 100%;
-      margin: 0 auto 20px;
-      background-color: #3b3b3b;
+      margin: 0 auto 15px;
+      background-color: var(--card);
       padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
+    
     .sponsor-container {
-      background: #444;
-      padding: 0px;
+      background: var(--card);
+      padding: 0;
       margin-bottom: 20px;
-      border-radius: 4px;
-      text-align: center;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
     }
-    .sponsor-label {
-      font-size: 12px;
-      color: #bbb;
-      margin-bottom: 5px;
-      display: block;
-    }
-    .sponsor-link {
-      display: block;
-      margin: 0 auto;
-      max-width: 200px;
-    }
+    
     .sponsor-img {
       width: 100%;
       height: auto;
-      border-radius: 4px;
+      display: block;
     }
+    
     h1 {
       font-family: 'Aladin', cursive;
-      color: #1e90ff;
+      color: var(--primary);
       font-size: 2.2rem;
-      margin: 5px 0 10px;
-      line-height: 1.2;
+      margin: 10px 0;
     }
+    
     h2, h3 {
-      color: #1e90ff;
-      font-size: 1.3rem;
-      margin: 0 0 10px;
+      color: var(--primary);
+      font-size: 1.4rem;
+      margin: 0 0 15px;
       padding-bottom: 8px;
-      border-bottom: 2px solid #1e90ff;
+      border-bottom: 2px solid var(--primary);
     }
+    
     .input-group {
-      margin-bottom: 12px;
+      margin-bottom: 15px;
       text-align: left;
     }
+    
     .input-group label {
       display: block;
-      margin-bottom: 5px;
-      font-size: 14px;
-      color: #ccc;
+      margin-bottom: 6px;
+      font-size: 15px;
+      color: var(--text);
+      opacity: 0.9;
     }
+    
     input, button, select {
       width: 100%;
-      padding: 12px 15px;
-      margin: 0;
-      border-radius: 6px;
+      padding: 14px;
+      border-radius: 8px;
       border: none;
       font-size: 16px;
       -webkit-appearance: none;
+      transition: all 0.2s;
     }
+    
     input {
-      background-color: #444;
-      color: #fff;
-      border: 1px solid #555;
+      background-color: rgba(0,0,0,0.1);
+      color: var(--text);
+      border: 1px solid var(--border);
     }
-    input[type="number"] {
-      -moz-appearance: textfield;
+    
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.2);
     }
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    input::placeholder {
-      color: #bbb;
-      opacity: 1;
-    }
+    
     button {
-      background-color: #1e90ff;
+      background-color: var(--primary);
       color: white;
       font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.2s;
-      margin-top: 8px;
-      border: none;
+      margin-top: 10px;
     }
+    
     button:active {
-      background-color: #187bcd;
+      background-color: var(--primary-dark);
       transform: translateY(1px);
     }
+    
     .result {
       margin: 15px 0 0;
       font-size: 16px;
-      padding: 12px;
-      background: #34495e;
-      border-radius: 6px;
-      color: #ffbf00;
-      min-height: 50px;
-      border: 1px solid #1e90ff;
+      padding: 15px;
+      background: rgba(0,0,0,0.1);
+      border-radius: 8px;
+      color: var(--highlight);
+      border: 1px solid var(--primary);
       text-align: left;
     }
-    .section {
-      margin: 20px auto;
-      padding: 15px;
-      background-color: #3b3b3b;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      border: 1px solid #444;
-      max-width: 100%;
-    }
+    
     .footer {
-      margin: 25px auto 10px;
+      margin: 20px auto 10px;
       padding: 15px;
-      background-color: #222;
-      border-radius: 8px;
+      background-color: var(--card);
+      border-radius: 10px;
       font-size: 14px;
-      color: white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      max-width: 100%;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
+    
     .footer a {
-      color: lightgray;
-      text-decoration: underline;
-      display: inline-block;
-      margin: 3px 0;
+      color: var(--text);
+      text-decoration: none;
+      display: block;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 6px;
+      background: rgba(0,0,0,0.1);
+      transition: background 0.2s;
     }
-    .dark-mode {
-      background-color: #f5f5f5;
-      color: #333;
+    
+    .footer a:active {
+      background: rgba(0,0,0,0.2);
     }
-    .dark-mode .container, 
-    .dark-mode .section, 
-    .dark-mode .footer {
-      background-color: #e0e0e0;
-      color: #333;
+    
+    .footer-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 8px 0;
+      opacity: 0.3;
     }
-    .dark-mode input {
-      background-color: #fff;
-      color: #333;
-      border: 1px solid #ddd;
+    
+    .info-toggle {
+      background: rgba(0,0,0,0.1);
+      color: var(--text);
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      margin: 15px 0 0;
+      display: block;
     }
-    .dark-mode .result {
-      background: #d0e0f0;
-      color: #d35400;
+    
+    .info-content {
+      display: none;
+      margin-top: 12px;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: left;
+      font-size: 14px;
+      background: rgba(0,0,0,0.1);
+      line-height: 1.6;
     }
+    
+    .info-content p {
+      margin-bottom: 12px;
+    }
+    
+    .info-content ul {
+      margin: 12px 0;
+      padding-left: 20px;
+    }
+    
+    .info-content li {
+      margin-bottom: 8px;
+    }
+    
+    .info-content div.example {
+      background: rgba(0,0,0,0.1);
+      padding: 12px;
+      border-radius: 6px;
+      margin: 15px 0;
+      border-left: 3px solid var(--primary);
+    }
+    
+    .info-content div.tip {
+      background: rgba(30, 144, 255, 0.1);
+      padding: 10px;
+      border-radius: 6px;
+      margin: 15px 0;
+      border-left: 3px solid var(--primary);
+    }
+    
+    .powered-by {
+      color: var(--text);
+      opacity: 0.7;
+      margin-bottom: 15px;
+      display: block;
+      font-size: 14px;
+    }
+    
     .switch {
       position: relative;
       display: inline-block;
-      width: 52px;
-      height: 26px;
+      width: 60px;
+      height: 30px;
       margin: 10px 0 15px;
     }
+    
     .switch input {
       opacity: 0;
       width: 0;
       height: 0;
     }
+    
     .slider {
       position: absolute;
       cursor: pointer;
@@ -191,74 +254,34 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: #444;
-      transition: 0.2s;
-      border-radius: 26px;
+      background-color: var(--border);
+      transition: .2s;
+      border-radius: 30px;
     }
+    
     .slider:before {
       position: absolute;
       content: "";
-      height: 20px;
-      width: 20px;
-      left: 3px;
-      bottom: 3px;
+      height: 22px;
+      width: 22px;
+      left: 4px;
+      bottom: 4px;
       background-color: white;
-      transition: 0.2s;
+      transition: .2s;
       border-radius: 50%;
     }
+    
     input:checked + .slider {
-      background-color: #1e90ff;
+      background-color: var(--primary);
     }
+    
     input:checked + .slider:before {
-      transform: translateX(26px);
+      transform: translateX(30px);
     }
-    .info-toggle {
-      background: #555;
-      color: white;
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-      margin: 15px 0 0;
-      display: inline-block;
-      transition: background-color 0.2s;
-      width: 100%;
-      text-align: center;
-    }
-    .info-toggle:active {
-      background: #666;
-    }
-    .info-content {
-      display: none;
-      margin-top: 12px;
-      background: #444;
-      padding: 12px;
-      border-radius: 6px;
-      text-align: left;
-      line-height: 1.5;
-      font-size: 14px;
-    }
-    .dark-mode .info-content {
-      background: #ddd;
-      color: #333;
-    }
-    .powered-by {
-      color: lightgray;
-      margin-bottom: 12px;
-      display: block;
-      font-size: 14px;
-    }
+    
     @media (min-width: 500px) {
-      .container, .section {
+      .container, .section, .footer {
         max-width: 450px;
-      }
-    }
-    @media (min-width: 768px) {
-      h1 {
-        font-size: 2.5rem;
-      }
-      .container, .section {
-        padding: 20px;
       }
     }
   </style>
@@ -266,12 +289,11 @@
 <body>
   <div class="container">
     <!-- Sponsor Spot -->
-<div class="sponsor-container">
-  <span class="sponsor-label"></span>
-  <a href="https://usuckatshooting.com/partner-with-us/" target="_blank" class="sponsor-link">
-    <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1833.png?w=1024" class="sponsor-img">
-  </a>
-</div>
+    <div class="sponsor-container">
+      <a href="https://usuckatshooting.com/partner-with-us/" target="_blank" class="sponsor-link">
+        <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1833.png?w=1024" class="sponsor-img">
+      </a>
+    </div>
     
     <h1>Hit Factor Genie 🧞‍♂️</h1>
     <a href="https://usuckatshooting.com" target="_blank" class="powered-by">Powered By USuckAtShooting</a>
@@ -296,12 +318,19 @@
     <!-- HHF Info Toggle -->
     <div class="info-toggle" onclick="toggleInfo('hhfInfoContent')">▼ Learn More</div>
     <div id="hhfInfoContent" class="info-content">
-      <p>HF Genie's Math follows Eric Grauffel's Method.</p>
+      <p><strong>HF Genie's Math follows Eric Grauffel's Method.</strong></p>
+      
       <p>This tool helps you use the current High Hit Factor (HHF) to determine how many points you can afford to drop on a stage. With that insight, you can strategically decide where to push speed and where to play it safe — and in some scenarios, plan Charlies on tougher targets like partials, no shoots, and swingers.</p>
-      <p>How to find the HHF:<p>
-      <p>You can ask the Range Officer for the fastest time on that stage. By estimating the hits, you'll get a good sense of the HHF.</p>
-      <p>At major matches with scores posted from the previous day or live scoring updates, you'll have access to the HHF.</p>
-      <p> Or use the Estimated High Hit Factor Predictor below!</p>
+      
+      <h4>How to find the HHF:</h4>
+      
+      <ul>
+        <li>Ask the Range Officer for the fastest time on that stage</li>
+        <li>Estimate the hits to calculate the HHF</li>
+        <li>Check major match scores from previous days</li>
+        <li>Use live scoring updates when available</li>
+        <li>Or use the Estimated High Hit Factor Predictor below</li>
+      </ul>
     </div>
   </div>
 
@@ -322,22 +351,24 @@
     <!-- Updated Info Toggle -->
     <div class="info-toggle" onclick="toggleInfo('estimateHHFInfoContent')">▼ "Measure the gap, close the gap" - Learn How</div>
     <div id="estimateHHFInfoContent" class="info-content">
-      <div style="text-align: center; margin-bottom: 10px;">
-        <h4 style="color: #1e90ff; margin: 5px 0;">"Measure the gap, close the gap"</h4>
-        <p style="font-style: italic; margin: 0;">Use another shooter's consistent performance to predict stage potential</p>
+      <div style="text-align: center; margin-bottom: 15px;">
+        <h4 style="color: var(--primary); margin-bottom: 8px;">"Measure the gap, close the gap"</h4>
+        <p style="font-style: italic;">Use another shooter's consistent performance to predict stage potential</p>
       </div>
       
       <p><strong>How It Works:</strong> If a shooter consistently achieves X% of the stage winner's HF (e.g., 80%), this calculator can estimate the 100%.</p>
       
-      <div style="background: #444; padding: 10px; border-radius: 5px; margin: 10px 0; border-left: 3px solid #1e90ff;">
-        <p><strong>Example:</strong> Hit Factor: <span style="color: #ffbf00;">6.8</span> at 80% → Winner's HF ≈ <span style="color: #ffbf00;">8.5</span></p>
+      <div class="example">
+        <p><strong>Example Calculation:</strong></p>
+        <p>Hit Factor: <span style="color: var(--highlight); font-weight: bold;">6.8</span> at 80%</p>
+        <p>→ Winner's HF ≈ <span style="color: var(--highlight); font-weight: bold;">8.5</span></p>
       </div>
       
-      <p><strong>Key Insights:</strong></p>
-      <ul style="padding-left: 20px; margin: 10px 0;">
-        <li>You need <strong>+1.7 HF</strong> to match the winner</li>
+      <h4>Key Insights:</h4>
+      <ul>
+        <li><strong>+1.7 HF</strong> needed to match the winner</li>
         <li>This means either:
-          <ul style="padding-left: 15px;">
+          <ul>
             <li>25% faster with equal points, <strong>or</strong></li>
             <li>25% more points (like converting 2 Charlies to Alphas)</li>
           </ul>
@@ -346,16 +377,16 @@
         <li>Every Charlie (-2pts) = 0.24s time penalty</li>
       </ul>
       
-      <p><strong>Next Steps:</strong> Plug the predicted HHF into the HF Genie calculator to:</p>
-      <ul style="padding-left: 20px; margin: 10px 0;">
+      <h4>Next Steps:</h4>
+      <ul>
         <li>See your allowed Charlies/Deltas</li>
         <li>Calculate exact miss penalties</li>
         <li>Optimize your speed/accuracy balance</li>
       </ul>
       
-      <p style="background: #1e90ff20; padding: 8px; border-radius: 3px; border-left: 3px solid #1e90ff; margin: 15px 0 5px 0;">
-        <strong>Pro Tip:</strong> Use the average consistent percentage (e.g., 75%) for tbe best estimates.
-      </p>
+      <div class="tip">
+        <p><strong>Pro Tip:</strong> Use the average consistent percentage (e.g., 75%) for the best estimates.</p>
+      </div>
     </div>
   </div>
 
@@ -392,10 +423,25 @@
     <!-- Points Down Info Toggle -->
     <div class="info-toggle" onclick="toggleInfo('pointsDownInfoContent')">▼ Learn More</div>
     <div id="pointsDownInfoContent" class="info-content">
-      <p>This tool helps you understand how points dropped (e.g., Charlies, Deltas, Mikes, No-Shoots, and Penalties) affect your performance based on the Hit Factor (HF).</p>
-      <p>For example, shooting 1 Charlie (down 2 points) on a 2HF stage is equal to adding 1 second to a clean run (all Alphas).</p>
-      <p>By entering your HF and the number of penalties, you can see how much time you lose due to points dropped.</p>
-      <p>This data is grounded in mathematics. Hit Factor is calculated as points divided by time, representing points per second. This calculator was inspired by a chart shared by Brantley Merriam.</p>
+      <p>This tool helps you understand how points dropped affect your performance based on the Hit Factor (HF).</p>
+      
+      <div class="example">
+        <p><strong>Example:</strong> Shooting 1 Charlie (down 2 points) on a 2HF stage is equal to adding 1 second to a clean run (all Alphas).</p>
+      </div>
+      
+      <h4>Key Concepts:</h4>
+      <ul>
+        <li>Hit Factor = Points ÷ Time</li>
+        <li>Represents points per second</li>
+        <li>Higher HF means each point is more valuable</li>
+        <li>Lower HF allows more point drops</li>
+      </ul>
+      
+      <p>By entering your HF and penalty counts, you can see the time equivalent of your accuracy decisions.</p>
+      
+      <div class="tip">
+        <p><strong>Note:</strong> This calculator was inspired by a chart shared by Brantley Merriam.</p>
+      </div>
     </div>
   </div>
   
@@ -438,27 +484,24 @@
   </div>
   
   <div class="footer">
-    <div class="footer">
-  <p>HF Genie Math follows Eric Grauffel's Method</p>
-  <a href="https://dryfire-timer.netlify.app/" target="_blank">Dry-Fire Timer</a>
-  <div class="footer-divider"></div>
-  <a href="https://usuckatshooting.com" target="_blank">USuckAtShooting.com</a>
-  <div class="footer-divider"></div>
-  <a href="https://instagram.com/wes.cronin" target="_blank">Wes Cronin</a>
-  <div class="footer-divider"></div>
-  <a href="https://instagram.com/usuckatshooting" target="_blank">USuckAtShooting</a>
-  <div class="footer-divider"></div>
-  <a href="https://www.youtube.com/usuckatshooting" target="_blank">YouTube</a>
-  <div class="footer-divider"></div>
-  <a href="https://usuckatshooting.bigcartel.com/" target="_blank">Support Me / Shirts</a>
-</div>
+    <p>HF Genie Math follows Eric Grauffel's Method</p>
+    <a href="https://dryfire-timer.netlify.app/" target="_blank">Dry-Fire Timer</a>
+    <div class="footer-divider"></div>
+    <a href="https://usuckatshooting.com" target="_blank">USuckAtShooting.com</a>
+    <div class="footer-divider"></div>
+    <a href="https://instagram.com/wes.cronin" target="_blank">Wes Cronin</a>
+    <div class="footer-divider"></div>
+    <a href="https://instagram.com/usuckatshooting" target="_blank">USuckAtShooting</a>
+    <div class="footer-divider"></div>
+    <a href="https://www.youtube.com/usuckatshooting" target="_blank">YouTube</a>
+    <div class="footer-divider"></div>
+    <a href="https://usuckatshooting.bigcartel.com/" target="_blank">Support Me / Shirts</a>
   </div>
   
   <script>
     // Dark Mode Toggle
     document.getElementById("toggleDarkMode").addEventListener("change", function() {
       document.body.classList.toggle("dark-mode");
-      // Save preference to localStorage
       localStorage.setItem('darkMode', this.checked);
     });
 
@@ -559,19 +602,15 @@
       const shooterHF = parseFloat(document.getElementById("currentHHF").value) || 0;
       const percentage = parseFloat(document.getElementById("shooterPercentage").value) || 0;
 
-      // Validation
       if (shooterHF <= 0 || percentage <= 0 || percentage >= 100) {
-        document.getElementById("estimateHHFResult").innerHTML = 
-          "Please enter valid numbers (0 < % < 100).";
+        document.getElementById("estimateHHFResult").innerHTML = "Please enter valid numbers (0 < % < 100).";
         return;
       }
 
-      // Calculate true HHF and improvement needed
       const trueHHF = (shooterHF / (percentage / 100)).toFixed(2);
       const hfDifference = (trueHHF - shooterHF).toFixed(2);
       const percentImprovement = ((100 / percentage) * 100 - 100).toFixed(0);
 
-      // Display results with strategic insights
       document.getElementById("estimateHHFResult").innerHTML = `
         <strong>Predicted HHF:</strong> ${trueHHF}<br>
         <strong>To match winner:</strong> +${hfDifference} HF needed<br>
