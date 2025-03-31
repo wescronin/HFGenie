@@ -69,6 +69,26 @@
       display: block;
     }
     
+    .mini-banner {
+      margin: 15px 0 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      display: flex;
+      justify-content: center;
+      background: var(--card);
+      padding: 5px;
+    }
+    
+    .mini-banner-img {
+      max-width: 100%;
+      height: auto;
+      max-height: 80px;
+      width: auto;
+      object-fit: contain;
+      border-radius: 5px;
+    }
+    
     h1 {
       font-family: 'Aladin', cursive;
       color: var(--primary);
@@ -288,10 +308,10 @@
 </head>
 <body>
   <div class="container">
-    <!-- Sponsor Spot -->
+    <!-- Sponsor Spot (Top Banner - Unchanged) -->
     <div class="sponsor-container">
       <a href="https://usuckatshooting.com/partner-with-us/" target="_blank" class="sponsor-link">
-        <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1836.png?w=1024" class="sponsor-img">
+        <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1836.png?w=1024" class="sponsor-img" alt="USuckAtShooting Banner">
       </a>
     </div>
     
@@ -314,6 +334,13 @@
     </div>
     <button id="calculateBtn">Calculate</button>
     <div id="result" class="result"></div>
+    
+    <!-- Mini Banner -->
+    <div class="mini-banner">
+      <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
+        <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1864-1.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner">
+      </a>
+    </div>
 
     <!-- HHF Info Toggle -->
     <div class="info-toggle" onclick="toggleInfo('hhfInfoContent')">▼ Learn More</div>
@@ -347,6 +374,13 @@
     </div>
     <button id="estimateHHFBtn">Predict Winner's HF</button>
     <div id="estimateHHFResult" class="result"></div>
+    
+    <!-- Mini Banner -->
+    <div class="mini-banner">
+      <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
+        <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1864-1.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner">
+      </a>
+    </div>
 
     <!-- Updated Info Toggle -->
     <div class="info-toggle" onclick="toggleInfo('estimateHHFInfoContent')">▼ "Measure the gap, close the gap" - Learn How</div>
@@ -419,6 +453,13 @@
     </div>
     <button id="penaltyCalcBtn">Calculate Penalty</button>
     <div id="penaltyResult" class="result"></div>
+    
+    <!-- Mini Banner -->
+    <div class="mini-banner">
+      <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
+        <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1864-1.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner">
+      </a>
+    </div>
 
     <!-- Points Down Info Toggle -->
     <div class="info-toggle" onclick="toggleInfo('pointsDownInfoContent')">▼ Learn More</div>
@@ -481,6 +522,13 @@
     </div>
     <button id="advCalcBtn">Calculate</button>
     <div id="advResult" class="result"></div>
+    
+    <!-- Mini Banner -->
+    <div class="mini-banner">
+      <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
+        <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1864-1.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner">
+      </a>
+    </div>
   </div>
   
   <div class="footer">
