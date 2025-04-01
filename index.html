@@ -330,11 +330,13 @@
       margin-top: 8px;
     }
 
+    /* Banner Styling - Fixed for Mobile */
     .banner-container {
       margin: 20px 0;
       border-radius: 8px;
       overflow: hidden;
       border: 1px solid var(--border);
+      max-width: 100%;
     }
 
     .banner-img {
@@ -352,14 +354,16 @@
       justify-content: center;
       background: var(--card);
       padding: 5px;
-      height: 80px;
+      height: auto;
+      min-height: 80px;
       width: 100%;
     }
 
     .mini-banner-img {
-      height: 100%;
-      width: auto;
-      object-fit: cover;
+      width: 100%;
+      height: auto;
+      max-height: 80px;
+      object-fit: contain;
     }
 
     .support-card {
@@ -392,6 +396,71 @@
       margin-right: 8px;
     }
 
+    /* Home Page Content */
+    .home-content {
+      text-align: center;
+    }
+
+    .home-content h2 {
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .home-content p {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .home-content ul {
+      text-align: left;
+      margin-left: 20px;
+      margin-bottom: 16px;
+    }
+
+    .home-footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .home-footer-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+
+    /* Info Box Styling */
+    .info-box {
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .info-box h3 {
+      color: var(--primary);
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+    }
+
+    .info-box h3 i {
+      margin-right: 8px;
+    }
+
+    .info-box p {
+      margin-bottom: 12px;
+    }
+
+    .info-box ul {
+      margin-left: 20px;
+      margin-bottom: 12px;
+    }
+
     @media (max-width: 480px) {
       .container {
         padding: 0;
@@ -408,6 +477,18 @@
       .tab {
         padding: 12px 16px;
         font-size: 0.9rem;
+      }
+      
+      /* Mobile-specific banner adjustments */
+      .banner-container, .mini-banner {
+        border-radius: 0;
+        margin-left: -16px;
+        margin-right: -16px;
+        width: calc(100% + 32px);
+      }
+      
+      .mini-banner-img {
+        max-height: 60px;
       }
     }
   </style>
@@ -437,15 +518,58 @@
 
     <!-- Enhanced Tabs -->
     <div class="tabs">
-      <div class="tab active" data-tab="strategy">Strategy</div>
+      <div class="tab active" data-tab="home">Home</div>
+      <div class="tab" data-tab="strategy">Strategy</div>
       <div class="tab" data-tab="predictor">Predictor</div>
       <div class="tab" data-tab="penalty">Penalty</div>
       <div class="tab" data-tab="calculator">Calculator</div>
       <div class="tab" data-tab="support">Support</div>
     </div>
 
+    <!-- Home Tab -->
+    <div class="tab-content active" id="home-tab">
+      <div class="card home-content">
+        <h2><i class="fas fa-home"></i> Welcome to HF Genie</h2>
+        
+        <div class="info-box">
+          <h3><i class="fas fa-chess"></i> The Strategy Calculator</h3>
+          <p>Calculating stage math on the fly can be tough—the HF Genie simplifies it. Based on Eric Grauffel's method, this tool uses the High Hit Factor (HHF) to show how many points you can afford to drop. With this insight, you can strategically balance speed and precision—even planning Charlies on tough targets like partials, no-shoots, or swingers.</p>
+        </div>
+        
+        <div class="info-box">
+          <h3><i class="fas fa-chart-line"></i> HHF Predictor</h3>
+          <p>If a shooter consistently scores X% of the stage winner's HF (e.g., 80%), this tool estimates the 100% hit factor. Use the predicted HF in the Strategy Calculator to refine your plan.</p>
+          <p>Tested on major match data, the predictions are highly accurate!</p>
+        </div>
+        
+        <div class="info-box">
+          <h3><i class="fas fa-stopwatch"></i> Penalty – Points as Time</h3>
+          <p>Think of a racing game where a ghost car shows the perfect lap—every mistake costs time, pushing you further behind. The HF Genie's "Points Down as Time" calculator works the same way.</p>
+          <p>For example:</p>
+          <ul>
+            <li>On a 6 HF stage, each Charlie (-2 points) puts you 0.33 sec behind your "ghost" (a flawless Alpha run).</li>
+            <li>On a 2 HF stage, a Charlie (-2 points) is like adding 1 second to your time—the same penalty as shooting clean but 1 sec slower.</li>
+          </ul>
+          <p>This tool helps you visualize how Charlies, Deltas, Mikes, No-Shoots, and Penalties impact your performance based on the stage's HF.</p>
+        </div>
+        
+        <div class="mini-banner">
+          <a href="https://dryfire-timer.netlify.app/" target="_blank">
+            <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1889.png?w=1024" class="mini-banner-img" alt="Dry Fire Timer">
+          </a>
+        </div>
+        
+        <div class="home-footer-links">
+          <a href="https://usuckatshooting.com" class="home-footer-link" target="_blank">Website</a>
+          <a href="https://instagram.com/usuckatshooting" class="home-footer-link" target="_blank">Instagram</a>
+          <a href="https://www.youtube.com/usuckatshooting" class="home-footer-link" target="_blank">YouTube</a>
+          <a href="https://usuckatshooting.bigcartel.com/" class="home-footer-link" target="_blank">Store</a>
+        </div>
+      </div>
+    </div>
+
     <!-- Strategy Calculator -->
-    <div class="tab-content active" id="strategy-tab">
+    <div class="tab-content" id="strategy-tab">
       <div class="card">
         <h2><i class="fas fa-chess"></i> Stage Strategy</h2>
         
@@ -471,7 +595,6 @@
         </div>
       </div>
       
-      <!-- Updated Mini Banner for Strategy Tab -->
       <div class="mini-banner">
         <a href="https://usuckatshooting.bigcartel.com/" target="_blank">
           <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1889.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Store">
@@ -516,7 +639,6 @@
         </div>
       </div>
       
-      <!-- Updated Mini Banner for Predictor Tab -->
       <div class="mini-banner">
         <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
           <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1888.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner">
@@ -577,7 +699,6 @@
         </div>
       </div>
       
-      <!-- Updated Mini Banner for Penalty Tab -->
       <div class="mini-banner">
         <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
           <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1888.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner">
@@ -646,7 +767,6 @@
         </div>
       </div>
       
-      <!-- Updated Mini Banner for Calculator Tab -->
       <div class="mini-banner">
         <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
           <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1888.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner">
