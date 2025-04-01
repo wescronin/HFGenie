@@ -1,272 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hit Factor Genie</title>
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Hit Factor Genie</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Aladin&display=swap');
     :root {
-      --primary: #1e90ff;
-      --primary-dark: #187bcd;
-      --bg: #2f2f2f;
-      --card: #3b3b3b;
-      --text: #fff;
-      --border: #555;
-      --highlight: #ffbf00;
+      --primary: #4895ef;
+      --primary-light: #4361ee;
+      --primary-dark: #3a0ca3;
+      --secondary: #f72585;
+      --success: #4cc9f0;
+      --warning: #f8961e;
+      --danger: #ef233c;
+      --dark: #2b2d42;
+      --light: #f8f9fa;
+      --gray: #adb5bd;
+      --bg: #121212;
+      --card: #1e1e1e;
+      --text: #f8f9fa;
+      --border: #333;
+      --shadow: 0 4px 6px rgba(0,0,0,0.3);
     }
-    
-    .dark-mode {
-      --bg: #f5f5f5;
-      --card: #e0e0e0;
-      --text: #333;
-      --border: #ddd;
-      --highlight: #d35400;
+
+    .light-mode {
+      --primary: #4361ee;
+      --primary-light: #4895ef;
+      --primary-dark: #3a0ca3;
+      --bg: #ffffff;
+      --card: #ffffff;
+      --text: #212529;
+      --border: #dee2e6;
+      --shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
-    
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
-    
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
       background-color: var(--bg);
       color: var(--text);
-      text-align: center;
-      padding: 10px;
       line-height: 1.6;
-      -webkit-text-size-adjust: 100%;
-      -webkit-tap-highlight-color: transparent;
+      padding: 16px;
+      -webkit-font-smoothing: antialiased;
     }
-    
-    .container, .section {
-      max-width: 100%;
-      margin: 0 auto 15px;
-      background-color: var(--card);
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
     }
-    
-    .sponsor-container {
-      background: var(--card);
-      padding: 0;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid var(--border);
+
+    header {
+      text-align: center;
+      margin-bottom: 24px;
     }
-    
-    .sponsor-img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    
-    .mini-banner {
-      margin: 15px 0 0;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      display: flex;
-      justify-content: center;
-      background: var(--card);
-      padding: 5px;
-    }
-    
-    .mini-banner-img {
-      max-width: 100%;
-      height: auto;
-      max-height: 80px;
-      width: auto;
-      object-fit: contain;
-      border-radius: 5px;
-    }
-    
+
     h1 {
-      font-family: 'Aladin', cursive;
       color: var(--primary);
       font-size: 2.2rem;
-      margin: 10px 0;
+      margin-bottom: 8px;
+      font-weight: 700;
     }
-    
-    h2, h3 {
+
+    .subtitle {
+      color: var(--gray);
+      font-size: 1rem;
+      margin-bottom: 16px;
+    }
+
+    .card {
+      background-color: var(--card);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    h2 {
       color: var(--primary);
       font-size: 1.4rem;
-      margin: 0 0 15px;
-      padding-bottom: 8px;
-      border-bottom: 2px solid var(--primary);
+      margin-bottom: 20px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
     }
-    
+
     .input-group {
-      margin-bottom: 15px;
-      text-align: left;
+      margin-bottom: 16px;
     }
-    
-    .input-group label {
+
+    label {
       display: block;
-      margin-bottom: 6px;
-      font-size: 15px;
+      margin-bottom: 8px;
+      font-weight: 500;
+      font-size: 0.95rem;
       color: var(--text);
-      opacity: 0.9;
     }
-    
-    input, button, select {
+
+    input, select {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 1rem;
+      background-color: var(--card);
+      color: var(--text);
+      transition: all 0.2s ease;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    button {
       width: 100%;
       padding: 14px;
       border-radius: 8px;
       border: none;
-      font-size: 16px;
-      -webkit-appearance: none;
-      transition: all 0.2s;
-    }
-    
-    input {
-      background-color: rgba(0,0,0,0.1);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    
-    input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.2);
-    }
-    
-    button {
+      font-size: 1rem;
+      font-weight: 600;
       background-color: var(--primary);
       color: white;
-      font-weight: bold;
       cursor: pointer;
-      margin-top: 10px;
+      transition: all 0.2s ease;
+      margin-top: 8px;
     }
-    
-    button:active {
+
+    button:hover {
       background-color: var(--primary-dark);
+    }
+
+    button:active {
       transform: translateY(1px);
     }
-    
+
     .result {
-      margin: 15px 0 0;
-      font-size: 16px;
-      padding: 15px;
-      background: rgba(0,0,0,0.1);
+      margin-top: 20px;
+      padding: 16px;
       border-radius: 8px;
-      color: var(--highlight);
-      border: 1px solid var(--primary);
-      text-align: left;
-    }
-    
-    .footer {
-      margin: 20px auto 10px;
-      padding: 15px;
-      background-color: var(--card);
-      border-radius: 10px;
-      font-size: 14px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    
-    .footer a {
-      color: var(--text);
-      text-decoration: none;
-      display: block;
-      padding: 10px;
-      margin: 5px 0;
-      border-radius: 6px;
-      background: rgba(0,0,0,0.1);
-      transition: background 0.2s;
-    }
-    
-    .footer a:active {
-      background: rgba(0,0,0,0.2);
-    }
-    
-    .footer-divider {
-      height: 1px;
-      background: var(--border);
-      margin: 8px 0;
-      opacity: 0.3;
-    }
-    
-    .info-toggle {
-      background: rgba(0,0,0,0.1);
-      color: var(--text);
-      padding: 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 15px;
-      margin: 15px 0 0;
-      display: block;
-    }
-    
-    .info-content {
+      background-color: rgba(67, 97, 238, 0.08);
+      border-left: 4px solid var(--primary);
       display: none;
-      margin-top: 12px;
-      padding: 15px;
-      border-radius: 8px;
-      text-align: left;
-      font-size: 14px;
-      background: rgba(0,0,0,0.1);
-      line-height: 1.6;
     }
-    
-    .info-content p {
-      margin-bottom: 12px;
-    }
-    
-    .info-content ul {
-      margin: 12px 0;
-      padding-left: 20px;
-    }
-    
-    .info-content li {
+
+    .result p {
       margin-bottom: 8px;
     }
-    
-    .info-content div.example {
-      background: rgba(0,0,0,0.1);
-      padding: 12px;
-      border-radius: 6px;
-      margin: 15px 0;
-      border-left: 3px solid var(--primary);
+
+    .result strong {
+      color: var(--primary);
     }
-    
-    .info-content div.tip {
-      background: rgba(30, 144, 255, 0.1);
-      padding: 10px;
-      border-radius: 6px;
-      margin: 15px 0;
-      border-left: 3px solid var(--primary);
+
+    /* Enhanced Tab Styling */
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) var(--bg);
+      padding-bottom: 4px;
     }
-    
-    .powered-by {
-      color: var(--text);
-      opacity: 0.7;
-      margin-bottom: 15px;
+
+    .tabs::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .tabs::-webkit-scrollbar-thumb {
+      background-color: var(--primary);
+      border-radius: 3px;
+    }
+
+    .tabs::-webkit-scrollbar-track {
+      background-color: var(--bg);
+    }
+
+    .tab {
+      padding: 12px 20px;
+      cursor: pointer;
+      font-weight: 600;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      user-select: none;
+      -webkit-user-select: none;
+      color: var(--gray);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .tab:hover {
+      color: var(--primary-light);
+    }
+
+    .tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .tab:after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--primary);
+      transform: scaleX(0);
+      transition: transform 0.2s ease;
+    }
+
+    .tab.active:after {
+      transform: scaleX(1);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
       display: block;
-      font-size: 14px;
     }
-    
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 20px 0;
+      gap: 12px;
+    }
+
     .switch {
       position: relative;
       display: inline-block;
-      width: 60px;
-      height: 30px;
-      margin: 10px 0 15px;
+      width: 50px;
+      height: 26px;
     }
-    
+
     .switch input {
       opacity: 0;
       width: 0;
       height: 0;
     }
-    
+
     .slider {
       position: absolute;
       cursor: pointer;
@@ -274,418 +263,603 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: var(--border);
-      transition: .2s;
-      border-radius: 30px;
+      background-color: var(--gray);
+      transition: .4s;
+      border-radius: 34px;
     }
-    
+
     .slider:before {
       position: absolute;
       content: "";
-      height: 22px;
-      width: 22px;
+      height: 18px;
+      width: 18px;
       left: 4px;
       bottom: 4px;
       background-color: white;
-      transition: .2s;
+      transition: .4s;
       border-radius: 50%;
     }
-    
+
     input:checked + .slider {
       background-color: var(--primary);
     }
-    
+
     input:checked + .slider:before {
-      transform: translateX(30px);
+      transform: translateX(24px);
     }
-    
-    @media (min-width: 500px) {
-      .container, .section, .footer {
-        max-width: 450px;
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    .badge-alpha {
+      background-color: rgba(76, 201, 240, 0.15);
+      color: var(--success);
+    }
+
+    .badge-charlie {
+      background-color: rgba(248, 150, 30, 0.15);
+      color: var(--warning);
+    }
+
+    .badge-delta {
+      background-color: rgba(239, 35, 60, 0.15);
+      color: var(--danger);
+    }
+
+    .badge-penalty {
+      background-color: rgba(43, 45, 66, 0.15);
+      color: var(--dark);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    .info-text {
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-top: 8px;
+    }
+
+    .banner-container {
+      margin: 20px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .banner-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .mini-banner {
+      margin: 15px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      display: flex;
+      justify-content: center;
+      background: var(--card);
+      padding: 5px;
+      height: 80px;
+      width: 100%;
+    }
+
+    .mini-banner-img {
+      height: 100%;
+      width: auto;
+      object-fit: cover;
+    }
+
+    .support-card {
+      text-align: center;
+    }
+
+    .support-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .support-link {
+      display: block;
+      padding: 14px;
+      background-color: rgba(67, 97, 238, 0.1);
+      border-radius: 8px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .support-link:hover {
+      background-color: rgba(67, 97, 238, 0.2);
+    }
+
+    .support-link i {
+      margin-right: 8px;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 0;
+      }
+      
+      .card {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .tab {
+        padding: 12px 16px;
+        font-size: 0.9rem;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Sponsor Spot (Top Banner - Unchanged) -->
-    <div class="sponsor-container">
-      <a href="https://usuckatshooting.com/partner-with-us/" target="_blank" class="sponsor-link">
-        <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1836.png?w=1024" class="sponsor-img" alt="USuckAtShooting Banner">
-      </a>
-    </div>
-    
-    <h1>Hit Factor Genie 🧞‍♂️</h1>
-    <a href="https://usuckatshooting.com" target="_blank" class="powered-by">Powered By USuckAtShooting</a>
-    
-    <!-- Dark Mode Toggle Switch -->
-    <label class="switch">
-      <input type="checkbox" id="toggleDarkMode">
-      <span class="slider"></span>
-    </label>
+    <header>
+      <h1><i class="fas fa-bolt"></i> Hit Factor Genie</h1>
+      <p class="subtitle">Optimize your competitive shooting performance</p>
+    </header>
 
-    <div class="input-group">
-      <label for="highHitFactor">Current High Hit Factor</label>
-      <input type="number" id="highHitFactor" placeholder="Enter value" inputmode="decimal">
-    </div>
-    <div class="input-group">
-      <label for="roundCount">Stage Round Count</label>
-      <input type="number" id="roundCount" placeholder="Enter count" inputmode="numeric">
-    </div>
-    <button id="calculateBtn">Calculate</button>
-    <div id="result" class="result"></div>
-    
-    <!-- Mini Banner - First Calculator (Updated image and link) -->
-    <div class="mini-banner">
-      <a href="https://usuckatshooting.bigcartel.com/" target="_blank">
-        <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1868.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Store">
-      </a>
-    </div>
-
-    <!-- HHF Info Toggle -->
-    <div class="info-toggle" onclick="toggleInfo('hhfInfoContent')">▼ Learn More</div>
-    <div id="hhfInfoContent" class="info-content">
-      <p><strong>HF Genie's Math follows Eric Grauffel's Method.</strong></p>
-      
-      <p>This tool helps you use the current High Hit Factor (HHF) to determine how many points you can afford to drop on a stage. With that insight, you can strategically decide where to push speed and where to play it safe — and in some scenarios, plan Charlies on tougher targets like partials, no shoots, and swingers.</p>
-      
-      <h4>How to find the HHF:</h4>
-      
-      <ul>
-        <li>Ask the Range Officer for the fastest time on that stage</li>
-        <li>Estimate the hits to calculate the HHF</li>
-        <li>Check major match scores from previous days</li>
-        <li>Use live scoring updates when available</li>
-        <li>Or use the Estimated High Hit Factor Predictor below</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- Estimated High Hit Factor Predictor -->
-  <div class="section">
-    <h3>Estimated High Hit Factor Predictor</h3>
-    <div class="input-group">
-      <label for="currentHHF">Hit Factor</label>
-      <input type="number" id="currentHHF" placeholder="Enter HF" min="0" inputmode="decimal" step="0.01">
-    </div>
-    <div class="input-group">
-      <label for="shooterPercentage">% of Winner</label>
-      <input type="number" id="shooterPercentage" placeholder="80" min="1" max="99" inputmode="numeric">
-    </div>
-    <button id="estimateHHFBtn">Predict Winner's HF</button>
-    <div id="estimateHHFResult" class="result"></div>
-    
-    <!-- Mini Banner (Original image and link) -->
-    <div class="mini-banner">
+    <!-- Main Sponsor Banner -->
+    <div class="banner-container">
       <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
-        <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1864-1.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner">
+        <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1836.png?w=1024" class="banner-img" alt="USuckAtShooting Banner">
       </a>
     </div>
 
-    <!-- Updated Info Toggle -->
-    <div class="info-toggle" onclick="toggleInfo('estimateHHFInfoContent')">▼ "Measure the gap, close the gap" - Learn How</div>
-    <div id="estimateHHFInfoContent" class="info-content">
-      <div style="text-align: center; margin-bottom: 15px;">
-        <h4 style="color: var(--primary); margin-bottom: 8px;">"Measure the gap, close the gap"</h4>
-        <p style="font-style: italic;">Use another shooter's consistent performance to predict stage potential</p>
+    <div class="theme-toggle">
+      <i class="fas fa-moon"></i>
+      <label class="switch">
+        <input type="checkbox" id="toggleDarkMode">
+        <span class="slider"></span>
+      </label>
+      <i class="fas fa-sun"></i>
+    </div>
+
+    <!-- Enhanced Tabs -->
+    <div class="tabs">
+      <div class="tab active" data-tab="strategy">Strategy</div>
+      <div class="tab" data-tab="predictor">Predictor</div>
+      <div class="tab" data-tab="penalty">Penalty</div>
+      <div class="tab" data-tab="calculator">Calculator</div>
+      <div class="tab" data-tab="support">Support</div>
+    </div>
+
+    <!-- Strategy Calculator -->
+    <div class="tab-content active" id="strategy-tab">
+      <div class="card">
+        <h2><i class="fas fa-chess"></i> Stage Strategy</h2>
+        
+        <div class="input-group">
+          <label for="highHitFactor">Current High Hit Factor</label>
+          <input type="number" id="highHitFactor" placeholder="e.g. 7.5" inputmode="decimal" step="0.01">
+        </div>
+        
+        <div class="input-group">
+          <label for="roundCount">Stage Round Count</label>
+          <input type="number" id="roundCount" placeholder="e.g. 24" inputmode="numeric">
+          <p class="info-text">Total rounds required for the stage</p>
+        </div>
+        
+        <button id="calculateBtn">Calculate Strategy</button>
+        
+        <div id="result" class="result">
+          <p><strong>Allowed Charlies:</strong> <span id="charliesAllowed">0</span></p>
+          <p><strong>Allowed Deltas:</strong> <span id="deltasAllowed">0</span></p>
+          <p><strong>Make up a miss in:</strong> <span id="makeupShotTime">0</span> sec</p>
+          <p><strong>Make up a Delta in:</strong> <span id="makeupDeltaTime">0</span> sec</p>
+          <p id="warningText" style="color: var(--warning); font-weight: 500; margin-top: 8px;"></p>
+        </div>
       </div>
       
-      <p><strong>How It Works:</strong> If a shooter consistently achieves X% of the stage winner's HF (e.g., 80%), this calculator can estimate the 100%.</p>
-      
-      <div class="example">
-        <p><strong>Example Calculation:</strong></p>
-        <p>Hit Factor: <span style="color: var(--highlight); font-weight: bold;">6.8</span> at 80%</p>
-        <p>→ Winner's HF ≈ <span style="color: var(--highlight); font-weight: bold;">8.5</span></p>
+      <!-- Updated Mini Banner for Strategy Tab -->
+      <div class="mini-banner">
+        <a href="https://usuckatshooting.bigcartel.com/" target="_blank">
+          <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1889.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Store">
+        </a>
+      </div>
+
+      <div class="card">
+        <h2><i class="fas fa-info-circle"></i> How It Works</h2>
+        <p>This calculator helps you determine how many points you can afford to drop based on the stage's High Hit Factor (HHF).</p>
+        <p style="margin-top: 12px;"><strong>Where to find HHF:</strong></p>
+        <ul style="margin: 8px 0 0 20px;">
+          <li>Ask the Range Officer for fastest time</li>
+          <li>Check major match scores</li>
+          <li>Use live scoring updates</li>
+          <li>Estimate using the Predictor tab</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- HHF Predictor -->
+    <div class="tab-content" id="predictor-tab">
+      <div class="card">
+        <h2><i class="fas fa-chart-line"></i> HHF Predictor</h2>
+        
+        <div class="input-group">
+          <label for="currentHHF">Your Hit Factor</label>
+          <input type="number" id="currentHHF" placeholder="e.g. 6.2" min="0" inputmode="decimal" step="0.01">
+        </div>
+        
+        <div class="input-group">
+          <label for="shooterPercentage">Your % of Winner</label>
+          <input type="number" id="shooterPercentage" placeholder="e.g. 80" min="1" max="99" inputmode="numeric">
+          <p class="info-text">Your consistent percentage compared to stage winners</p>
+        </div>
+        
+        <button id="estimateHHFBtn">Predict Winner's HF</button>
+        
+        <div id="estimateHHFResult" class="result">
+          <p><strong>Predicted HHF:</strong> <span id="trueHHF">0</span></p>
+          <p><strong>To match winner:</strong> +<span id="hfDifference">0</span> HF needed</p>
+          <p><strong>Improvement needed:</strong> <span id="percentImprovement">0</span>%</p>
+        </div>
       </div>
       
-      <h4>Key Insights:</h4>
-      <ul>
-        <li><strong>+1.7 HF</strong> needed to match the winner</li>
-        <li>This means either:
-          <ul>
+      <!-- Updated Mini Banner for Predictor Tab -->
+      <div class="mini-banner">
+        <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
+          <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1888.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner">
+        </a>
+      </div>
+
+      <div class="card">
+        <h2><i class="fas fa-lightbulb"></i> Key Insights</h2>
+        <p>If you consistently shoot at X% of the winner's HF, this estimates what 100% would be.</p>
+        
+        <div style="margin-top: 16px; padding: 12px; background-color: rgba(67, 97, 238, 0.08); border-radius: 8px;">
+          <p><strong>Example:</strong> 6.8 HF at 80% → Winner ≈ 8.5 HF</p>
+          <p style="margin-top: 8px;">This means you need to be either:</p>
+          <ul style="margin: 8px 0 0 20px;">
             <li>25% faster with equal points, <strong>or</strong></li>
-            <li>25% more points (like converting 2 Charlies to Alphas)</li>
+            <li>25% more points (convert 2 Charlies to Alphas)</li>
           </ul>
-        </li>
-        <li>Every 0.5s saved = must keep 4.25 points</li>
-        <li>Every Charlie (-2pts) = 0.24s time penalty</li>
-      </ul>
-      
-      <h4>Next Steps:</h4>
-      <ul>
-        <li>See your allowed Charlies/Deltas</li>
-        <li>Calculate exact miss penalties</li>
-        <li>Optimize your speed/accuracy balance</li>
-      </ul>
-      
-      <div class="tip">
-        <p><strong>Pro Tip:</strong> Use the average consistent percentage (e.g., 75%) for the best estimates.</p>
+        </div>
       </div>
+    </div>
+
+    <!-- Penalty Calculator -->
+    <div class="tab-content" id="penalty-tab">
+      <div class="card">
+        <h2><i class="fas fa-stopwatch"></i> Points as Time</h2>
+        
+        <div class="input-group">
+          <label for="hitFactor">Hit Factor (HF)</label>
+          <input type="number" id="hitFactor" placeholder="e.g. 5.0" min="0" inputmode="decimal" step="0.01">
+        </div>
+        
+        <div class="input-group">
+          <label for="charlies">Charlies <span class="badge badge-charlie">-2 pts</span></label>
+          <input type="number" id="charlies" placeholder="e.g. 2" min="0" inputmode="numeric">
+        </div>
+        
+        <div class="input-group">
+          <label for="deltas">Deltas <span class="badge badge-delta">-3 pts</span></label>
+          <input type="number" id="deltas" placeholder="e.g. 1" min="0" inputmode="numeric">
+        </div>
+        
+        <div class="input-group">
+          <label for="mikes">Mikes <span class="badge badge-penalty">-10 pts</span></label>
+          <input type="number" id="mikes" placeholder="e.g. 0" min="0" inputmode="numeric">
+        </div>
+        
+        <div class="input-group">
+          <label for="noShoots">No-Shoots <span class="badge badge-penalty">-10 pts</span></label>
+          <input type="number" id="noShoots" placeholder="e.g. 0" min="0" inputmode="numeric">
+        </div>
+        
+        <button id="penaltyCalcBtn">Calculate Penalty</button>
+        
+        <div id="penaltyResult" class="result">
+          <p><strong>Total Points Dropped:</strong> <span id="pointsDropped">0</span></p>
+          <p><strong>Equivalent Time Loss:</strong> <span id="equivalentTime">0</span> seconds</p>
+          <p><em>Equal to shooting clean but <span id="timeLossText">0</span> seconds slower</em></p>
+        </div>
+      </div>
+      
+      <!-- Updated Mini Banner for Penalty Tab -->
+      <div class="mini-banner">
+        <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
+          <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1888.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner">
+        </a>
+      </div>
+
+      <div class="card">
+        <h2><i class="fas fa-calculator"></i> The Math</h2>
+        <p>This shows how points dropped affect your performance based on Hit Factor.</p>
+        
+        <div style="margin-top: 16px; padding: 12px; background-color: rgba(67, 97, 238, 0.08); border-radius: 8px;">
+          <p><strong>Formula:</strong> Time Penalty = Points Dropped ÷ Hit Factor</p>
+          <p style="margin-top: 8px;"><strong>Example:</strong> 1 Charlie (2 pts) on 2HF stage = 1 second penalty</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Advanced HF Calculator -->
+    <div class="tab-content" id="calculator-tab">
+      <div class="card">
+        <h2><i class="fas fa-calculator"></i> Hit Factor Calculator</h2>
+        
+        <div class="input-group">
+          <label for="scoring">Scoring</label>
+          <select id="scoring">
+            <option value="minor">Minor (A=5, C=3, D=1)</option>
+            <option value="major">Major (A=5, C=4, D=2)</option>
+          </select>
+        </div>
+        
+        <div class="input-group">
+          <label for="alpha">Alphas <span class="badge badge-alpha">+5 pts</span></label>
+          <input type="number" id="alpha" placeholder="e.g. 10" min="0" inputmode="numeric">
+        </div>
+        
+        <div class="input-group">
+          <label for="charlie">Charlies <span class="badge badge-charlie">+3/4 pts</span></label>
+          <input type="number" id="charlie" placeholder="e.g. 2" min="0" inputmode="numeric">
+        </div>
+        
+        <div class="input-group">
+          <label for="delta">Deltas <span class="badge badge-delta">+1/2 pts</span></label>
+          <input type="number" id="delta" placeholder="e.g. 0" min="0" inputmode="numeric">
+        </div>
+        
+        <div class="input-group">
+          <label for="miss">Misses <span class="badge badge-penalty">-10 pts</span></label>
+          <input type="number" id="miss" placeholder="e.g. 0" min="0" inputmode="numeric">
+        </div>
+        
+        <div class="input-group">
+          <label for="penalty">No-Shoots <span class="badge badge-penalty">-10 pts</span></label>
+          <input type="number" id="penalty" placeholder="e.g. 0" min="0" inputmode="numeric">
+        </div>
+        
+        <div class="input-group">
+          <label for="advTime">Time (seconds)</label>
+          <input type="number" id="advTime" placeholder="e.g. 12.5" min="0" inputmode="decimal" step="0.1">
+        </div>
+        
+        <button id="advCalcBtn">Calculate Hit Factor</button>
+        
+        <div id="advResult" class="result">
+          <p><strong>Hit Factor:</strong> <span id="calculatedHF">0</span></p>
+          <p id="hfEvaluation" style="font-weight: 500;"></p>
+        </div>
+      </div>
+      
+      <!-- Updated Mini Banner for Calculator Tab -->
+      <div class="mini-banner">
+        <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
+          <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1888.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner">
+        </a>
+      </div>
+    </div>
+
+    <!-- Support Tab -->
+    <div class="tab-content" id="support-tab">
+      <div class="card support-card">
+        <h2><i class="fas fa-heart"></i> Support HF Genie</h2>
+        <p>Help keep this tool free and improved by supporting our work</p>
+        
+        <div class="support-links">
+          <a href="https://usuckatshooting.com/partner-with-us/" class="support-link" target="_blank">
+            <i class="fas fa-handshake"></i> Become a Partner
+          </a>
+          <a href="https://usuckatshooting.bigcartel.com/" class="support-link" target="_blank">
+            <i class="fas fa-store"></i> Visit Our Store
+          </a>
+          <a href="https://usuckatshooting.com" class="support-link" target="_blank">
+            <i class="fas fa-globe"></i> USuckAtShooting.com
+          </a>
+          <a href="https://instagram.com/wes.cronin" class="support-link" target="_blank">
+            <i class="fab fa-instagram"></i> Wes Cronin
+          </a>
+          <a href="https://instagram.com/usuckatshooting" class="support-link" target="_blank">
+            <i class="fab fa-instagram"></i> USuckAtShooting
+          </a>
+          <a href="https://www.youtube.com/usuckatshooting" class="support-link" target="_blank">
+            <i class="fab fa-youtube"></i> YouTube Channel
+          </a>
+          <a href="https://dryfire-timer.netlify.app/" class="support-link" target="_blank">
+            <i class="fas fa-stopwatch"></i> Dry-Fire Timer
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>HF Genie follows Eric Grauffel's Method</p>
+      <p>Made with <i class="fas fa-heart" style="color: var(--secondary);"></i> by USuckAtShooting</p>
     </div>
   </div>
 
-  <!-- Points Down as Time -->
-  <div class="section">
-    <h3>Points Down as Time</h3>
-    <div class="input-group">
-      <label for="hitFactor">Hit Factor (HF)</label>
-      <input type="number" id="hitFactor" placeholder="Enter Hit Factor" min="0" inputmode="decimal">
-    </div>
-    <div class="input-group">
-      <label for="charlies">Charlies</label>
-      <input type="number" id="charlies" placeholder="Enter count" min="0" inputmode="numeric">
-    </div>
-    <div class="input-group">
-      <label for="deltas">Deltas</label>
-      <input type="number" id="deltas" placeholder="Enter count" min="0" inputmode="numeric">
-    </div>
-    <div class="input-group">
-      <label for="mikes">Mikes</label>
-      <input type="number" id="mikes" placeholder="Enter count" min="0" inputmode="numeric">
-    </div>
-    <div class="input-group">
-      <label for="noShoots">No-Shoots</label>
-      <input type="number" id="noShoots" placeholder="Enter count" min="0" inputmode="numeric">
-    </div>
-    <div class="input-group">
-      <label for="penalties">Penalties</label>
-      <input type="number" id="penalties" placeholder="Enter count" min="0" inputmode="numeric">
-    </div>
-    <button id="penaltyCalcBtn">Calculate Penalty</button>
-    <div id="penaltyResult" class="result"></div>
-    
-    <!-- Mini Banner (Original image and link) -->
-    <div class="mini-banner">
-      <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
-        <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1864-1.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner">
-      </a>
-    </div>
-
-    <!-- Points Down Info Toggle -->
-    <div class="info-toggle" onclick="toggleInfo('pointsDownInfoContent')">▼ Learn More</div>
-    <div id="pointsDownInfoContent" class="info-content">
-      <p>This tool helps you understand how points dropped affect your performance based on the Hit Factor (HF).</p>
-      
-      <div class="example">
-        <p><strong>Example:</strong> Shooting 1 Charlie (down 2 points) on a 2HF stage is equal to adding 1 second to a clean run (all Alphas).</p>
-      </div>
-      
-      <h4>Key Concepts:</h4>
-      <ul>
-        <li>Hit Factor = Points ÷ Time</li>
-        <li>Represents points per second</li>
-        <li>Higher HF means each point is more valuable</li>
-        <li>Lower HF allows more point drops</li>
-      </ul>
-      
-      <p>By entering your HF and penalty counts, you can see the time equivalent of your accuracy decisions.</p>
-      
-      <div class="tip">
-        <p><strong>Note:</strong> This calculator was inspired by a chart shared by Brantley Merriam.</p>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Hit Factor Calculator -->
-  <div class="section">
-    <h2>Hit Factor Calculator</h2>
-    <div class="input-group">
-      <label for="scoring">Scoring</label>
-      <select id="scoring">
-        <option value="minor">Minor</option>
-        <option value="major">Major</option>
-      </select>
-    </div>
-    <div class="input-group">
-      <label for="alpha">Alphas</label>
-      <input type="number" id="alpha" placeholder="Enter count" min="0" inputmode="numeric">
-    </div>
-    <div class="input-group">
-      <label for="charlie">Charlies</label>
-      <input type="number" id="charlie" placeholder="Enter count" min="0" inputmode="numeric">
-    </div>
-    <div class="input-group">
-      <label for="delta">Deltas</label>
-      <input type="number" id="delta" placeholder="Enter count" min="0" inputmode="numeric">
-    </div>
-    <div class="input-group">
-      <label for="miss">Misses</label>
-      <input type="number" id="miss" placeholder="Enter count" min="0" inputmode="numeric">
-    </div>
-    <div class="input-group">
-      <label for="penalty">No-Shoots / Penalties</label>
-      <input type="number" id="penalty" placeholder="Enter count" min="0" inputmode="numeric">
-    </div>
-    <div class="input-group">
-      <label for="advTime">Time (sec)</label>
-      <input type="number" id="advTime" placeholder="Enter time" min="0" inputmode="decimal">
-    </div>
-    <button id="advCalcBtn">Calculate</button>
-    <div id="advResult" class="result"></div>
-    
-    <!-- Mini Banner (Original image and link) -->
-    <div class="mini-banner">
-      <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
-        <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1864-1.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner">
-      </a>
-    </div>
-  </div>
-  
-  <div class="footer">
-    <p>HF Genie Math follows Eric Grauffel's Method</p>
-    <a href="https://dryfire-timer.netlify.app/" target="_blank">Dry-Fire Timer</a>
-    <div class="footer-divider"></div>
-    <a href="https://usuckatshooting.com" target="_blank">USuckAtShooting.com</a>
-    <div class="footer-divider"></div>
-    <a href="https://instagram.com/wes.cronin" target="_blank">Wes Cronin</a>
-    <div class="footer-divider"></div>
-    <a href="https://instagram.com/usuckatshooting" target="_blank">USuckAtShooting</a>
-    <div class="footer-divider"></div>
-    <a href="https://www.youtube.com/usuckatshooting" target="_blank">YouTube</a>
-    <div class="footer-divider"></div>
-    <a href="https://usuckatshooting.bigcartel.com/" target="_blank">Support Me / Shirts</a>
-  </div>
-  
   <script>
-    // Dark Mode Toggle
-    document.getElementById("toggleDarkMode").addEventListener("change", function() {
-      document.body.classList.toggle("dark-mode");
-      localStorage.setItem('darkMode', this.checked);
+    // Dark Mode Toggle (starts in dark mode, toggles to light)
+    const darkModeToggle = document.getElementById('toggleDarkMode');
+    darkModeToggle.addEventListener('change', function() {
+      document.body.classList.toggle('light-mode');
+      localStorage.setItem('lightMode', this.checked);
     });
 
-    // Check for saved dark mode preference
-    if (localStorage.getItem('darkMode') === 'true') {
-      document.getElementById('toggleDarkMode').checked = true;
-      document.body.classList.add('dark-mode');
+    // Check for saved light mode preference
+    if (localStorage.getItem('lightMode') === 'true') {
+      darkModeToggle.checked = true;
+      document.body.classList.add('light-mode');
     }
 
-    // Main Calculator Logic
-    document.getElementById("calculateBtn").addEventListener("click", function () {
-      let highHitFactor = parseFloat(document.getElementById("highHitFactor").value) || 0;
-      let roundCount = parseInt(document.getElementById("roundCount").value) || 0;
+    // Tab Switching (without focusing inputs)
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        // Prevent default to avoid any focus changes
+        e.preventDefault();
+        
+        // Remove active class from all tabs and content
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        // Add active class to clicked tab and corresponding content
+        tab.classList.add('active');
+        document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+      });
+    });
 
-      if (roundCount < 1 || highHitFactor < 0) {
-        document.getElementById("result").innerHTML = "Please enter valid numbers.";
-        return;
-      }
-
-      let charliesAllowed = 0;
-      let deltasAllowed = 0;
-      let warning = "";
-
+    // Strategy Calculator
+    document.getElementById("calculateBtn").addEventListener("click", calculateStrategy);
+    
+    function calculateStrategy() {
+      const highHitFactor = parseFloat(document.getElementById("highHitFactor").value) || 0;
+      const roundCount = parseInt(document.getElementById("roundCount").value) || 0;
+      const result = document.getElementById("result");
+      
+      if (!validateInputs(highHitFactor, roundCount)) return;
+      
+      let charliesAllowed, deltasAllowed, warning = "";
+      
       if (highHitFactor <= 4.4) {
         charliesAllowed = 0;
         deltasAllowed = 0;
-      } else if (highHitFactor > 4.4 && highHitFactor < 7.9) {
+        warning = "Low HF stage - focus on accuracy over speed";
+      } 
+      else if (highHitFactor > 4.4 && highHitFactor < 7.9) {
         charliesAllowed = Math.floor(roundCount * 0.10);
         deltasAllowed = Math.floor(roundCount * 0.01);
-      } else if (highHitFactor >= 7.9 && highHitFactor < 11.9) {
+      } 
+      else if (highHitFactor >= 7.9 && highHitFactor < 11.9) {
         charliesAllowed = Math.floor(roundCount * 0.20);
         deltasAllowed = Math.floor(roundCount * 0.05);
-      } else if (highHitFactor >= 11.9) {
+      } 
+      else {
         charliesAllowed = Math.floor(roundCount * 0.50);
         deltasAllowed = 0;
-        warning = "Warning: High Hit Factor stage. Prioritize speed, but ensure accuracy on close targets.";
+        warning = "High HF stage - prioritize speed but ensure accuracy on close targets";
       }
+      
+      const makeupShotTime = (10 / highHitFactor).toFixed(2);
+      const makeupDeltaTime = (4 / highHitFactor).toFixed(2);
+      
+      document.getElementById("charliesAllowed").textContent = charliesAllowed;
+      document.getElementById("deltasAllowed").textContent = deltasAllowed;
+      document.getElementById("makeupShotTime").textContent = makeupShotTime;
+      document.getElementById("makeupDeltaTime").textContent = makeupDeltaTime;
+      document.getElementById("warningText").textContent = warning;
+      
+      result.style.display = "block";
+    }
 
-      let makeupShotTime = (15 / highHitFactor).toFixed(2);
-      let makeupDeltaTime = (4 / highHitFactor).toFixed(2);
-
-      document.getElementById("result").innerHTML = `
-        Allowed Charlies: <b>${charliesAllowed}</b><br>
-        Allowed Deltas: <b>${deltasAllowed}</b><br>
-        Make up a miss with an Alpha in less than: <b>${makeupShotTime} seconds</b><br>
-        Make up a Delta with an Alpha in less than: <b>${makeupDeltaTime} seconds</b><br>
-        ${warning ? `<br><b>${warning}</b>` : ""}
-      `;
-    });
-
-    // Hit Factor Calculator
-    document.getElementById("advCalcBtn").addEventListener("click", function() {
-      let scoring = document.getElementById("scoring").value;
-      let alphaPoints = scoring === "major" ? 5 : 5;
-      let charliePoints = scoring === "major" ? 4 : 3;
-      let deltaPoints = scoring === "major" ? 2 : 1;
-      let alpha = parseInt(document.getElementById("alpha").value) || 0;
-      let charlie = parseInt(document.getElementById("charlie").value) || 0;
-      let delta = parseInt(document.getElementById("delta").value) || 0;
-      let miss = parseInt(document.getElementById("miss").value) || 0;
-      let penalty = parseInt(document.getElementById("penalty").value) || 0;
-      let advTime = parseFloat(document.getElementById("advTime").value) || 1;
-      let points = (alpha * alphaPoints) + (charlie * charliePoints) + (delta * deltaPoints) - (miss * 10) - (penalty * 10);
-      document.getElementById("advResult").innerHTML = `Hit Factor: <b>${(points / advTime).toFixed(2)}</b>`;
-    });
-
-    // Penalty Calculator Logic
-    document.getElementById("penaltyCalcBtn").addEventListener("click", function () {
-      let hitFactor = parseFloat(document.getElementById("hitFactor").value) || 0;
-      let charlies = parseFloat(document.getElementById("charlies").value) || 0;
-      let deltas = parseFloat(document.getElementById("deltas").value) || 0;
-      let mikes = parseFloat(document.getElementById("mikes").value) || 0;
-      let noShoots = parseFloat(document.getElementById("noShoots").value) || 0;
-      let penalties = parseFloat(document.getElementById("penalties").value) || 0;
-
-      if (hitFactor < 0 || charlies < 0 || deltas < 0 || mikes < 0 || noShoots < 0 || penalties < 0) {
-        document.getElementById("penaltyResult").innerHTML = "Please enter non-negative values.";
-        return;
-      }
-
-      if (hitFactor <= 0) {
-        document.getElementById("penaltyResult").innerHTML = "Please enter a valid Hit Factor.";
-        return;
-      }
-
-      let pointsDropped = (charlies * 2) + (deltas * 3) + (mikes * 10) + (noShoots * 10) + (penalties * 10);
-      let equivalentTime = (pointsDropped / hitFactor).toFixed(2);
-
-      document.getElementById("penaltyResult").innerHTML = `
-        <strong>Total Points Dropped:</strong> ${pointsDropped}<br>
-        <strong>Equivalent Time Loss:</strong> ${equivalentTime} seconds<br>
-        <em>This means shooting with these penalties is equivalent to shooting clean but ${equivalentTime} seconds slower.</em>
-      `;
-    });
-
-    // Estimated High Hit Factor Calculator Logic
-    document.getElementById("estimateHHFBtn").addEventListener("click", function() {
+    // HHF Predictor
+    document.getElementById("estimateHHFBtn").addEventListener("click", estimateHHF);
+    
+    function estimateHHF() {
       const shooterHF = parseFloat(document.getElementById("currentHHF").value) || 0;
       const percentage = parseFloat(document.getElementById("shooterPercentage").value) || 0;
-
+      const result = document.getElementById("estimateHHFResult");
+      
       if (shooterHF <= 0 || percentage <= 0 || percentage >= 100) {
-        document.getElementById("estimateHHFResult").innerHTML = "Please enter valid numbers (0 < % < 100).";
+        alert("Please enter valid numbers (0 < % < 100)");
         return;
       }
-
+      
       const trueHHF = (shooterHF / (percentage / 100)).toFixed(2);
       const hfDifference = (trueHHF - shooterHF).toFixed(2);
       const percentImprovement = ((100 / percentage) * 100 - 100).toFixed(0);
-
-      document.getElementById("estimateHHFResult").innerHTML = `
-        <strong>Predicted HHF:</strong> ${trueHHF}<br>
-        <strong>To match winner:</strong> +${hfDifference} HF needed<br>
-        <strong>Improvement:</strong> ${percentImprovement}% faster/more points<br>
-        <em>Plug ${trueHHF} into the HF Genie calculator for stage strategy!</em>
-      `;
-    });
-
-    // Info Toggle Function
-    function toggleInfo(id) {
-      var info = document.getElementById(id);
-      info.style.display = (info.style.display === "none" || info.style.display === "") ? "block" : "none";
+      
+      document.getElementById("trueHHF").textContent = trueHHF;
+      document.getElementById("hfDifference").textContent = hfDifference;
+      document.getElementById("percentImprovement").textContent = percentImprovement;
+      
+      result.style.display = "block";
     }
 
-    // Prevent zooming on input focus for mobile
-    document.addEventListener('DOMContentLoaded', function() {
-      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        document.querySelectorAll('input').forEach(input => {
-          input.addEventListener('focus', function() {
-            document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');
-          });
-          input.addEventListener('blur', function() {
-            document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
-          });
-        });
+    // Penalty Calculator
+    document.getElementById("penaltyCalcBtn").addEventListener("click", calculatePenalty);
+    
+    function calculatePenalty() {
+      const hitFactor = parseFloat(document.getElementById("hitFactor").value) || 0;
+      const charlies = parseFloat(document.getElementById("charlies").value) || 0;
+      const deltas = parseFloat(document.getElementById("deltas").value) || 0;
+      const mikes = parseFloat(document.getElementById("mikes").value) || 0;
+      const noShoots = parseFloat(document.getElementById("noShoots").value) || 0;
+      const result = document.getElementById("penaltyResult");
+      
+      if (hitFactor <= 0) {
+        alert("Please enter a valid Hit Factor");
+        return;
       }
-    });
+      
+      const pointsDropped = (charlies * 2) + (deltas * 3) + (mikes * 10) + (noShoots * 10);
+      const equivalentTime = (pointsDropped / hitFactor).toFixed(2);
+      
+      document.getElementById("pointsDropped").textContent = pointsDropped;
+      document.getElementById("equivalentTime").textContent = equivalentTime;
+      document.getElementById("timeLossText").textContent = equivalentTime;
+      
+      result.style.display = "block";
+    }
+
+    // Advanced HF Calculator
+    document.getElementById("advCalcBtn").addEventListener("click", calculateAdvancedHF);
+    
+    function calculateAdvancedHF() {
+      const scoring = document.getElementById("scoring").value;
+      const alphaPoints = 5;
+      const charliePoints = scoring === "major" ? 4 : 3;
+      const deltaPoints = scoring === "major" ? 2 : 1;
+      
+      const alpha = parseInt(document.getElementById("alpha").value) || 0;
+      const charlie = parseInt(document.getElementById("charlie").value) || 0;
+      const delta = parseInt(document.getElementById("delta").value) || 0;
+      const miss = parseInt(document.getElementById("miss").value) || 0;
+      const penalty = parseInt(document.getElementById("penalty").value) || 0;
+      const advTime = parseFloat(document.getElementById("advTime").value) || 1;
+      const result = document.getElementById("advResult");
+      
+      const points = (alpha * alphaPoints) + (charlie * charliePoints) + (delta * deltaPoints) - (miss * 10) - (penalty * 10);
+      const hitFactor = (points / advTime).toFixed(2);
+      
+      document.getElementById("calculatedHF").textContent = hitFactor;
+      document.getElementById("hfEvaluation").textContent = getHFEvaluation(hitFactor);
+      
+      result.style.display = "block";
+    }
+
+    // Helper Functions
+    function validateInputs(hhf, rounds) {
+      if (rounds < 1 || hhf < 0) {
+        alert("Please enter valid numbers");
+        return false;
+      }
+      return true;
+    }
+
+    function getHFEvaluation(hf) {
+      hf = parseFloat(hf);
+      if (hf >= 8) return "Excellent hit factor!";
+      if (hf >= 5) return "Good hit factor";
+      if (hf >= 3) return "Average hit factor";
+      return "Low hit factor - focus on speed or accuracy";
+    }
+
+    // Initialize first tab
+    document.querySelector('.tab.active').click();
   </script>
 </body>
 </html>
