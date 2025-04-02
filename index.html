@@ -735,66 +735,79 @@
       </div>
     </div>
 
-    <!-- Penalty Calculator -->
-    <div class="tab-content" id="penalty-tab">
-      <div class="card">
-        <h2><i class="fas fa-stopwatch"></i> Points as Time</h2>
-        
-        <div class="input-group">
-          <label for="hitFactor">Hit Factor (HF)</label>
-          <input type="number" id="hitFactor" placeholder="e.g. 5.0" min="0" inputmode="decimal" step="0.01">
-        </div>
-        
-        <div class="input-group">
-          <label for="charlies">Charlies <span class="badge badge-charlie">-2 pts</span></label>
-          <input type="number" id="charlies" placeholder="e.g. 2" min="0" inputmode="numeric">
-        </div>
-        
-        <div class="input-group">
-          <label for="deltas">Deltas <span class="badge badge-delta">-3 pts</span></label>
-          <input type="number" id="deltas" placeholder="e.g. 1" min="0" inputmode="numeric">
-        </div>
-        
-        <div class="input-group">
-          <label for="mikes">Mikes <span class="badge badge-penalty">-10 pts</span></label>
-          <input type="number" id="mikes" placeholder="e.g. 0" min="0" inputmode="numeric">
-        </div>
-        
-        <div class="input-group">
-          <label for="noShoots">No-Shoots <span class="badge badge-penalty">-10 pts</span></label>
-          <input type="number" id="noShoots" placeholder="e.g. 0" min="0" inputmode="numeric">
-        </div>
-        
-        <button id="penaltyCalcBtn">Calculate Penalty</button>
-        
-        <div id="penaltyResult" class="result">
-          <p><strong>Total Points Dropped:</strong> <span id="pointsDropped">0</span></p>
-          <p><strong>Equivalent Time Loss:</strong> <span id="equivalentTime">0</span> seconds</p>
-          <p><em>Equal to shooting clean but <span id="timeLossText">0</span> seconds slower</em></p>
-          
-          <div class="result-actions">
-            <button class="copy-btn" onclick="copyResult('penaltyResult')"><i class="fas fa-copy"></i> Copy</button>
-            <button class="share-btn" onclick="shareResult('penalty')"><i class="fas fa-share"></i> Share</button>
-          </div>
-        </div>
-      </div>
+<!-- Penalty Calculator -->
+<div class="tab-content" id="penalty-tab">
+  <div class="card">
+    <h2><i class="fas fa-stopwatch"></i> Points as Time</h2>
+    
+    <div class="input-group">
+      <label for="hitFactor">Hit Factor (HF)</label>
+      <input type="number" id="hitFactor" placeholder="e.g. 5.0" min="0" inputmode="decimal" step="0.01">
+    </div>
+    
+    <div class="input-group">
+      <label for="penaltyScoring">Scoring</label>
+      <select id="penaltyScoring">
+        <option value="minor">Minor (C=-2, D=-4)</option>
+        <option value="major">Major (C=-1, D=-3)</option>
+      </select>
+    </div>
+    
+    <div class="input-group">
+      <label for="charlies">Charlies <span class="badge badge-charlie" id="charlieBadge">-2 pts</span></label>
+      <input type="number" id="charlies" placeholder="e.g. 2" min="0" inputmode="numeric">
+    </div>
+    
+    <div class="input-group">
+      <label for="deltas">Deltas <span class="badge badge-delta" id="deltaBadge">-4 pts</span></label>
+      <input type="number" id="deltas" placeholder="e.g. 1" min="0" inputmode="numeric">
+    </div>
+    
+    <div class="input-group">
+      <label for="mikes">Mikes <span class="badge badge-penalty">-10 pts</span></label>
+      <input type="number" id="mikes" placeholder="e.g. 0" min="0" inputmode="numeric">
+    </div>
+    
+    <div class="input-group">
+      <label for="noShoots">No-Shoots <span class="badge badge-penalty">-10 pts</span></label>
+      <input type="number" id="noShoots" placeholder="e.g. 0" min="0" inputmode="numeric">
+    </div>
+    
+    <button id="penaltyCalcBtn">Calculate Penalty</button>
+    
+    <div id="penaltyResult" class="result">
+      <p><strong>Total Points Dropped:</strong> <span id="pointsDropped">0</span></p>
+      <p><strong>Equivalent Time Loss:</strong> <span id="equivalentTime">0</span> seconds</p>
+      <p><em>Equal to shooting clean but <span id="timeLossText">0</span> seconds slower</em></p>
       
-      <div class="mini-banner">
-        <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
-          <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1888.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner" loading="lazy">
-        </a>
-      </div>
-
-      <div class="card">
-        <h2><i class="fas fa-calculator"></i> The Math</h2>
-        <p>This shows how points dropped affect your performance based on Hit Factor.</p>
-        
-        <div style="margin-top: 16px; padding: 12px; background-color: rgba(67, 97, 238, 0.08); border-radius: 8px;">
-          <p><strong>Formula:</strong> Time Penalty = Points Dropped ÷ Hit Factor</p>
-          <p style="margin-top: 8px;"><strong>Example:</strong> 1 Charlie (2 pts) on 2HF stage = 1 second penalty</p>
-        </div>
+      <div class="result-actions">
+        <button class="copy-btn" onclick="copyResult('penaltyResult')"><i class="fas fa-copy"></i> Copy</button>
+        <button class="share-btn" onclick="shareResult('penalty')"><i class="fas fa-share"></i> Share</button>
       </div>
     </div>
+  </div>
+  
+  <div class="mini-banner">
+    <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
+      <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1888.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner" loading="lazy">
+    </a>
+  </div>
+
+  <div class="card">
+    <h2><i class="fas fa-calculator"></i> The Math</h2>
+    <p>This shows how points dropped affect your performance based on Hit Factor.</p>
+    
+    <div style="margin-top: 16px; padding: 12px; background-color: rgba(67, 97, 238, 0.08); border-radius: 8px;">
+      <p><strong>Formula:</strong> Time Penalty = Points Dropped ÷ Hit Factor</p>
+      <p style="margin-top: 8px;"><strong>Example:</strong> 1 Charlie (2 pts minor / 1 pt major) on 2HF stage = 1 second (minor) or 0.5 second (major) penalty</p>
+      <p style="margin-top: 8px;"><strong>Scoring Differences:</strong></p>
+      <ul style="margin: 8px 0 0 20px;">
+        <li><strong>Minor:</strong> Charlie = -2 pts (5-3), Delta = -4 pts (5-1)</li>
+        <li><strong>Major:</strong> Charlie = -1 pt (5-4), Delta = -3 pts (5-2)</li>
+      </ul>
+    </div>
+  </div>
+</div>
 
     <!-- Advanced HF Calculator -->
     <div class="tab-content" id="calculator-tab">
@@ -1354,31 +1367,47 @@ ${document.getElementById('hfEvaluation').textContent}`;
     }
 
     // Penalty Calculator
-    document.getElementById("penaltyCalcBtn").addEventListener("click", calculatePenalty);
-    
-    function calculatePenalty() {
-      const hitFactor = parseFloat(document.getElementById("hitFactor").value) || 0;
-      const charlies = parseFloat(document.getElementById("charlies").value) || 0;
-      const deltas = parseFloat(document.getElementById("deltas").value) || 0;
-      const mikes = parseFloat(document.getElementById("mikes").value) || 0;
-      const noShoots = parseFloat(document.getElementById("noShoots").value) || 0;
-      const result = document.getElementById("penaltyResult");
-      
-      if (hitFactor <= 0) {
-        alert("Please enter a valid Hit Factor");
-        return;
-      }
-      
-      const pointsDropped = (charlies * 2) + (deltas * 3) + (mikes * 10) + (noShoots * 10);
-      const equivalentTime = (pointsDropped / hitFactor).toFixed(2);
-      
-      document.getElementById("pointsDropped").textContent = pointsDropped;
-      document.getElementById("equivalentTime").textContent = equivalentTime;
-      document.getElementById("timeLossText").textContent = equivalentTime;
-      
-      result.style.display = "block";
-      saveInputState('penalty');
+  document.getElementById("penaltyCalcBtn").addEventListener("click", calculatePenalty);
+  
+  // Update the scoring badges when selection changes
+  document.getElementById("penaltyScoring").addEventListener("change", function() {
+    if (this.value === "major") {
+      document.getElementById("charlieBadge").textContent = "-1 pt";
+      document.getElementById("deltaBadge").textContent = "-3 pts";
+    } else {
+      document.getElementById("charlieBadge").textContent = "-2 pts";
+      document.getElementById("deltaBadge").textContent = "-4 pts";
     }
+  });
+  
+  function calculatePenalty() {
+    const hitFactor = parseFloat(document.getElementById("hitFactor").value) || 0;
+    const scoring = document.getElementById("penaltyScoring").value;
+    const charlies = parseFloat(document.getElementById("charlies").value) || 0;
+    const deltas = parseFloat(document.getElementById("deltas").value) || 0;
+    const mikes = parseFloat(document.getElementById("mikes").value) || 0;
+    const noShoots = parseFloat(document.getElementById("noShoots").value) || 0;
+    const result = document.getElementById("penaltyResult");
+    
+    if (hitFactor <= 0) {
+      alert("Please enter a valid Hit Factor");
+      return;
+    }
+    
+    // Calculate points based on scoring selection
+    const charliePenalty = scoring === "major" ? 1 : 2;
+    const deltaPenalty = scoring === "major" ? 3 : 4;
+    
+    const pointsDropped = (charlies * charliePenalty) + (deltas * deltaPenalty) + (mikes * 10) + (noShoots * 10);
+    const equivalentTime = (pointsDropped / hitFactor).toFixed(2);
+    
+    document.getElementById("pointsDropped").textContent = pointsDropped;
+    document.getElementById("equivalentTime").textContent = equivalentTime;
+    document.getElementById("timeLossText").textContent = equivalentTime;
+    
+    result.style.display = "block";
+    saveInputState('penalty');
+  }
 
     // Advanced HF Calculator
     document.getElementById("advCalcBtn").addEventListener("click", calculateAdvancedHF);
