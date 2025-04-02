@@ -52,6 +52,7 @@
       line-height: 1.6;
       padding: 16px;
       -webkit-font-smoothing: antialiased;
+      font-size: clamp(14px, 2.5vw, 16px);
     }
 
     .container {
@@ -67,14 +68,14 @@
 
     h1 {
       color: var(--primary);
-      font-size: 2.2rem;
+      font-size: clamp(1.8rem, 6vw, 2.2rem);
       margin-bottom: 8px;
       font-weight: 700;
     }
 
     .subtitle {
       color: var(--gray);
-      font-size: 1rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
       margin-bottom: 16px;
     }
 
@@ -89,7 +90,7 @@
 
     h2 {
       color: var(--primary);
-      font-size: 1.4rem;
+      font-size: clamp(1.2rem, 4vw, 1.4rem);
       margin-bottom: 20px;
       font-weight: 600;
       display: flex;
@@ -104,7 +105,7 @@
       display: block;
       margin-bottom: 8px;
       font-weight: 500;
-      font-size: 0.95rem;
+      font-size: clamp(0.85rem, 3vw, 0.95rem);
       color: var(--text);
     }
 
@@ -113,7 +114,7 @@
       padding: 14px 16px;
       border-radius: 8px;
       border: 1px solid var(--border);
-      font-size: 1rem;
+      font-size: clamp(0.95rem, 3.5vw, 1rem);
       background-color: var(--card);
       color: var(--text);
       transition: all 0.2s ease;
@@ -130,7 +131,7 @@
       padding: 14px;
       border-radius: 8px;
       border: none;
-      font-size: 1rem;
+      font-size: clamp(0.95rem, 3.5vw, 1rem);
       font-weight: 600;
       background-color: var(--primary);
       color: white;
@@ -154,6 +155,7 @@
       background-color: rgba(67, 97, 238, 0.08);
       border-left: 4px solid var(--primary);
       display: none;
+      position: relative;
     }
 
     .result p {
@@ -164,7 +166,6 @@
       color: var(--primary);
     }
 
-    /* Enhanced Tab Styling */
     .tabs {
       display: flex;
       margin-bottom: 20px;
@@ -201,6 +202,7 @@
       color: var(--gray);
       position: relative;
       flex-shrink: 0;
+      font-size: clamp(0.8rem, 3vw, 0.9rem);
     }
 
     .tab:hover {
@@ -230,6 +232,12 @@
 
     .tab-content {
       display: none;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .tab-content.active {
@@ -331,7 +339,6 @@
       margin-top: 8px;
     }
 
-    /* Banner Styling */
     .banner-container {
       margin: 20px auto;
       border-radius: 8px;
@@ -345,6 +352,7 @@
       width: 100%;
       height: auto;
       display: block;
+      loading: lazy;
     }
 
     .mini-banner {
@@ -366,6 +374,7 @@
       height: auto;
       max-height: 80px;
       object-fit: contain;
+      loading: lazy;
     }
 
     .support-card {
@@ -398,7 +407,6 @@
       margin-right: 8px;
     }
 
-    /* Home Page Content */
     .home-content {
       text-align: center;
     }
@@ -433,7 +441,6 @@
       font-size: 0.85rem;
     }
 
-    /* Info Box Styling */
     .info-box {
       background-color: var(--card);
       border: 1px solid var(--border);
@@ -463,7 +470,6 @@
       margin-bottom: 12px;
     }
 
-    /* Timer Link Styling */
     .timer-link {
       display: block;
       padding: 14px;
@@ -485,6 +491,45 @@
       margin-right: 8px;
     }
 
+    .result-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .result-actions button {
+      flex: 1;
+      padding: 10px;
+      font-size: 0.85rem;
+    }
+
+    .copy-btn {
+      background-color: var(--success);
+    }
+
+    .share-btn {
+      background-color: var(--secondary);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--primary);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
     @media (max-width: 480px) {
       .container {
         padding: 0;
@@ -503,10 +548,13 @@
         font-size: 0.9rem;
       }
       
-      /* Mobile-specific banner adjustments */
       .banner-container {
         border-radius: 0;
         width: 100%;
+      }
+
+      .result-actions {
+        flex-direction: column;
       }
     }
   </style>
@@ -515,13 +563,13 @@
   <div class="container">
     <header>
       <h1><i class="fas fa-bolt"></i> Hit Factor Genie</h1>
-      <p class="subtitle">OPTIMIZE YOUR PERFORMANCE</p>
+      <p class="subtitle">Optimize your competitive shooting performance</p>
     </header>
 
     <!-- Main Sponsor Banner -->
     <div class="banner-container">
       <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
-        <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1836.png?w=1024" class="banner-img" alt="USuckAtShooting Banner">
+        <img src="https://usuckatshooting.com/wp-content/uploads/2025/03/img_1836.png?w=1024" class="banner-img" alt="USuckAtShooting Banner" loading="lazy">
       </a>
     </div>
 
@@ -603,18 +651,23 @@
         
         <button id="calculateBtn">Calculate Strategy</button>
         
-        <div id="result" class="result">
+        <div id="strategyResult" class="result">
           <p><strong>Allowed Charlies:</strong> <span id="charliesAllowed">0</span></p>
           <p><strong>Allowed Deltas:</strong> <span id="deltasAllowed">0</span></p>
           <p><strong>Make up a miss in:</strong> <span id="makeupShotTime">0</span> sec</p>
           <p><strong>Make up a Delta in:</strong> <span id="makeupDeltaTime">0</span> sec</p>
           <p id="warningText" style="color: var(--warning); font-weight: 500; margin-top: 8px;"></p>
+          
+          <div class="result-actions">
+            <button class="copy-btn" onclick="copyResult('strategyResult')"><i class="fas fa-copy"></i> Copy</button>
+            <button class="share-btn" onclick="shareResult('strategy')"><i class="fas fa-share"></i> Share</button>
+          </div>
         </div>
       </div>
       
       <div class="mini-banner">
         <a href="https://usuckatshooting.bigcartel.com/" target="_blank">
-          <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1889.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Store">
+          <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1889.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Store" loading="lazy">
         </a>
       </div>
 
@@ -637,7 +690,7 @@
         <h2><i class="fas fa-chart-line"></i> HHF Predictor</h2>
         
         <div class="input-group">
-          <label for="currentHHF">Your Hit Factor</label>
+          <label for="currentHHF">Shooter's Hit Factor</label>
           <input type="number" id="currentHHF" placeholder="e.g. 6.2" min="0" inputmode="decimal" step="0.01">
         </div>
         
@@ -653,12 +706,17 @@
           <p><strong>Predicted HHF:</strong> <span id="trueHHF">0</span></p>
           <p><strong>To match winner:</strong> +<span id="hfDifference">0</span> HF needed</p>
           <p><strong>Improvement needed:</strong> <span id="percentImprovement">0</span>%</p>
+          
+          <div class="result-actions">
+            <button class="copy-btn" onclick="copyResult('estimateHHFResult')"><i class="fas fa-copy"></i> Copy</button>
+            <button class="share-btn" onclick="shareResult('predictor')"><i class="fas fa-share"></i> Share</button>
+          </div>
         </div>
       </div>
       
       <div class="mini-banner">
         <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
-          <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1888.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner">
+          <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1888.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner" loading="lazy">
         </a>
       </div>
 
@@ -713,12 +771,17 @@
           <p><strong>Total Points Dropped:</strong> <span id="pointsDropped">0</span></p>
           <p><strong>Equivalent Time Loss:</strong> <span id="equivalentTime">0</span> seconds</p>
           <p><em>Equal to shooting clean but <span id="timeLossText">0</span> seconds slower</em></p>
+          
+          <div class="result-actions">
+            <button class="copy-btn" onclick="copyResult('penaltyResult')"><i class="fas fa-copy"></i> Copy</button>
+            <button class="share-btn" onclick="shareResult('penalty')"><i class="fas fa-share"></i> Share</button>
+          </div>
         </div>
       </div>
       
       <div class="mini-banner">
         <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
-          <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1888.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner">
+          <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1888.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner" loading="lazy">
         </a>
       </div>
 
@@ -781,12 +844,17 @@
         <div id="advResult" class="result">
           <p><strong>Hit Factor:</strong> <span id="calculatedHF">0</span></p>
           <p id="hfEvaluation" style="font-weight: 500;"></p>
+          
+          <div class="result-actions">
+            <button class="copy-btn" onclick="copyResult('advResult')"><i class="fas fa-copy"></i> Copy</button>
+            <button class="share-btn" onclick="shareResult('calculator')"><i class="fas fa-share"></i> Share</button>
+          </div>
         </div>
       </div>
       
       <div class="mini-banner">
         <a href="https://usuckatshooting.com/partner-with-us/" target="_blank">
-          <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1888.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner">
+          <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1888.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner" loading="lazy">
         </a>
       </div>
     </div>
@@ -845,11 +913,16 @@
       </div>
     </div>
 
+   
+
     <div class="footer">
       <p>HF Genie follows Eric Grauffel's Method</p>
       <p>Made with <i class="fas fa-heart" style="color: var(--secondary);"></i> by Wes Cronin</p>
     </div>
   </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
 
   <script>
     // Dark Mode Toggle (starts in dark mode, toggles to light)
@@ -865,19 +938,349 @@
       document.body.classList.add('light-mode');
     }
 
-    // Tab Switching (without focusing inputs)
+    // Tab Switching with persistence
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', (e) => {
-        // Prevent default to avoid any focus changes
         e.preventDefault();
         
-        // Remove active class from all tabs and content
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         
-        // Add active class to clicked tab and corresponding content
         tab.classList.add('active');
-        document.getElementById(`${tab.dataset.tab}-tab`).classList.add('active');
+        const tabName = tab.dataset.tab;
+        document.getElementById(`${tabName}-tab`).classList.add('active');
+        localStorage.setItem('lastActiveTab', tabName);
+      });
+    });
+
+    // Set last active tab on load
+    document.addEventListener('DOMContentLoaded', () => {
+      const lastTab = localStorage.getItem('lastActiveTab') || 'home';
+      document.querySelector(`.tab[data-tab="${lastTab}"]`).click();
+    });
+
+    // Input history for undo/redo
+    const inputHistory = {
+      strategy: { past: [], future: [], current: null },
+      predictor: { past: [], future: [], current: null },
+      penalty: { past: [], future: [], current: null },
+      calculator: { past: [], future: [], current: null }
+    };
+
+    // Track input changes
+    document.querySelectorAll('input, select').forEach(input => {
+      input.addEventListener('input', function() {
+        const tab = this.closest('.tab-content').id.replace('-tab', '');
+        if (tab in inputHistory) {
+          saveInputState(tab);
+        }
+      });
+    });
+
+    function saveInputState(tab) {
+      const inputs = Array.from(document.querySelectorAll(`#${tab}-tab input, #${tab}-tab select`));
+      const currentState = inputs.map(input => ({
+        id: input.id,
+        value: input.value,
+        type: input.type
+      }));
+      
+      if (inputHistory[tab].current) {
+        inputHistory[tab].past.push(inputHistory[tab].current);
+        if (inputHistory[tab].past.length > 20) {
+          inputHistory[tab].past.shift();
+        }
+      }
+      
+      inputHistory[tab].current = currentState;
+      inputHistory[tab].future = [];
+    }
+
+    function undoInput(tab) {
+      if (inputHistory[tab].past.length === 0) {
+        showToast('Nothing to undo');
+        return;
+      }
+      
+      if (inputHistory[tab].current) {
+        inputHistory[tab].future.push(inputHistory[tab].current);
+      }
+      
+      inputHistory[tab].current = inputHistory[tab].past.pop();
+      restoreState(tab, inputHistory[tab].current);
+      showToast('Undo successful');
+    }
+
+    function redoInput(tab) {
+      if (inputHistory[tab].future.length === 0) {
+        showToast('Nothing to redo');
+        return;
+      }
+      
+      if (inputHistory[tab].current) {
+        inputHistory[tab].past.push(inputHistory[tab].current);
+      }
+      
+      inputHistory[tab].current = inputHistory[tab].future.pop();
+      restoreState(tab, inputHistory[tab].current);
+      showToast('Redo successful');
+    }
+
+    function restoreState(tab, state) {
+      state.forEach(item => {
+        const element = document.getElementById(item.id);
+        if (element) {
+          element.value = item.value;
+        }
+      });
+      
+      // Re-run calculation if applicable
+      switch(tab) {
+        case 'strategy': calculateStrategy(); break;
+        case 'predictor': estimateHHF(); break;
+        case 'penalty': calculatePenalty(); break;
+        case 'calculator': calculateAdvancedHF(); break;
+      }
+    }
+
+    // Toast notification
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Copy results to clipboard
+    function copyResult(resultId) {
+      const resultElement = document.getElementById(resultId);
+      const resultText = Array.from(resultElement.querySelectorAll('p'))
+        .map(p => p.textContent)
+        .join('\n');
+      
+      navigator.clipboard.writeText(resultText)
+        .then(() => showToast('Results copied to clipboard!'))
+        .catch(() => showToast('Failed to copy results'));
+    }
+
+    // Share results
+    function shareResult(tab) {
+      let shareData = {
+        title: 'Hit Factor Genie Results',
+        text: '',
+        url: window.location.href.split('?')[0] + `?tab=${tab}`
+      };
+      
+      switch(tab) {
+        case 'strategy':
+          shareData.text = `Strategy Results:
+Allowed Charlies: ${document.getElementById('charliesAllowed').textContent}
+Allowed Deltas: ${document.getElementById('deltasAllowed').textContent}
+Make up a miss in: ${document.getElementById('makeupShotTime').textContent} sec
+Make up a Delta in: ${document.getElementById('makeupDeltaTime').textContent} sec`;
+          break;
+          
+        case 'predictor':
+          shareData.text = `HHF Prediction:
+Predicted HHF: ${document.getElementById('trueHHF').textContent}
+To match winner: +${document.getElementById('hfDifference').textContent} HF needed
+Improvement needed: ${document.getElementById('percentImprovement').textContent}%`;
+          break;
+          
+        case 'penalty':
+          shareData.text = `Penalty Results:
+Total Points Dropped: ${document.getElementById('pointsDropped').textContent}
+Equivalent Time Loss: ${document.getElementById('equivalentTime').textContent} seconds`;
+          break;
+          
+        case 'calculator':
+          shareData.text = `Hit Factor Calculation:
+Hit Factor: ${document.getElementById('calculatedHF').textContent}
+${document.getElementById('hfEvaluation').textContent}`;
+          break;
+      }
+      
+      if (navigator.share) {
+        navigator.share(shareData)
+          .catch(() => showToast('Sharing cancelled'));
+      } else {
+        navigator.clipboard.writeText(shareData.text + '\n\n' + shareData.url)
+          .then(() => showToast('Results copied to clipboard!'))
+          .catch(() => showToast('Failed to share results'));
+      }
+    }
+
+    // Save calculations
+    function saveCalculation(tab) {
+      const savedCalculations = JSON.parse(localStorage.getItem(`saved_${tab}`) || '[]');
+      const timestamp = new Date().toLocaleString();
+      let calculationData = {
+        id: Date.now(),
+        timestamp,
+        tab
+      };
+      
+      switch(tab) {
+        case 'strategy':
+          calculationData.data = {
+            highHitFactor: document.getElementById('highHitFactor').value,
+            roundCount: document.getElementById('roundCount').value,
+            charliesAllowed: document.getElementById('charliesAllowed').textContent,
+            deltasAllowed: document.getElementById('deltasAllowed').textContent,
+            makeupShotTime: document.getElementById('makeupShotTime').textContent,
+            makeupDeltaTime: document.getElementById('makeupDeltaTime').textContent
+          };
+          break;
+          
+        case 'predictor':
+          calculationData.data = {
+            currentHHF: document.getElementById('currentHHF').value,
+            shooterPercentage: document.getElementById('shooterPercentage').value,
+            trueHHF: document.getElementById('trueHHF').textContent,
+            hfDifference: document.getElementById('hfDifference').textContent,
+            percentImprovement: document.getElementById('percentImprovement').textContent
+          };
+          break;
+          
+        case 'penalty':
+          calculationData.data = {
+            hitFactor: document.getElementById('hitFactor').value,
+            charlies: document.getElementById('charlies').value,
+            deltas: document.getElementById('deltas').value,
+            mikes: document.getElementById('mikes').value,
+            noShoots: document.getElementById('noShoots').value,
+            pointsDropped: document.getElementById('pointsDropped').textContent,
+            equivalentTime: document.getElementById('equivalentTime').textContent
+          };
+          break;
+          
+        case 'calculator':
+          calculationData.data = {
+            scoring: document.getElementById('scoring').value,
+            alpha: document.getElementById('alpha').value,
+            charlie: document.getElementById('charlie').value,
+            delta: document.getElementById('delta').value,
+            miss: document.getElementById('miss').value,
+            penalty: document.getElementById('penalty').value,
+            advTime: document.getElementById('advTime').value,
+            calculatedHF: document.getElementById('calculatedHF').textContent,
+            hfEvaluation: document.getElementById('hfEvaluation').textContent
+          };
+          break;
+      }
+      
+      savedCalculations.push(calculationData);
+      localStorage.setItem(`saved_${tab}`, JSON.stringify(savedCalculations));
+      showToast('Calculation saved!');
+      loadSavedCalculations(tab);
+    }
+
+    function loadSavedCalculations(tab) {
+      const savedCalculations = JSON.parse(localStorage.getItem(`saved_${tab}`) || '[]');
+      const container = document.getElementById(`${tab}List`);
+      const parent = document.getElementById(`saved${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
+      
+      if (!container || !parent) return;
+      
+      container.innerHTML = '';
+      
+      if (savedCalculations.length === 0) {
+        container.innerHTML = '<p>No saved calculations yet</p>';
+        parent.style.display = 'none';
+        return;
+      }
+      
+      parent.style.display = 'block';
+      
+      savedCalculations.reverse().forEach(calc => {
+        const item = document.createElement('div');
+        item.className = 'calculation-item';
+        
+        const summary = document.createElement('div');
+        summary.innerHTML = `<strong>${calc.timestamp}</strong>`;
+        
+        const actions = document.createElement('div');
+        actions.className = 'calculation-actions';
+        
+        const loadBtn = document.createElement('button');
+        loadBtn.innerHTML = '<i class="fas fa-undo"></i>';
+        loadBtn.className = 'copy-btn';
+        loadBtn.style.padding = '5px 8px';
+        loadBtn.onclick = () => loadCalculation(calc);
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+        deleteBtn.className = 'save-btn';
+        deleteBtn.style.padding = '5px 8px';
+        deleteBtn.style.marginLeft = '5px';
+        deleteBtn.onclick = () => deleteCalculation(calc.id, tab);
+        
+        actions.appendChild(loadBtn);
+        actions.appendChild(deleteBtn);
+        item.appendChild(summary);
+        item.appendChild(actions);
+        container.appendChild(item);
+      });
+    }
+
+    function loadCalculation(calc) {
+      document.querySelector(`.tab[data-tab="${calc.tab}"]`).click();
+      
+      switch(calc.tab) {
+        case 'strategy':
+          document.getElementById('highHitFactor').value = calc.data.highHitFactor;
+          document.getElementById('roundCount').value = calc.data.roundCount;
+          calculateStrategy();
+          break;
+          
+        case 'predictor':
+          document.getElementById('currentHHF').value = calc.data.currentHHF;
+          document.getElementById('shooterPercentage').value = calc.data.shooterPercentage;
+          estimateHHF();
+          break;
+          
+        case 'penalty':
+          document.getElementById('hitFactor').value = calc.data.hitFactor;
+          document.getElementById('charlies').value = calc.data.charlies;
+          document.getElementById('deltas').value = calc.data.deltas;
+          document.getElementById('mikes').value = calc.data.mikes;
+          document.getElementById('noShoots').value = calc.data.noShoots;
+          calculatePenalty();
+          break;
+          
+        case 'calculator':
+          document.getElementById('scoring').value = calc.data.scoring;
+          document.getElementById('alpha').value = calc.data.alpha;
+          document.getElementById('charlie').value = calc.data.charlie;
+          document.getElementById('delta').value = calc.data.delta;
+          document.getElementById('miss').value = calc.data.miss;
+          document.getElementById('penalty').value = calc.data.penalty;
+          document.getElementById('advTime').value = calc.data.advTime;
+          calculateAdvancedHF();
+          break;
+      }
+      
+      showToast('Calculation loaded');
+    }
+
+    function deleteCalculation(id, tab) {
+      const savedCalculations = JSON.parse(localStorage.getItem(`saved_${tab}`) || '[]');
+      const updated = savedCalculations.filter(calc => calc.id !== id);
+      localStorage.setItem(`saved_${tab}`, JSON.stringify(updated));
+      loadSavedCalculations(tab);
+      showToast('Calculation deleted');
+    }
+
+    // Load saved calculations when tab is clicked
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        const tabName = this.dataset.tab;
+        if (['strategy', 'predictor', 'penalty', 'calculator'].includes(tabName)) {
+          loadSavedCalculations(tabName);
+        }
       });
     });
 
@@ -887,7 +1290,7 @@
     function calculateStrategy() {
       const highHitFactor = parseFloat(document.getElementById("highHitFactor").value) || 0;
       const roundCount = parseInt(document.getElementById("roundCount").value) || 0;
-      const result = document.getElementById("result");
+      const result = document.getElementById("strategyResult");
       
       if (!validateInputs(highHitFactor, roundCount)) return;
       
@@ -922,6 +1325,7 @@
       document.getElementById("warningText").textContent = warning;
       
       result.style.display = "block";
+      saveInputState('strategy');
     }
 
     // HHF Predictor
@@ -946,6 +1350,7 @@
       document.getElementById("percentImprovement").textContent = percentImprovement;
       
       result.style.display = "block";
+      saveInputState('predictor');
     }
 
     // Penalty Calculator
@@ -972,6 +1377,7 @@
       document.getElementById("timeLossText").textContent = equivalentTime;
       
       result.style.display = "block";
+      saveInputState('penalty');
     }
 
     // Advanced HF Calculator
@@ -998,6 +1404,7 @@
       document.getElementById("hfEvaluation").textContent = getHFEvaluation(hitFactor);
       
       result.style.display = "block";
+      saveInputState('calculator');
     }
 
     // Helper Functions
@@ -1017,8 +1424,17 @@
       return "Low hit factor - focus on speed or accuracy";
     }
 
-    // Initialize first tab
-    document.querySelector('.tab.active').click();
+    // Initialize first tab and load any URL parameters
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab');
+      
+      if (tabParam && document.querySelector(`.tab[data-tab="${tabParam}"]`)) {
+        document.querySelector(`.tab[data-tab="${tabParam}"]`).click();
+      } else {
+        document.querySelector('.tab.active').click();
+      }
+    });
   </script>
 </body>
 </html>
