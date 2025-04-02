@@ -563,7 +563,7 @@
   <div class="container">
     <header>
       <h1><i class="fas fa-bolt"></i> Hit Factor Genie</h1>
-      <p class="subtitle">OPTIMIZE YOUR SHOOTING PERFORMANCE</p>
+      <p class="subtitle">Optimize Your Shooting Performance</p>
     </header>
 
     <!-- Main Sponsor Banner -->
@@ -1418,10 +1418,10 @@ ${document.getElementById('hfEvaluation').textContent}`;
 
     function getHFEvaluation(hf) {
       hf = parseFloat(hf);
-      if (hf >= 8) return "";
-      if (hf >= 5) return ";
-      if (hf >= 3) return "";
-      return "";
+      if (hf >= 8) return "Excellent hit factor!";
+      if (hf >= 5) return "Good hit factor";
+      if (hf >= 3) return "Average hit factor";
+      return "Low hit factor - focus on speed or accuracy";
     }
 
     // Initialize first tab and load any URL parameters
