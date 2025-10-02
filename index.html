@@ -11,6 +11,11 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-5HQ7ZFQK5M"></script>
   <script>
@@ -21,6 +26,104 @@
   </script>
   
   <style>
+    /* Header Logout Button */
+    .header-logout {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(239, 35, 60, 0.1);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    
+    .header-logout:hover {
+      background: var(--danger);
+      color: white;
+    }
+    
+    /* User Profile Styles */
+    .user-profile {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding: 15px;
+      background: var(--card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+    
+    .user-info {
+      flex: 1;
+    }
+    
+    .user-name {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .user-stats {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+    
+    .logout-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      width: auto;
+    }
+    
+    .logout-btn:hover {
+      background: var(--danger);
+      border-color: var(--danger);
+    }
+    
+    /* Login Button */
+    .login-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      width: auto;
+    }
+    
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
+    }
+
+    /* Rest of your existing CSS remains the same */
     :root {
       --primary: #4895ef;
       --primary-light: #4361ee;
@@ -69,9 +172,10 @@
     }
 
     .container {
-      max-width: 600px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 0 16px;
+      position: relative;
     }
 
     header {
@@ -104,7 +208,7 @@
 
     .card {
       background-color: var(--card);
-      border-radius: 12px;
+      border-radius: 16px;
       padding: 24px;
       margin-bottom: 20px;
       box-shadow: var(--shadow);
@@ -113,7 +217,8 @@
     }
 
     .card:hover {
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      transform: translateY(-2px);
     }
 
     h2 {
@@ -127,7 +232,7 @@
     }
 
     .input-group {
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       position: relative;
     }
 
@@ -137,13 +242,16 @@
       font-weight: 500;
       font-size: clamp(0.85rem, 3vw, 0.95rem);
       color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     input, select {
       width: 100%;
       padding: 14px 16px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
+      border-radius: 10px;
+      border: 2px solid var(--border);
       font-size: clamp(0.95rem, 3.5vw, 1rem);
       background-color: var(--card);
       color: var(--text);
@@ -158,12 +266,12 @@
 
     button {
       width: 100%;
-      padding: 14px;
-      border-radius: 8px;
+      padding: 16px;
+      border-radius: 10px;
       border: none;
       font-size: clamp(0.95rem, 3.5vw, 1rem);
       font-weight: 600;
-      background-color: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: white;
       cursor: pointer;
       transition: var(--transition);
@@ -175,8 +283,8 @@
     }
 
     button:hover {
-      background-color: var(--primary-dark);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
     }
 
     button:active {
@@ -185,9 +293,9 @@
 
     .result {
       margin-top: 20px;
-      padding: 16px;
-      border-radius: 8px;
-      background-color: rgba(67, 97, 238, 0.08);
+      padding: 20px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.05));
       border-left: 4px solid var(--primary);
       display: none;
       position: relative;
@@ -195,7 +303,10 @@
     }
 
     .result p {
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .result strong {
@@ -227,7 +338,7 @@
     }
 
     .tab {
-      padding: 12px 20px;
+      padding: 14px 20px;
       cursor: pointer;
       font-weight: 600;
       white-space: nowrap;
@@ -318,9 +429,11 @@
     }
 
     .badge {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 10px;
+      border-radius: 20px;
       font-size: 0.75rem;
       font-weight: 600;
       margin-left: 8px;
@@ -354,14 +467,15 @@
     }
 
     .info-text {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--gray);
-      margin-top: 8px;
+      margin-top: 6px;
+      font-style: italic;
     }
 
     .banner-container {
       margin: 20px auto;
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
       border: 1px solid var(--border);
       max-width: 100%;
@@ -371,7 +485,7 @@
 
     .banner-container:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     }
 
     .banner-img {
@@ -383,7 +497,7 @@
 
     .mini-banner {
       margin: 15px 0;
-      border-radius: 8px;
+      border-radius: 10px;
       overflow: hidden;
       border: 1px solid var(--border);
       display: flex;
@@ -398,7 +512,7 @@
 
     .mini-banner:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
     }
 
     .mini-banner-img {
@@ -424,7 +538,7 @@
       display: block;
       padding: 14px;
       background-color: rgba(67, 97, 238, 0.1);
-      border-radius: 8px;
+      border-radius: 10px;
       color: var(--primary);
       text-decoration: none;
       font-weight: 600;
@@ -479,17 +593,17 @@
     }
 
     .info-box {
-      background-color: var(--card);
+      background: linear-gradient(135deg, var(--card), rgba(67, 97, 238, 0.05));
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 16px;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
       transition: var(--transition);
     }
 
     .info-box:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
 
     .info-box h3 {
@@ -512,9 +626,9 @@
 
     .timer-link {
       display: block;
-      padding: 14px;
-      background-color: rgba(67, 97, 238, 0.1);
-      border-radius: 8px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.05));
+      border-radius: 10px;
       color: var(--primary);
       text-decoration: none;
       font-weight: 600;
@@ -528,44 +642,44 @@
     }
 
     .timer-link:hover {
-      background-color: rgba(67, 97, 238, 0.2);
+      background: linear-gradient(135deg, rgba(67, 97, 238, 0.2), rgba(76, 201, 240, 0.1));
       transform: translateY(-2px);
     }
 
     .result-actions {
       display: flex;
       gap: 10px;
-      margin-top: 15px;
+      margin-top: 20px;
     }
 
     .result-actions button {
       flex: 1;
-      padding: 10px;
+      padding: 12px;
       font-size: 0.85rem;
     }
 
     .copy-btn {
-      background-color: var(--success);
+      background: linear-gradient(135deg, var(--success), #3aa8d8);
     }
 
     .copy-btn:hover {
-      background-color: #3aa8d8;
+      background: linear-gradient(135deg, #3aa8d8, var(--success));
     }
 
     .share-btn {
-      background-color: var(--secondary);
+      background: linear-gradient(135deg, var(--secondary), #e51673);
     }
 
     .share-btn:hover {
-      background-color: #e51673;
+      background: linear-gradient(135deg, #e51673, var(--secondary));
     }
 
     .save-btn {
-      background-color: var(--warning);
+      background: linear-gradient(135deg, var(--warning), #e0871b);
     }
 
     .save-btn:hover {
-      background-color: #e0871b;
+      background: linear-gradient(135deg, #e0871b, var(--warning));
     }
 
     .toast {
@@ -575,8 +689,8 @@
       transform: translateX(-50%);
       background-color: var(--primary);
       color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
+      padding: 14px 24px;
+      border-radius: 10px;
       box-shadow: var(--shadow);
       z-index: 1000;
       opacity: 0;
@@ -594,7 +708,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px;
+      padding: 12px;
       border-bottom: 1px solid var(--border);
     }
 
@@ -614,9 +728,9 @@
       justify-content: space-between;
       margin-bottom: 10px;
       cursor: pointer;
-      padding: 10px;
+      padding: 12px;
       background-color: rgba(67, 97, 238, 0.1);
-      border-radius: 8px;
+      border-radius: 10px;
     }
 
     .history-title h3 {
@@ -627,9 +741,9 @@
     .history-list {
       max-height: 300px;
       overflow-y: auto;
-      padding: 10px;
+      padding: 12px;
       background-color: var(--card);
-      border-radius: 8px;
+      border-radius: 10px;
       border: 1px solid var(--border);
     }
 
@@ -641,7 +755,7 @@
 
     .history-controls button {
       flex: 1;
-      padding: 8px;
+      padding: 10px;
       font-size: 0.8rem;
     }
 
@@ -696,6 +810,313 @@
       color: var(--primary);
     }
 
+    /* NEW ENHANCEMENTS */
+
+    /* Tooltip */
+    .tooltip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: help;
+      margin-left: 5px;
+      width: 18px;
+      height: 18px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.7rem;
+    }
+
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 220px;
+      background-color: var(--dark);
+      color: var(--light);
+      text-align: center;
+      border-radius: 8px;
+      padding: 10px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.8rem;
+      font-weight: normal;
+      line-height: 1.4;
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* Example Button */
+    .example-btn {
+      background: linear-gradient(135deg, var(--gray), #8d99ae);
+      margin-top: 5px;
+      padding: 10px;
+      font-size: 0.85rem;
+    }
+
+    .example-btn:hover {
+      background: linear-gradient(135deg, #8d99ae, var(--gray));
+    }
+
+    /* Visual Chart */
+    .chart-container {
+      margin-top: 20px;
+      height: 200px;
+      background: linear-gradient(135deg, var(--card), rgba(67, 97, 238, 0.05));
+      border-radius: 10px;
+      padding: 15px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      gap: 10px;
+    }
+
+    .chart-bar {
+      flex: 1;
+      background: linear-gradient(to top, var(--primary), var(--primary-light));
+      border-radius: 5px 5px 0 0;
+      position: relative;
+      transition: var(--transition);
+      min-height: 10px;
+    }
+
+    .chart-bar:hover {
+      opacity: 0.8;
+    }
+
+    .chart-label {
+      position: absolute;
+      bottom: -25px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--text);
+    }
+
+    /* Input Validation */
+    input:invalid {
+      border-color: var(--danger);
+    }
+
+    .validation-message {
+      color: var(--danger);
+      font-size: 0.8rem;
+      margin-top: 5px;
+      display: none;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      width: 100%;
+      height: 6px;
+      background-color: var(--border);
+      border-radius: 3px;
+      margin: 15px 0;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--success), var(--primary));
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    /* Comparison Feature */
+    .comparison-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .comparison-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .comparison-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 10px 0;
+    }
+
+    /* Feedback Form */
+    .feedback-form {
+      margin-top: 30px;
+      padding: 20px;
+      background: var(--card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .feedback-form textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      margin-bottom: 10px;
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* Auth Modal Styles */
+    .auth-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 10000;
+      backdrop-filter: blur(5px);
+    }
+    
+    .auth-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--card);
+      padding: 30px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1px solid var(--border);
+    }
+    
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .auth-tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: var(--transition);
+    }
+    
+    .auth-tab.active {
+      border-bottom-color: var(--primary);
+      color: var(--primary);
+    }
+    
+    .auth-form {
+      display: none;
+    }
+    
+    .auth-form.active {
+      display: block;
+    }
+    
+    .close-auth {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gray);
+    }
+    
+    /* Achievements Styles */
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .achievement {
+      text-align: center;
+      padding: 10px;
+      border-radius: 10px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+    
+    .achievement.locked {
+      opacity: 0.5;
+      filter: grayscale(1);
+    }
+    
+    .achievement.unlocked {
+      border-color: var(--success);
+      background: rgba(76, 201, 240, 0.1);
+    }
+    
+    .achievement-icon {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+    
+    .achievement-name {
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    
+    /* Enhanced History Styles */
+    .history-item {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .history-item:hover {
+      background: rgba(67, 97, 238, 0.05);
+    }
+    
+    .history-summary {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    
+    .history-details {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+    
+    .history-date {
+      font-size: 0.7rem;
+      color: var(--gray);
+      text-align: right;
+    }
+
+    /* Enhanced Responsiveness */
+    @media (max-width: 768px) {
+      .comparison-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .header-logout {
+        top: 10px;
+        left: 10px;
+        padding: 6px 10px;
+        font-size: 0.8rem;
+      }
+    }
+
     @media (max-width: 480px) {
       .container {
         padding: 0;
@@ -703,6 +1124,7 @@
       
       .card {
         padding: 20px;
+        border-radius: 12px;
       }
       
       h1 {
@@ -744,45 +1166,60 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Tooltip */
-    .tooltip {
-      position: relative;
-      display: inline-block;
-      cursor: help;
-      margin-left: 5px;
+    /* Accessibility Improvements */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
 
-    .tooltip .tooltiptext {
-      visibility: hidden;
-      width: 200px;
-      background-color: var(--dark);
-      color: var(--light);
-      text-align: center;
-      border-radius: 6px;
-      padding: 8px;
-      position: absolute;
-      z-index: 1;
-      bottom: 125%;
-      left: 50%;
-      transform: translateX(-50%);
-      opacity: 0;
-      transition: opacity 0.3s;
-      font-size: 0.8rem;
-      font-weight: normal;
+    /* Focus styles for keyboard navigation */
+    button:focus, input:focus, select:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
     }
 
-    .tooltip:hover .tooltiptext {
-      visibility: visible;
-      opacity: 1;
+    /* High contrast mode support */
+    @media (prefers-contrast: high) {
+      :root {
+        --border: #000;
+        --shadow: 0 2px 4px rgba(0,0,0,0.8);
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Header Logout Button -->
+    <button class="header-logout" id="headerLogout" onclick="logout()">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+
     <header>
       <h1><i class="fas fa-bolt"></i> Hit Factor Genie</h1>
       <p class="subtitle">Optimize Your Shooting Performance</p>
     </header>
+
+    <!-- User Profile Section -->
+    <div class="user-profile" id="userProfile">
+      <div class="user-avatar" id="userAvatar">U</div>
+      <div class="user-info">
+        <div class="user-name" id="userName">User</div>
+        <div class="user-stats">
+          <span id="calculationCount">0 calculations</span>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+
+    <!-- Login Button (shown when not logged in) -->
+    <button class="login-btn" id="loginButton" onclick="showAuthModal()">
+      <i class="fas fa-user"></i> Login to Save History
+    </button>
 
     <!-- Main Sponsor Banner -->
     <div class="banner-container">
@@ -807,6 +1244,7 @@
       <div class="tab" data-tab="predictor">Predictor</div>
       <div class="tab" data-tab="penalty">Penalty</div>
       <div class="tab" data-tab="calculator">Calculator</div>
+      <div class="tab" data-tab="account">Account</div>
       <div class="tab" data-tab="timer">Dry Fire Timer</div>
       <div class="tab" data-tab="support">Support</div>
     </div>
@@ -867,24 +1305,35 @@
         <h2><i class="fas fa-chess"></i> Stage Strategy</h2>
         
         <div class="input-group">
-          <label for="highHitFactor">Current High Hit Factor</label>
-          <input type="number" id="highHitFactor" placeholder="e.g. 7.5" inputmode="decimal" step="0.01">
+          <label for="highHitFactor">
+            Current High Hit Factor
+            <div class="tooltip">?
+              <span class="tooltiptext">The highest hit factor achieved on this stage. Ask the RO or check match results.</span>
+            </div>
+          </label>
+          <input type="number" id="highHitFactor" placeholder="e.g. 7.5" inputmode="decimal" step="0.01" min="0" max="20">
         </div>
         
         <div class="input-group">
-          <label for="roundCount">Stage Round Count</label>
-          <input type="number" id="roundCount" placeholder="e.g. 24" inputmode="numeric">
+          <label for="roundCount">
+            Stage Round Count
+            <div class="tooltip">?
+              <span class="tooltiptext">Total number of rounds required to complete the stage (including mandatory reloads)</span>
+            </div>
+          </label>
+          <input type="number" id="roundCount" placeholder="e.g. 24" inputmode="numeric" min="1" max="50">
           <p class="info-text">Total rounds required for the stage</p>
         </div>
         
         <button id="calculateBtn"><i class="fas fa-calculator"></i> Calculate Strategy</button>
+        <button class="example-btn" id="strategyExampleBtn"><i class="fas fa-magic"></i> Try Example</button>
         
         <div id="strategyResult" class="result">
-          <p><strong>Allowed Charlies:</strong> <span id="charliesAllowed">0</span></p>
-          <p><strong>Allowed Deltas:</strong> <span id="deltasAllowed">0</span></p>
-          <p><strong>Make up a miss in:</strong> <span id="makeupShotTime">0</span> sec</p>
-          <p><strong>Make up a Delta in:</strong> <span id="makeupDeltaTime">0</span> sec</p>
-          <p id="warningText" style="color: var(--warning); font-weight: 500; margin-top: 8px;"></p>
+          <p><i class="fas fa-chess"></i> <strong>Allowed Charlies:</strong> <span id="charliesAllowed">0</span></p>
+          <p><i class="fas fa-chess-board"></i> <strong>Allowed Deltas:</strong> <span id="deltasAllowed">0</span></p>
+          <p><i class="fas fa-bullseye"></i> <strong>Make up a miss in:</strong> <span id="makeupShotTime">0</span> sec</p>
+          <p><i class="fas fa-crosshairs"></i> <strong>Make up a Delta in:</strong> <span id="makeupDeltaTime">0</span> sec</p>
+          <p id="warningText" style="color: var(--warning); font-weight: 500; margin-top: 8px; display: flex; align-items: center; gap: 8px;"></p>
           
           <div class="result-actions">
             <button class="copy-btn" onclick="copyResult('strategyResult')"><i class="fas fa-copy"></i> Copy</button>
@@ -917,8 +1366,8 @@
       </div>
       
       <div class="mini-banner">
-        <a href="https://hitfactorgenie.company.site/products" target="_blank" rel="noopener noreferrer">
-          <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1889.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Store" loading="lazy">
+        <a href="https://usuckatshooting.com/partner-with-us/" target="_blank" rel="noopener noreferrer">
+          <img src="https://usuckatshooting.com/wp-content/uploads/2025/04/img_1888.png?w=1024" class="mini-banner-img" alt="USuckAtShooting Partner Banner" loading="lazy">
         </a>
       </div>
 
@@ -946,22 +1395,33 @@
         <h2><i class="fas fa-chart-line"></i> HHF Predictor</h2>
         
         <div class="input-group">
-          <label for="currentHHF">Shooter's Hit Factor</label>
-          <input type="number" id="currentHHF" placeholder="e.g. 6.2" min="0" inputmode="decimal" step="0.01">
+          <label for="currentHHF">
+            Shooter's Hit Factor
+            <div class="tooltip">?
+              <span class="tooltiptext">Your current hit factor on this stage</span>
+            </div>
+          </label>
+          <input type="number" id="currentHHF" placeholder="e.g. 6.2" min="0" inputmode="decimal" step="0.01" max="20">
         </div>
         
         <div class="input-group">
-          <label for="shooterPercentage">Your % of Winner</label>
+          <label for="shooterPercentage">
+            Your % of Winner
+            <div class="tooltip">?
+              <span class="tooltiptext">Your consistent percentage compared to stage winners from past matches</span>
+            </div>
+          </label>
           <input type="number" id="shooterPercentage" placeholder="e.g. 80" min="1" max="99" inputmode="numeric">
           <p class="info-text">Your consistent percentage compared to stage winners</p>
         </div>
         
         <button id="estimateHHFBtn"><i class="fas fa-chart-bar"></i> Predict Winner's HF</button>
+        <button class="example-btn" id="predictorExampleBtn"><i class="fas fa-magic"></i> Try Example</button>
         
         <div id="estimateHHFResult" class="result">
-          <p><strong>Predicted HHF:</strong> <span id="trueHHF">0</span></p>
-          <p><strong>To match winner:</strong> +<span id="hfDifference">0</span> HF needed</p>
-          <p><strong>Improvement needed:</strong> <span id="percentImprovement">0</span>%</p>
+          <p><i class="fas fa-bolt"></i> <strong>Predicted HHF:</strong> <span id="trueHHF">0</span></p>
+          <p><i class="fas fa-tachometer-alt"></i> <strong>To match winner:</strong> +<span id="hfDifference">0</span> HF needed</p>
+          <p><i class="fas fa-chart-line"></i> <strong>Improvement needed:</strong> <span id="percentImprovement">0</span>%</p>
           
           <div class="result-actions">
             <button class="copy-btn" onclick="copyResult('estimateHHFResult')"><i class="fas fa-copy"></i> Copy</button>
@@ -1028,8 +1488,13 @@
         <h2><i class="fas fa-stopwatch"></i> Points as Time</h2>
         
         <div class="input-group">
-          <label for="hitFactor">Hit Factor (HF)</label>
-          <input type="number" id="hitFactor" placeholder="e.g. 5.0" min="0" inputmode="decimal" step="0.01">
+          <label for="hitFactor">
+            Hit Factor (HF)
+            <div class="tooltip">?
+              <span class="tooltiptext">The stage's hit factor - use your actual HF or the predicted winner's HF</span>
+            </div>
+          </label>
+          <input type="number" id="hitFactor" placeholder="e.g. 5.0" min="0" inputmode="decimal" step="0.01" max="20">
         </div>
         
         <div class="input-group">
@@ -1041,30 +1506,31 @@
         </div>
         
         <div class="input-group">
-          <label for="charlies">Charlies <span class="badge badge-charlie" id="charlieBadge">-2 pts</span></label>
-          <input type="number" id="charlies" placeholder="e.g. 2" min="0" inputmode="numeric">
+          <label for="charlies">Charlies <span class="badge badge-charlie"><i class="fas fa-circle"></i> -2 pts</span></label>
+          <input type="number" id="charlies" placeholder="e.g. 2" min="0" inputmode="numeric" max="20">
         </div>
         
         <div class="input-group">
-          <label for="deltas">Deltas <span class="badge badge-delta" id="deltaBadge">-4 pts</span></label>
-          <input type="number" id="deltas" placeholder="e.g. 1" min="0" inputmode="numeric">
+          <label for="deltas">Deltas <span class="badge badge-delta"><i class="fas fa-times-circle"></i> -4 pts</span></label>
+          <input type="number" id="deltas" placeholder="e.g. 1" min="0" inputmode="numeric" max="10">
         </div>
         
         <div class="input-group">
-          <label for="mikes">Mikes <span class="badge badge-penalty">-10 pts</span></label>
-          <input type="number" id="mikes" placeholder="e.g. 0" min="0" inputmode="numeric">
+          <label for="mikes">Mikes <span class="badge badge-penalty"><i class="fas fa-times"></i> -10 pts</span></label>
+          <input type="number" id="mikes" placeholder="e.g. 0" min="0" inputmode="numeric" max="5">
         </div>
         
         <div class="input-group">
-          <label for="noShoots">No-Shoots <span class="badge badge-penalty">-10 pts</span></label>
-          <input type="number" id="noShoots" placeholder="e.g. 0" min="0" inputmode="numeric">
+          <label for="noShoots">No-Shoots <span class="badge badge-penalty"><i class="fas fa-ban"></i> -10 pts</span></label>
+          <input type="number" id="noShoots" placeholder="e.g. 0" min="0" inputmode="numeric" max="5">
         </div>
         
         <button id="penaltyCalcBtn"><i class="fas fa-clock"></i> Calculate Penalty</button>
+        <button class="example-btn" id="penaltyExampleBtn"><i class="fas fa-magic"></i> Try Example</button>
         
         <div id="penaltyResult" class="result">
-          <p><strong>Total Points Dropped:</strong> <span id="pointsDropped">0</span></p>
-          <p><strong>Equivalent Time Loss:</strong> <span id="equivalentTime">0</span> seconds</p>
+          <p><i class="fas fa-exclamation-triangle"></i> <strong>Total Points Dropped:</strong> <span id="pointsDropped">0</span></p>
+          <p><i class="fas fa-clock"></i> <strong>Equivalent Time Loss:</strong> <span id="equivalentTime">0</span> seconds</p>
           <p><em>Equal to shooting clean but <span id="timeLossText">0</span> seconds slower</em></p>
           
           <div class="result-actions">
@@ -1141,40 +1607,47 @@
         </div>
         
         <div class="input-group">
-          <label for="alpha">Alphas <span class="badge badge-alpha">+5 pts</span></label>
-          <input type="number" id="alpha" placeholder="e.g. 10" min="0" inputmode="numeric">
+          <label for="alpha">Alphas <span class="badge badge-alpha"><i class="fas fa-check-circle"></i> +5 pts</span></label>
+          <input type="number" id="alpha" placeholder="e.g. 10" min="0" inputmode="numeric" max="50">
         </div>
         
         <div class="input-group">
-          <label for="charlie">Charlies <span class="badge badge-charlie">+3/4 pts</span></label>
-          <input type="number" id="charlie" placeholder="e.g. 2" min="0" inputmode="numeric">
+          <label for="charlie">Charlies <span class="badge badge-charlie"><i class="fas fa-circle"></i> +3/4 pts</span></label>
+          <input type="number" id="charlie" placeholder="e.g. 2" min="0" inputmode="numeric" max="30">
         </div>
         
         <div class="input-group">
-          <label for="delta">Deltas <span class="badge badge-delta">+1/2 pts</span></label>
-          <input type="number" id="delta" placeholder="e.g. 0" min="0" inputmode="numeric">
+          <label for="delta">Deltas <span class="badge badge-delta"><i class="fas fa-times-circle"></i> +1/2 pts</span></label>
+          <input type="number" id="delta" placeholder="e.g. 0" min="0" inputmode="numeric" max="20">
         </div>
         
         <div class="input-group">
-          <label for="miss">Misses <span class="badge badge-penalty">-10 pts</span></label>
-          <input type="number" id="miss" placeholder="e.g. 0" min="0" inputmode="numeric">
+          <label for="miss">Misses <span class="badge badge-penalty"><i class="fas fa-times"></i> -10 pts</span></label>
+          <input type="number" id="miss" placeholder="e.g. 0" min="0" inputmode="numeric" max="10">
         </div>
         
         <div class="input-group">
-          <label for="penalty">No-Shoots <span class="badge badge-penalty">-10 pts</span></label>
-          <input type="number" id="penalty" placeholder="e.g. 0" min="0" inputmode="numeric">
+          <label for="penalty">No-Shoots <span class="badge badge-penalty"><i class="fas fa-ban"></i> -10 pts</span></label>
+          <input type="number" id="penalty" placeholder="e.g. 0" min="0" inputmode="numeric" max="10">
         </div>
         
         <div class="input-group">
           <label for="advTime">Time (seconds)</label>
-          <input type="number" id="advTime" placeholder="e.g. 12.5" min="0" inputmode="decimal" step="0.1">
+          <input type="number" id="advTime" placeholder="e.g. 12.5" min="0" inputmode="decimal" step="0.1" max="60">
         </div>
         
         <button id="advCalcBtn"><i class="fas fa-bolt"></i> Calculate Hit Factor</button>
+        <button class="example-btn" id="calculatorExampleBtn"><i class="fas fa-magic"></i> Try Example</button>
         
         <div id="advResult" class="result">
-          <p><strong>Hit Factor:</strong> <span id="calculatedHF">0</span></p>
-          <p id="hfEvaluation" style="font-weight: 500;"></p>
+          <p><i class="fas fa-bolt"></i> <strong>Hit Factor:</strong> <span id="calculatedHF">0</span></p>
+          <p id="hfEvaluation" style="font-weight: 500; display: flex; align-items: center; gap: 8px;"></p>
+          
+          <!-- Performance Rating -->
+          <div class="progress-container">
+            <div class="progress-bar" id="hfProgress" style="width: 0%"></div>
+          </div>
+          <p style="text-align: center; font-size: 0.8rem; color: var(--gray);" id="hfRating">Beginner</p>
           
           <div class="result-actions">
             <button class="copy-btn" onclick="copyResult('advResult')"><i class="fas fa-copy"></i> Copy</button>
@@ -1227,6 +1700,51 @@
             <li>Time: 8.5 seconds</li>
           </ul>
           <p style="margin-top: 8px;"><strong>Hit Factor:</strong> (40 + 6) ÷ 8.5 = 5.41 (minor) or (40 + 8) ÷ 8.5 = 5.65 (major)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Account Tab -->
+    <div class="tab-content" id="account-tab">
+      <div class="card">
+        <h2><i class="fas fa-user-cog"></i> Account Management</h2>
+        
+        <div class="account-details">
+          <div class="account-detail-row">
+            <span class="account-detail-label">Email:</span>
+            <span class="account-detail-value" id="accountTabEmail">-</span>
+          </div>
+          <div class="account-detail-row">
+            <span class="account-detail-label">Display Name:</span>
+            <span class="account-detail-value" id="accountTabName">-</span>
+          </div>
+          <div class="account-detail-row">
+            <span class="account-detail-label">Member Since:</span>
+            <span class="account-detail-value" id="accountTabCreated">-</span>
+          </div>
+          <div class="account-detail-row">
+            <span class="account-detail-label">Total Calculations:</span>
+            <span class="account-detail-value" id="accountTabCalculations">0</span>
+          </div>
+        </div>
+        
+        <div class="password-section">
+          <h3><i class="fas fa-key"></i> Change Password</h3>
+          <div class="input-group">
+            <label for="accountCurrentPassword">Current Password</label>
+            <input type="password" id="accountCurrentPassword" placeholder="Enter current password">
+          </div>
+          <div class="input-group">
+            <label for="accountNewPassword">New Password</label>
+            <input type="password" id="accountNewPassword" placeholder="Enter new password">
+          </div>
+          <div class="input-group">
+            <label for="accountConfirmNewPassword">Confirm New Password</label>
+            <input type="password" id="accountConfirmNewPassword" placeholder="Confirm new password">
+          </div>
+          <button class="update-password-btn" onclick="updateAccountPassword()">
+            <i class="fas fa-save"></i> Update Password
+          </button>
         </div>
       </div>
     </div>
@@ -1306,6 +1824,14 @@
           </a>
         </div>
         
+        <!-- Feedback Form -->
+        <div class="feedback-form">
+          <h3><i class="fas fa-comment-dots"></i> Send Feedback</h3>
+          <p>We'd love to hear your suggestions or report any issues:</p>
+          <textarea id="feedbackText" placeholder="Tell us what you think..."></textarea>
+          <button id="submitFeedback"><i class="fas fa-paper-plane"></i> Send Feedback</button>
+        </div>
+        
         <div style="margin-top: 30px; padding: 16px; background-color: rgba(67, 97, 238, 0.08); border-radius: 8px;">
           <h3><i class="fas fa-code"></i> About This App</h3>
           <p>Hit Factor Genie was created by Wes Cronin to help competitive shooters optimize their performance through data-driven decisions.</p>
@@ -1324,87 +1850,864 @@
   <!-- Toast Notification -->
   <div id="toast" class="toast"></div>
 
-  <script>
-    // Dark Mode Toggle (starts in dark mode, toggles to light)
-    const darkModeToggle = document.getElementById('toggleDarkMode');
-    darkModeToggle.addEventListener('change', function() {
-      document.body.classList.toggle('light-mode');
-      localStorage.setItem('lightMode', this.checked);
-    });
-
-    // Check for saved light mode preference
-    if (localStorage.getItem('lightMode') === 'true') {
-      darkModeToggle.checked = true;
-      document.body.classList.add('light-mode');
-    }
-
-    // Tab Switching with persistence
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', (e) => {
-        e.preventDefault();
-        
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        
-        tab.classList.add('active');
-        const tabName = tab.dataset.tab;
-        document.getElementById(`${tabName}-tab`).classList.add('active');
-        localStorage.setItem('lastActiveTab', tabName);
-        
-        // Load saved calculations when tab is clicked
-        if (['strategy', 'predictor', 'penalty', 'calculator'].includes(tabName)) {
-          loadSavedCalculations(tabName);
-        }
-      });
-    });
-
-    // Set last active tab on load
-    document.addEventListener('DOMContentLoaded', () => {
-      const lastTab = localStorage.getItem('lastActiveTab') || 'home';
-      document.querySelector(`.tab[data-tab="${lastTab}"]`).click();
+  <!-- Auth Modal -->
+  <div class="auth-modal" id="authModal">
+    <div class="auth-content">
+      <span class="close-auth" onclick="closeAuthModal()">&times;</span>
+      <h2 style="margin-bottom: 20px; text-align: center;">
+        <i class="fas fa-user-shield"></i> Account
+      </h2>
       
-      // Initialize history sections
-      ['strategy', 'predictor', 'penalty', 'calculator'].forEach(tab => {
-        loadSavedCalculations(tab);
-      });
-    });
+      <div class="auth-tabs">
+        <div class="auth-tab active" data-form="login">Login</div>
+        <div class="auth-tab" data-form="register">Register</div>
+      </div>
+      
+      <!-- Login Form -->
+      <div class="auth-form active" id="loginForm">
+        <div class="input-group">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" placeholder="your@email.com">
+        </div>
+        <div class="input-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••">
+        </div>
+        <button onclick="login()" style="margin-top: 20px;">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+        <p style="text-align: center; margin-top: 15px; font-size: 0.9rem; color: var(--gray);">
+          Demo: Use any email/password
+        </p>
+      </div>
+      
+      <!-- Register Form -->
+      <div class="auth-form" id="registerForm">
+        <div class="input-group">
+          <label for="registerName">Display Name</label>
+          <input type="text" id="registerName" placeholder="Shooter Name">
+        </div>
+        <div class="input-group">
+          <label for="registerEmail">Email</label>
+          <input type="email" id="registerEmail" placeholder="your@email.com">
+        </div>
+        <div class="input-group">
+          <label for="registerPassword">Password</label>
+          <input type="password" id="registerPassword" placeholder="••••••••">
+        </div>
+        <div class="input-group">
+          <label for="registerConfirmPassword">Confirm Password</label>
+          <input type="password" id="registerConfirmPassword" placeholder="••••••••">
+        </div>
+        <button onclick="register()" style="margin-top: 20px;">
+          <i class="fas fa-user-plus"></i> Create Account
+        </button>
+      </div>
+    </div>
+  </div>
 
-    // Input history for undo/redo
-    const inputHistory = {
-      strategy: { past: [], future: [], current: null },
-      predictor: { past: [], future: [], current: null },
-      penalty: { past: [], future: [], current: null },
-      calculator: { past: [], future: [], current: null }
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBoiQ52wLY2z2HXxuAST1KNE8hNiCVZouQ",
+      authDomain: "hit-factor-genie.firebaseapp.com",
+      projectId: "hit-factor-genie",
+      storageBucket: "hit-factor-genie.firebasestorage.app",
+      messagingSenderId: "233870567161",
+      appId: "1:233870567161:web:56e4bd1668f36a13646428"
     };
 
-    // Track input changes
-    document.querySelectorAll('input, select').forEach(input => {
-      input.addEventListener('input', function() {
-        const tab = this.closest('.tab-content').id.replace('-tab', '');
-        if (tab in inputHistory) {
-          saveInputState(tab);
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // User Authentication System
+    let currentUser = null;
+
+    // Check if user is logged in on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Firebase auth state listener
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          // User is signed in
+          loadUserData(user.uid);
+        } else {
+          // User is signed out
+          currentUser = null;
+          updateUI();
         }
       });
+      
+      setupAuthTabs();
+      setupEventListeners();
+      setupTabs();
+      setupTheme();
     });
 
-    function saveInputState(tab) {
-      const inputs = Array.from(document.querySelectorAll(`#${tab}-tab input, #${tab}-tab select`));
-      const currentState = inputs.map(input => ({
-        id: input.id,
-        value: input.value,
-        type: input.type
-      }));
+    // Updated feedback function to email hitfactorgenie@gmail.com
+    function submitFeedback() {
+      const feedback = document.getElementById('feedbackText').value.trim();
+      if (feedback) {
+        // Create mailto link
+        const subject = 'HF Genie Feedback';
+        const body = `User Feedback:\n\n${feedback}\n\nUser: ${currentUser ? currentUser.email : 'Not logged in'}\nTimestamp: ${new Date().toLocaleString()}`;
+        
+        const mailtoLink = `mailto:hitfactorgenie@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        
+        // Open email client
+        window.open(mailtoLink, '_blank');
+        
+        showToast('Thank you for your feedback! Email client opened.', 'heart');
+        document.getElementById('feedbackText').value = '';
+        
+      } else {
+        showToast('Please enter your feedback', 'exclamation-triangle');
+      }
+    }
+
+    // Rest of your existing functions remain the same...
+    function setupAuthTabs() {
+      document.querySelectorAll('.auth-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          const formType = this.dataset.form;
+          
+          document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+          
+          document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+          document.getElementById(formType + 'Form').classList.add('active');
+        });
+      });
+    }
+
+    function setupEventListeners() {
+      // Setup event listeners for calculators
+      document.getElementById("advCalcBtn").addEventListener("click", calculateAdvancedHF);
+      document.getElementById("calculateBtn").addEventListener("click", calculateStrategy);
+      document.getElementById("estimateHHFBtn").addEventListener("click", estimateHHF);
+      document.getElementById("penaltyCalcBtn").addEventListener("click", calculatePenalty);
+      document.getElementById("submitFeedback").addEventListener("click", submitFeedback);
       
-      if (inputHistory[tab].current) {
-        inputHistory[tab].past.push(inputHistory[tab].current);
-        if (inputHistory[tab].past.length > 20) {
-          inputHistory[tab].past.shift();
+      // Example buttons
+      document.getElementById("calculatorExampleBtn").addEventListener("click", function() {
+        loadExample('calculator');
+      });
+      document.getElementById("strategyExampleBtn").addEventListener("click", function() {
+        loadExample('strategy');
+      });
+      document.getElementById("predictorExampleBtn").addEventListener("click", function() {
+        loadExample('predictor');
+      });
+      document.getElementById("penaltyExampleBtn").addEventListener("click", function() {
+        loadExample('penalty');
+      });
+    }
+
+    function showAuthModal() {
+      document.getElementById('authModal').style.display = 'block';
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authModal').style.display = 'none';
+    }
+
+    // Updated login function
+    async function login() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      
+      if (!email || !password) {
+        showToast('Please enter email and password', 'exclamation-triangle');
+        return;
+      }
+      
+      try {
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        showToast('Welcome back!', 'check');
+        closeAuthModal();
+      } catch (error) {
+        console.error('Login error:', error);
+        showToast('Login failed: ' + error.message, 'exclamation-triangle');
+      }
+    }
+
+    // Updated register function  
+    async function register() {
+      const name = document.getElementById('registerName').value;
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+      const confirmPassword = document.getElementById('registerConfirmPassword').value;
+      
+      if (!name || !email || !password) {
+        showToast('Please fill all fields', 'exclamation-triangle');
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        showToast('Passwords do not match', 'exclamation-triangle');
+        return;
+      }
+      
+      try {
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+        
+        // Create user document in Firestore
+        await db.collection('users').doc(user.uid).set({
+          name: name,
+          email: email,
+          joined: new Date().toISOString(),
+          calculations: [],
+          stats: {
+            totalCalculations: 0,
+            calculatorCalculations: 0
+          }
+        });
+        
+        showToast('Account created successfully!', 'check');
+        closeAuthModal();
+      } catch (error) {
+        console.error('Registration error:', error);
+        showToast('Registration failed: ' + error.message, 'exclamation-triangle');
+      }
+    }
+
+    // Load user data from Firestore
+    async function loadUserData(userId) {
+      try {
+        const userDoc = await db.collection('users').doc(userId).get();
+        if (userDoc.exists) {
+          const userData = userDoc.data();
+          currentUser = {
+            uid: userId,
+            email: userData.email,
+            name: userData.name,
+            ...userData
+          };
+          
+          updateUI();
+          loadUserCalculations();
+          updateAccountTab();
+        }
+      } catch (error) {
+        console.error('Error loading user data:', error);
+      }
+    }
+
+    // Update UI based on user status
+    function updateUI() {
+      const userProfile = document.getElementById('userProfile');
+      const loginButton = document.getElementById('loginButton');
+      const headerLogout = document.getElementById('headerLogout');
+      
+      if (currentUser) {
+        userProfile.style.display = 'flex';
+        loginButton.style.display = 'none';
+        headerLogout.style.display = 'block';
+        
+        // Update user info
+        document.getElementById('userName').textContent = currentUser.name;
+        document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+        document.getElementById('calculationCount').textContent = `${currentUser.stats?.totalCalculations || 0} calculations`;
+      } else {
+        userProfile.style.display = 'none';
+        loginButton.style.display = 'flex';
+        headerLogout.style.display = 'none';
+      }
+    }
+
+    // Update Account Tab with user information
+    function updateAccountTab() {
+      if (!currentUser) return;
+      
+      document.getElementById('accountTabEmail').textContent = currentUser.email;
+      document.getElementById('accountTabName').textContent = currentUser.name;
+      document.getElementById('accountTabCreated').textContent = currentUser.joined ? new Date(currentUser.joined).toLocaleDateString() : '-';
+      document.getElementById('accountTabCalculations').textContent = currentUser.stats?.totalCalculations || 0;
+    }
+
+    // Update password function
+    async function updateAccountPassword() {
+      const currentPassword = document.getElementById('accountCurrentPassword').value;
+      const newPassword = document.getElementById('accountNewPassword').value;
+      const confirmNewPassword = document.getElementById('accountConfirmNewPassword').value;
+      
+      if (!currentPassword || !newPassword || !confirmNewPassword) {
+        showToast('Please fill all password fields', 'exclamation-triangle');
+        return;
+      }
+      
+      if (newPassword !== confirmNewPassword) {
+        showToast('New passwords do not match', 'exclamation-triangle');
+        return;
+      }
+      
+      if (newPassword.length < 6) {
+        showToast('New password must be at least 6 characters', 'exclamation-triangle');
+        return;
+      }
+      
+      try {
+        // Re-authenticate user
+        const user = auth.currentUser;
+        const credential = firebase.auth.EmailAuthProvider.credential(user.email, currentPassword);
+        
+        await user.reauthenticateWithCredential(credential);
+        
+        // Update password
+        await user.updatePassword(newPassword);
+        
+        // Clear password fields
+        document.getElementById('accountCurrentPassword').value = '';
+        document.getElementById('accountNewPassword').value = '';
+        document.getElementById('accountConfirmNewPassword').value = '';
+        
+        showToast('Password updated successfully!', 'check');
+      } catch (error) {
+        console.error('Password update error:', error);
+        showToast('Failed to update password: ' + error.message, 'exclamation-triangle');
+      }
+    }
+
+    // FIXED: Updated save calculation function
+    async function saveCalculation(tab) {
+      if (!currentUser) {
+        showToast('Please login to save calculations', 'user');
+        showAuthModal();
+        return;
+      }
+      
+      const timestamp = new Date().toLocaleString();
+      let calculationData = {
+        id: Date.now(),
+        timestamp,
+        tab
+      };
+      
+      // Collect calculation data based on tab
+      switch(tab) {
+        case 'calculator':
+          calculationData.data = {
+            scoring: document.getElementById('scoring').value,
+            alpha: document.getElementById('alpha').value,
+            charlie: document.getElementById('charlie').value,
+            delta: document.getElementById('delta').value,
+            miss: document.getElementById('miss').value,
+            penalty: document.getElementById('penalty').value,
+            advTime: document.getElementById('advTime').value,
+            calculatedHF: document.getElementById('calculatedHF').textContent,
+            hfEvaluation: document.getElementById('hfEvaluation').textContent
+          };
+          break;
+        case 'strategy':
+          calculationData.data = {
+            highHitFactor: document.getElementById('highHitFactor').value,
+            roundCount: document.getElementById('roundCount').value,
+            charliesAllowed: document.getElementById('charliesAllowed').textContent,
+            deltasAllowed: document.getElementById('deltasAllowed').textContent,
+            makeupShotTime: document.getElementById('makeupShotTime').textContent,
+            makeupDeltaTime: document.getElementById('makeupDeltaTime').textContent
+          };
+          break;
+        case 'predictor':
+          calculationData.data = {
+            currentHHF: document.getElementById('currentHHF').value,
+            shooterPercentage: document.getElementById('shooterPercentage').value,
+            trueHHF: document.getElementById('trueHHF').textContent,
+            hfDifference: document.getElementById('hfDifference').textContent,
+            percentImprovement: document.getElementById('percentImprovement').textContent
+          };
+          break;
+        case 'penalty':
+          calculationData.data = {
+            hitFactor: document.getElementById('hitFactor').value,
+            charlies: document.getElementById('charlies').value,
+            deltas: document.getElementById('deltas').value,
+            mikes: document.getElementById('mikes').value,
+            noShoots: document.getElementById('noShoots').value,
+            pointsDropped: document.getElementById('pointsDropped').textContent,
+            equivalentTime: document.getElementById('equivalentTime').textContent
+          };
+          break;
+      }
+      
+      try {
+        // Get current user data to update stats correctly
+        const userDoc = await db.collection('users').doc(currentUser.uid).get();
+        const userData = userDoc.data();
+        
+        // Update user document with new calculation
+        await db.collection('users').doc(currentUser.uid).update({
+          calculations: firebase.firestore.FieldValue.arrayUnion(calculationData),
+          [`stats.${tab}Calculations`]: (userData.stats[`${tab}Calculations`] || 0) + 1,
+          'stats.totalCalculations': (userData.stats.totalCalculations || 0) + 1
+        });
+        
+        // Update local currentUser object
+        currentUser.calculations = currentUser.calculations || [];
+        currentUser.calculations.unshift(calculationData);
+        currentUser.stats = currentUser.stats || {};
+        currentUser.stats.totalCalculations = (currentUser.stats.totalCalculations || 0) + 1;
+        currentUser.stats[`${tab}Calculations`] = (currentUser.stats[`${tab}Calculations`] || 0) + 1;
+        
+        showToast('Calculation saved to your history!', 'save');
+        updateUI(); // Update the calculation count display
+        updateAccountTab(); // Update account tab
+        loadUserCalculations();
+      } catch (error) {
+        console.error('Error saving calculation:', error);
+        showToast('Failed to save calculation', 'exclamation-triangle');
+      }
+    }
+
+    function loadUserCalculations() {
+      if (!currentUser || !currentUser.calculations) return;
+      
+      // Load calculations into each tab's history
+      ['calculator', 'strategy', 'predictor', 'penalty'].forEach(tab => {
+        const container = document.getElementById(`${tab}List`);
+        if (!container) return;
+        
+        const userCalculations = currentUser.calculations.filter(calc => calc.tab === tab);
+        
+        if (userCalculations.length === 0) {
+          container.innerHTML = '<p style="text-align: center; color: var(--gray);">No saved calculations yet</p>';
+          return;
+        }
+        
+        container.innerHTML = '';
+        userCalculations.forEach(calc => {
+          const item = document.createElement('div');
+          item.className = 'history-item';
+          item.onclick = () => loadCalculation(calc);
+          
+          let summary = '';
+          let details = '';
+          
+          switch(calc.tab) {
+            case 'calculator':
+              summary = `HF: ${calc.data.calculatedHF} | Time: ${calc.data.advTime}s`;
+              details = `A:${calc.data.alpha} C:${calc.data.charlie} D:${calc.data.delta}`;
+              break;
+            case 'strategy':
+              summary = `HHF: ${calc.data.highHitFactor} | Rounds: ${calc.data.roundCount}`;
+              details = `C:${calc.data.charliesAllowed} D:${calc.data.deltasAllowed}`;
+              break;
+            case 'predictor':
+              summary = `Your HF: ${calc.data.currentHHF} | %: ${calc.data.shooterPercentage}`;
+              details = `Predicted: ${calc.data.trueHHF}`;
+              break;
+            case 'penalty':
+              summary = `HF: ${calc.data.hitFactor} | Time Loss: ${calc.data.equivalentTime}s`;
+              details = `C:${calc.data.charlies} D:${calc.data.deltas}`;
+              break;
+          }
+          
+          item.innerHTML = `
+            <div class="history-summary">${summary}</div>
+            <div class="history-details">${details}</div>
+            <div class="history-date">${calc.timestamp}</div>
+          `;
+          
+          container.appendChild(item);
+        });
+      });
+    }
+
+    function loadCalculation(calc) {
+      document.querySelector(`.tab[data-tab="${calc.tab}"]`).click();
+      
+      switch(calc.tab) {
+        case 'calculator':
+          document.getElementById('scoring').value = calc.data.scoring;
+          document.getElementById('alpha').value = calc.data.alpha;
+          document.getElementById('charlie').value = calc.data.charlie;
+          document.getElementById('delta').value = calc.data.delta;
+          document.getElementById('miss').value = calc.data.miss;
+          document.getElementById('penalty').value = calc.data.penalty;
+          document.getElementById('advTime').value = calc.data.advTime;
+          calculateAdvancedHF();
+          break;
+        case 'strategy':
+          document.getElementById('highHitFactor').value = calc.data.highHitFactor;
+          document.getElementById('roundCount').value = calc.data.roundCount;
+          calculateStrategy();
+          break;
+        case 'predictor':
+          document.getElementById('currentHHF').value = calc.data.currentHHF;
+          document.getElementById('shooterPercentage').value = calc.data.shooterPercentage;
+          estimateHHF();
+          break;
+        case 'penalty':
+          document.getElementById('hitFactor').value = calc.data.hitFactor;
+          document.getElementById('charlies').value = calc.data.charlies;
+          document.getElementById('deltas').value = calc.data.deltas;
+          document.getElementById('mikes').value = calc.data.mikes;
+          document.getElementById('noShoots').value = calc.data.noShoots;
+          calculatePenalty();
+          break;
+      }
+      
+      showToast('Calculation loaded', 'check');
+    }
+
+    // Updated logout function
+    function logout() {
+      auth.signOut();
+      currentUser = null;
+      showToast('Logged out successfully', 'sign-out-alt');
+    }
+
+    // FIXED: Share function
+    function shareResult(tab) {
+      let shareText = '';
+      
+      switch(tab) {
+        case 'strategy':
+          shareText = `🎯 Stage Strategy Results:
+• Allowed Charlies: ${document.getElementById('charliesAllowed').textContent}
+• Allowed Deltas: ${document.getElementById('deltasAllowed').textContent}
+• Make up a miss in: ${document.getElementById('makeupShotTime').textContent} sec
+• Make up a Delta in: ${document.getElementById('makeupDeltaTime').textContent} sec
+
+Plan your stage with Hit Factor Genie!`;
+          break;
+        case 'predictor':
+          shareText = `📈 HHF Prediction Results:
+• Predicted HHF: ${document.getElementById('trueHHF').textContent}
+• To match winner: +${document.getElementById('hfDifference').textContent} HF needed
+• Improvement needed: ${document.getElementById('percentImprovement').textContent}%
+
+Estimate stage performance with Hit Factor Genie!`;
+          break;
+        case 'penalty':
+          shareText = `⏱️ Penalty Analysis:
+• Total Points Dropped: ${document.getElementById('pointsDropped').textContent}
+• Equivalent Time Loss: ${document.getElementById('equivalentTime').textContent} seconds
+• Equal to shooting clean but ${document.getElementById('timeLossText').textContent} seconds slower
+
+Analyze penalties with Hit Factor Genie!`;
+          break;
+        case 'calculator':
+          shareText = `⚡ Hit Factor Calculation:
+• Hit Factor: ${document.getElementById('calculatedHF').textContent}
+• ${document.getElementById('hfEvaluation').textContent}
+
+Calculate your hit factor with Hit Factor Genie!`;
+          break;
+      }
+      
+      if (navigator.share) {
+        navigator.share({
+          title: 'Hit Factor Genie Results',
+          text: shareText,
+          url: window.location.href
+        })
+        .then(() => showToast('Results shared successfully!', 'share'))
+        .catch(() => showToast('Sharing cancelled', 'times'));
+      } else {
+        navigator.clipboard.writeText(shareText)
+        .then(() => showToast('Results copied to clipboard!', 'copy'))
+        .catch(() => showToast('Failed to share results', 'exclamation-triangle'));
+      }
+    }
+
+    // Calculator Functions
+    function calculateAdvancedHF() {
+      const scoring = document.getElementById("scoring").value;
+      const alphaPoints = 5;
+      const charliePoints = scoring === "major" ? 4 : 3;
+      const deltaPoints = scoring === "major" ? 2 : 1;
+      
+      const alpha = parseInt(document.getElementById("alpha").value) || 0;
+      const charlie = parseInt(document.getElementById("charlie").value) || 0;
+      const delta = parseInt(document.getElementById("delta").value) || 0;
+      const miss = parseInt(document.getElementById("miss").value) || 0;
+      const penalty = parseInt(document.getElementById("penalty").value) || 0;
+      const advTime = parseFloat(document.getElementById("advTime").value) || 1;
+      const result = document.getElementById("advResult");
+      
+      const points = (alpha * alphaPoints) + (charlie * charliePoints) + (delta * deltaPoints) - (miss * 10) - (penalty * 10);
+      const hitFactor = (points / advTime).toFixed(2);
+      
+      document.getElementById("calculatedHF").textContent = hitFactor;
+      
+      // Enhanced evaluation with progress bar
+      const { evaluation, rating, progress } = getEnhancedHFEvaluation(hitFactor);
+      const evaluationElement = document.getElementById("hfEvaluation");
+      evaluationElement.innerHTML = `<i class="fas fa-chart-line"></i> ${evaluation}`;
+      
+      document.getElementById("hfRating").textContent = rating;
+      updateProgressBar('hfProgress', progress);
+      
+      result.style.display = "block";
+    }
+
+    // Strategy Calculator
+    function calculateStrategy() {
+      const highHitFactor = parseFloat(document.getElementById("highHitFactor").value) || 0;
+      const roundCount = parseInt(document.getElementById("roundCount").value) || 0;
+      const result = document.getElementById("strategyResult");
+      
+      if (!validateInputs(highHitFactor, roundCount)) return;
+      
+      let charliesAllowed, deltasAllowed, warning = "";
+      let warningIcon = '<i class="fas fa-exclamation-triangle"></i>';
+      
+      if (highHitFactor <= 4.4) {
+        charliesAllowed = 0;
+        deltasAllowed = 0;
+        warning = "Low HF stage - focus on accuracy over speed";
+      } 
+      else if (highHitFactor > 4.4 && highHitFactor < 7.9) {
+        charliesAllowed = Math.floor(roundCount * 0.10);
+        deltasAllowed = Math.floor(roundCount * 0.01);
+      } 
+      else if (highHitFactor >= 7.9 && highHitFactor < 11.9) {
+        charliesAllowed = Math.floor(roundCount * 0.20);
+        deltasAllowed = Math.floor(roundCount * 0.05);
+      } 
+      else {
+        charliesAllowed = Math.floor(roundCount * 0.50);
+        deltasAllowed = 0;
+        warning = "High HF stage - prioritize speed but ensure accuracy on close targets";
+      }
+      
+      const makeupShotTime = (10 / highHitFactor).toFixed(2);
+      const makeupDeltaTime = (4 / highHitFactor).toFixed(2);
+      
+      document.getElementById("charliesAllowed").textContent = charliesAllowed;
+      document.getElementById("deltasAllowed").textContent = deltasAllowed;
+      document.getElementById("makeupShotTime").textContent = makeupShotTime;
+      document.getElementById("makeupDeltaTime").textContent = makeupDeltaTime;
+      document.getElementById("warningText").innerHTML = warning ? `${warningIcon} ${warning}` : '';
+      
+      result.style.display = "block";
+      saveInputState('strategy');
+    }
+
+    // HHF Predictor
+    function estimateHHF() {
+      const shooterHF = parseFloat(document.getElementById("currentHHF").value) || 0;
+      const percentage = parseFloat(document.getElementById("shooterPercentage").value) || 0;
+      const result = document.getElementById("estimateHHFResult");
+      
+      if (shooterHF <= 0 || percentage <= 0 || percentage >= 100) {
+        showToast("Please enter valid numbers (0 < % < 100)", "exclamation-triangle");
+        return;
+      }
+      
+      const trueHHF = (shooterHF / (percentage / 100)).toFixed(2);
+      const hfDifference = (trueHHF - shooterHF).toFixed(2);
+      const percentImprovement = ((100 / percentage) * 100 - 100).toFixed(0);
+      
+      document.getElementById("trueHHF").textContent = trueHHF;
+      document.getElementById("hfDifference").textContent = hfDifference;
+      document.getElementById("percentImprovement").textContent = percentImprovement;
+      
+      result.style.display = "block";
+      saveInputState('predictor');
+    }
+
+    // Penalty Calculator
+    function calculatePenalty() {
+      const hitFactor = parseFloat(document.getElementById("hitFactor").value) || 0;
+      const scoring = document.getElementById("penaltyScoring").value;
+      const charlies = parseFloat(document.getElementById("charlies").value) || 0;
+      const deltas = parseFloat(document.getElementById("deltas").value) || 0;
+      const mikes = parseFloat(document.getElementById("mikes").value) || 0;
+      const noShoots = parseFloat(document.getElementById("noShoots").value) || 0;
+      const result = document.getElementById("penaltyResult");
+      
+      if (hitFactor <= 0) {
+        showToast("Please enter a valid Hit Factor", "exclamation-triangle");
+        return;
+      }
+      
+      // Calculate points based on scoring selection
+      const charliePenalty = scoring === "major" ? 1 : 2;
+      const deltaPenalty = scoring === "major" ? 3 : 4;
+      
+      const pointsDropped = (charlies * charliePenalty) + (deltas * deltaPenalty) + (mikes * 10) + (noShoots * 10);
+      const equivalentTime = (pointsDropped / hitFactor).toFixed(2);
+      
+      document.getElementById("pointsDropped").textContent = pointsDropped;
+      document.getElementById("equivalentTime").textContent = equivalentTime;
+      document.getElementById("timeLossText").textContent = equivalentTime;
+      
+      result.style.display = "block";
+      saveInputState('penalty');
+    }
+
+    // Helper Functions
+    function validateInputs(hhf, rounds) {
+      if (rounds < 1 || hhf < 0) {
+        showToast("Please enter valid numbers", "exclamation-triangle");
+        return false;
+      }
+      return true;
+    }
+
+    function updateProgressBar(progressId, percentage) {
+      const progressBar = document.getElementById(progressId);
+      if (progressBar) {
+        progressBar.style.width = `${Math.min(percentage, 100)}%`;
+      }
+    }
+
+    function getEnhancedHFEvaluation(hf) {
+      hf = parseFloat(hf);
+      let evaluation = '';
+      let rating = '';
+      let progress = 0;
+      
+      if (hf >= 8) {
+        evaluation = 'Excellent hit factor! Professional level performance';
+        rating = 'Professional';
+        progress = 100;
+      } else if (hf >= 6) {
+        evaluation = 'Great hit factor! Competitive shooter level';
+        rating = 'Competitive';
+        progress = 75;
+      } else if (hf >= 4) {
+        evaluation = 'Good hit factor. Solid intermediate performance';
+        rating = 'Intermediate';
+        progress = 50;
+      } else if (hf >= 2) {
+        evaluation = 'Average hit factor. Room for improvement';
+        rating = 'Beginner';
+        progress = 25;
+      } else {
+        evaluation = 'Low hit factor - focus on fundamentals';
+        rating = 'Novice';
+        progress = 10;
+      }
+      
+      return { evaluation, rating, progress };
+    }
+
+    function loadExample(tab) {
+      const examples = {
+        calculator: {
+          scoring: 'minor',
+          alpha: 10,
+          charlie: 2,
+          delta: 0,
+          miss: 0,
+          penalty: 0,
+          advTime: 12.5
+        },
+        strategy: {
+          highHitFactor: 7.5,
+          roundCount: 24
+        },
+        predictor: {
+          currentHHF: 6.2,
+          shooterPercentage: 80
+        },
+        penalty: {
+          hitFactor: 5.0,
+          penaltyScoring: 'minor',
+          charlies: 2,
+          deltas: 1,
+          mikes: 0,
+          noShoots: 0
+        }
+      };
+      
+      const example = examples[tab];
+      
+      for (const [key, value] of Object.entries(example)) {
+        const element = document.getElementById(key);
+        if (element) {
+          element.value = value;
+          if (element.tagName === 'SELECT') {
+            element.dispatchEvent(new Event('change'));
+          }
         }
       }
       
-      inputHistory[tab].current = currentState;
-      inputHistory[tab].future = [];
+      // Trigger calculation
+      switch(tab) {
+        case 'calculator': calculateAdvancedHF(); break;
+        case 'strategy': calculateStrategy(); break;
+        case 'predictor': estimateHHF(); break;
+        case 'penalty': calculatePenalty(); break;
+      }
+      
+      showToast('Example data loaded!', 'magic');
     }
+
+    function setupTabs() {
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          e.preventDefault();
+          
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          
+          tab.classList.add('active');
+          const tabName = tab.dataset.tab;
+          document.getElementById(`${tabName}-tab`).classList.add('active');
+          localStorage.setItem('lastActiveTab', tabName);
+        });
+      });
+    }
+
+    function setupTheme() {
+      const darkModeToggle = document.getElementById('toggleDarkMode');
+      darkModeToggle.addEventListener('change', function() {
+        document.body.classList.toggle('light-mode');
+        localStorage.setItem('lightMode', this.checked);
+      });
+
+      // Check for saved light mode preference
+      if (localStorage.getItem('lightMode') === 'true') {
+        darkModeToggle.checked = true;
+        document.body.classList.add('light-mode');
+      }
+    }
+
+    function copyResult(resultId) {
+      const resultElement = document.getElementById(resultId);
+      const resultText = Array.from(resultElement.querySelectorAll('p'))
+        .map(p => p.textContent)
+        .join('\n');
+      
+      navigator.clipboard.writeText(resultText)
+        .then(() => showToast('Results copied to clipboard!', 'copy'))
+        .catch(() => showToast('Failed to copy results', 'exclamation-triangle'));
+    }
+
+    function toggleHistory(listId) {
+      const list = document.getElementById(listId);
+      const title = list.previousElementSibling;
+      const icon = title.querySelector('.fa-chevron-down');
+      
+      list.style.display = list.style.display === 'none' ? 'block' : 'none';
+      icon.classList.toggle('fa-chevron-up');
+      icon.classList.toggle('fa-chevron-down');
+    }
+
+    // Toast notification
+    function showToast(message, icon = 'info-circle') {
+      const toast = document.getElementById('toast');
+      toast.innerHTML = `<i class="fas fa-${icon}"></i> ${message}`;
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Input history for undo/redo (simplified for Firebase)
+    const inputHistory = {
+      calculator: { past: [], future: [], current: null },
+      strategy: { past: [], future: [], current: null },
+      predictor: { past: [], future: [], current: null },
+      penalty: { past: [], future: [], current: null }
+    };
 
     function undoInput(tab) {
       if (inputHistory[tab].past.length === 0) {
@@ -1446,425 +2749,50 @@
       
       // Re-run calculation if applicable
       switch(tab) {
+        case 'calculator': calculateAdvancedHF(); break;
         case 'strategy': calculateStrategy(); break;
         case 'predictor': estimateHHF(); break;
         case 'penalty': calculatePenalty(); break;
-        case 'calculator': calculateAdvancedHF(); break;
       }
     }
 
-    // Toggle history section visibility
-    function toggleHistory(listId) {
-      const list = document.getElementById(listId);
-      const title = list.previousElementSibling;
-      const icon = title.querySelector('.fa-chevron-down');
-      
-      list.style.display = list.style.display === 'none' ? 'block' : 'none';
-      icon.classList.toggle('fa-chevron-up');
-      icon.classList.toggle('fa-chevron-down');
-    }
-
-    // Toast notification
-    function showToast(message, icon = 'info-circle') {
-      const toast = document.getElementById('toast');
-      toast.innerHTML = `<i class="fas fa-${icon}"></i> ${message}`;
-      toast.classList.add('show');
-      
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3000);
-    }
-
-    // Copy results to clipboard
-    function copyResult(resultId) {
-      const resultElement = document.getElementById(resultId);
-      const resultText = Array.from(resultElement.querySelectorAll('p'))
-        .map(p => p.textContent)
-        .join('\n');
-      
-      navigator.clipboard.writeText(resultText)
-        .then(() => showToast('Results copied to clipboard!', 'copy'))
-        .catch(() => showToast('Failed to copy results', 'exclamation-triangle'));
-    }
-
-    // Share results
-    function shareResult(tab) {
-      let shareData = {
-        title: 'Hit Factor Genie Results',
-        text: '',
-        url: window.location.href.split('?')[0] + `?tab=${tab}`
-      };
-      
-      switch(tab) {
-        case 'strategy':
-          shareData.text = `Strategy Results:
-Allowed Charlies: ${document.getElementById('charliesAllowed').textContent}
-Allowed Deltas: ${document.getElementById('deltasAllowed').textContent}
-Make up a miss in: ${document.getElementById('makeupShotTime').textContent} sec
-Make up a Delta in: ${document.getElementById('makeupDeltaTime').textContent} sec`;
-          break;
-          
-        case 'predictor':
-          shareData.text = `HHF Prediction:
-Predicted HHF: ${document.getElementById('trueHHF').textContent}
-To match winner: +${document.getElementById('hfDifference').textContent} HF needed
-Improvement needed: ${document.getElementById('percentImprovement').textContent}%`;
-          break;
-          
-        case 'penalty':
-          shareData.text = `Penalty Results:
-Total Points Dropped: ${document.getElementById('pointsDropped').textContent}
-Equivalent Time Loss: ${document.getElementById('equivalentTime').textContent} seconds`;
-          break;
-          
-        case 'calculator':
-          shareData.text = `Hit Factor Calculation:
-Hit Factor: ${document.getElementById('calculatedHF').textContent}
-${document.getElementById('hfEvaluation').textContent}`;
-          break;
-      }
-      
-      if (navigator.share) {
-        navigator.share(shareData)
-          .catch(() => showToast('Sharing cancelled', 'times'));
-      } else {
-        navigator.clipboard.writeText(shareData.text + '\n\n' + shareData.url)
-          .then(() => showToast('Results copied to clipboard!', 'copy'))
-          .catch(() => showToast('Failed to share results', 'exclamation-triangle'));
-      }
-    }
-
-    // Save calculations
-    function saveCalculation(tab) {
-      const savedCalculations = JSON.parse(localStorage.getItem(`saved_${tab}`) || '[]');
-      const timestamp = new Date().toLocaleString();
-      let calculationData = {
-        id: Date.now(),
-        timestamp,
-        tab
-      };
-      
-      switch(tab) {
-        case 'strategy':
-          calculationData.data = {
-            highHitFactor: document.getElementById('highHitFactor').value,
-            roundCount: document.getElementById('roundCount').value,
-            charliesAllowed: document.getElementById('charliesAllowed').textContent,
-            deltasAllowed: document.getElementById('deltasAllowed').textContent,
-            makeupShotTime: document.getElementById('makeupShotTime').textContent,
-            makeupDeltaTime: document.getElementById('makeupDeltaTime').textContent
-          };
-          break;
-          
-        case 'predictor':
-          calculationData.data = {
-            currentHHF: document.getElementById('currentHHF').value,
-            shooterPercentage: document.getElementById('shooterPercentage').value,
-            trueHHF: document.getElementById('trueHHF').textContent,
-            hfDifference: document.getElementById('hfDifference').textContent,
-            percentImprovement: document.getElementById('percentImprovement').textContent
-          };
-          break;
-          
-        case 'penalty':
-          calculationData.data = {
-            hitFactor: document.getElementById('hitFactor').value,
-            charlies: document.getElementById('charlies').value,
-            deltas: document.getElementById('deltas').value,
-            mikes: document.getElementById('mikes').value,
-            noShoots: document.getElementById('noShoots').value,
-            pointsDropped: document.getElementById('pointsDropped').textContent,
-            equivalentTime: document.getElementById('equivalentTime').textContent
-          };
-          break;
-          
-        case 'calculator':
-          calculationData.data = {
-            scoring: document.getElementById('scoring').value,
-            alpha: document.getElementById('alpha').value,
-            charlie: document.getElementById('charlie').value,
-            delta: document.getElementById('delta').value,
-            miss: document.getElementById('miss').value,
-            penalty: document.getElementById('penalty').value,
-            advTime: document.getElementById('advTime').value,
-            calculatedHF: document.getElementById('calculatedHF').textContent,
-            hfEvaluation: document.getElementById('hfEvaluation').textContent
-          };
-          break;
-      }
-      
-      savedCalculations.push(calculationData);
-      localStorage.setItem(`saved_${tab}`, JSON.stringify(savedCalculations));
-      showToast('Calculation saved!', 'save');
-      loadSavedCalculations(tab);
-    }
-
-    function loadSavedCalculations(tab) {
-      const savedCalculations = JSON.parse(localStorage.getItem(`saved_${tab}`) || '[]');
-      const container = document.getElementById(`${tab}List`);
-      const parent = document.getElementById(`saved${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
-      
-      if (!container || !parent) return;
-      
-      container.innerHTML = '';
-      
-      if (savedCalculations.length === 0) {
-        container.innerHTML = '<p style="text-align: center; color: var(--gray);">No saved calculations yet</p>';
-        parent.style.display = 'none';
-        return;
-      }
-      
-      parent.style.display = 'block';
-      
-      savedCalculations.reverse().forEach(calc => {
-        const item = document.createElement('div');
-        item.className = 'calculation-item';
-        
-        const summary = document.createElement('div');
-        summary.innerHTML = `<strong>${calc.timestamp}</strong>`;
-        
-        const actions = document.createElement('div');
-        actions.className = 'calculation-actions';
-        
-        const loadBtn = document.createElement('button');
-        loadBtn.innerHTML = '<i class="fas fa-undo"></i>';
-        loadBtn.className = 'copy-btn';
-        loadBtn.style.padding = '5px 8px';
-        loadBtn.onclick = () => loadCalculation(calc);
-        
-        const deleteBtn = document.createElement('button');
-        deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
-        deleteBtn.className = 'save-btn';
-        deleteBtn.style.padding = '5px 8px';
-        deleteBtn.style.marginLeft = '5px';
-        deleteBtn.onclick = () => deleteCalculation(calc.id, tab);
-        
-        actions.appendChild(loadBtn);
-        actions.appendChild(deleteBtn);
-        item.appendChild(summary);
-        item.appendChild(actions);
-        container.appendChild(item);
+    // Track input changes for undo/redo
+    document.querySelectorAll('input, select').forEach(input => {
+      input.addEventListener('input', function() {
+        const tab = this.closest('.tab-content').id.replace('-tab', '');
+        if (tab in inputHistory) {
+          saveInputState(tab);
+        }
       });
-      
-      // Hide the list by default
-      container.style.display = 'none';
-    }
-
-    function loadCalculation(calc) {
-      document.querySelector(`.tab[data-tab="${calc.tab}"]`).click();
-      
-      switch(calc.tab) {
-        case 'strategy':
-          document.getElementById('highHitFactor').value = calc.data.highHitFactor;
-          document.getElementById('roundCount').value = calc.data.roundCount;
-          calculateStrategy();
-          break;
-          
-        case 'predictor':
-          document.getElementById('currentHHF').value = calc.data.currentHHF;
-          document.getElementById('shooterPercentage').value = calc.data.shooterPercentage;
-          estimateHHF();
-          break;
-          
-        case 'penalty':
-          document.getElementById('hitFactor').value = calc.data.hitFactor;
-          document.getElementById('charlies').value = calc.data.charlies;
-          document.getElementById('deltas').value = calc.data.deltas;
-          document.getElementById('mikes').value = calc.data.mikes;
-          document.getElementById('noShoots').value = calc.data.noShoots;
-          calculatePenalty();
-          break;
-          
-        case 'calculator':
-          document.getElementById('scoring').value = calc.data.scoring;
-          document.getElementById('alpha').value = calc.data.alpha;
-          document.getElementById('charlie').value = calc.data.charlie;
-          document.getElementById('delta').value = calc.data.delta;
-          document.getElementById('miss').value = calc.data.miss;
-          document.getElementById('penalty').value = calc.data.penalty;
-          document.getElementById('advTime').value = calc.data.advTime;
-          calculateAdvancedHF();
-          break;
-      }
-      
-      showToast('Calculation loaded', 'check');
-    }
-
-    function deleteCalculation(id, tab) {
-      const savedCalculations = JSON.parse(localStorage.getItem(`saved_${tab}`) || '[]');
-      const updated = savedCalculations.filter(calc => calc.id !== id);
-      localStorage.setItem(`saved_${tab}`, JSON.stringify(updated));
-      loadSavedCalculations(tab);
-      showToast('Calculation deleted', 'trash');
-    }
-
-    // Strategy Calculator
-    document.getElementById("calculateBtn").addEventListener("click", calculateStrategy);
-    
-    function calculateStrategy() {
-      const highHitFactor = parseFloat(document.getElementById("highHitFactor").value) || 0;
-      const roundCount = parseInt(document.getElementById("roundCount").value) || 0;
-      const result = document.getElementById("strategyResult");
-      
-      if (!validateInputs(highHitFactor, roundCount)) return;
-      
-      let charliesAllowed, deltasAllowed, warning = "";
-      
-      if (highHitFactor <= 4.4) {
-        charliesAllowed = 0;
-        deltasAllowed = 0;
-        warning = "Low HF stage - focus on accuracy over speed";
-      } 
-      else if (highHitFactor > 4.4 && highHitFactor < 7.9) {
-        charliesAllowed = Math.floor(roundCount * 0.10);
-        deltasAllowed = Math.floor(roundCount * 0.01);
-      } 
-      else if (highHitFactor >= 7.9 && highHitFactor < 11.9) {
-        charliesAllowed = Math.floor(roundCount * 0.20);
-        deltasAllowed = Math.floor(roundCount * 0.05);
-      } 
-      else {
-        charliesAllowed = Math.floor(roundCount * 0.50);
-        deltasAllowed = 0;
-        warning = "High HF stage - prioritize speed but ensure accuracy on close targets";
-      }
-      
-      const makeupShotTime = (10 / highHitFactor).toFixed(2);
-      const makeupDeltaTime = (4 / highHitFactor).toFixed(2);
-      
-      document.getElementById("charliesAllowed").textContent = charliesAllowed;
-      document.getElementById("deltasAllowed").textContent = deltasAllowed;
-      document.getElementById("makeupShotTime").textContent = makeupShotTime;
-      document.getElementById("makeupDeltaTime").textContent = makeupDeltaTime;
-      document.getElementById("warningText").textContent = warning;
-      
-      result.style.display = "block";
-      saveInputState('strategy');
-    }
-
-    // HHF Predictor
-    document.getElementById("estimateHHFBtn").addEventListener("click", estimateHHF);
-    
-    function estimateHHF() {
-      const shooterHF = parseFloat(document.getElementById("currentHHF").value) || 0;
-      const percentage = parseFloat(document.getElementById("shooterPercentage").value) || 0;
-      const result = document.getElementById("estimateHHFResult");
-      
-      if (shooterHF <= 0 || percentage <= 0 || percentage >= 100) {
-        showToast("Please enter valid numbers (0 < % < 100)", "exclamation-triangle");
-        return;
-      }
-      
-      const trueHHF = (shooterHF / (percentage / 100)).toFixed(2);
-      const hfDifference = (trueHHF - shooterHF).toFixed(2);
-      const percentImprovement = ((100 / percentage) * 100 - 100).toFixed(0);
-      
-      document.getElementById("trueHHF").textContent = trueHHF;
-      document.getElementById("hfDifference").textContent = hfDifference;
-      document.getElementById("percentImprovement").textContent = percentImprovement;
-      
-      result.style.display = "block";
-      saveInputState('predictor');
-    }
-
-    // Penalty Calculator
-    document.getElementById("penaltyCalcBtn").addEventListener("click", calculatePenalty);
-    
-    // Update the scoring badges when selection changes
-    document.getElementById("penaltyScoring").addEventListener("change", function() {
-      if (this.value === "major") {
-        document.getElementById("charlieBadge").textContent = "-1 pt";
-        document.getElementById("deltaBadge").textContent = "-3 pts";
-      } else {
-        document.getElementById("charlieBadge").textContent = "-2 pts";
-        document.getElementById("deltaBadge").textContent = "-4 pts";
-      }
     });
-    
-    function calculatePenalty() {
-      const hitFactor = parseFloat(document.getElementById("hitFactor").value) || 0;
-      const scoring = document.getElementById("penaltyScoring").value;
-      const charlies = parseFloat(document.getElementById("charlies").value) || 0;
-      const deltas = parseFloat(document.getElementById("deltas").value) || 0;
-      const mikes = parseFloat(document.getElementById("mikes").value) || 0;
-      const noShoots = parseFloat(document.getElementById("noShoots").value) || 0;
-      const result = document.getElementById("penaltyResult");
+
+    function saveInputState(tab) {
+      const inputs = Array.from(document.querySelectorAll(`#${tab}-tab input, #${tab}-tab select`));
+      const currentState = inputs.map(input => ({
+        id: input.id,
+        value: input.value,
+        type: input.type
+      }));
       
-      if (hitFactor <= 0) {
-        showToast("Please enter a valid Hit Factor", "exclamation-triangle");
-        return;
+      if (inputHistory[tab].current) {
+        inputHistory[tab].past.push(inputHistory[tab].current);
+        if (inputHistory[tab].past.length > 20) {
+          inputHistory[tab].past.shift();
+        }
       }
       
-      // Calculate points based on scoring selection
-      const charliePenalty = scoring === "major" ? 1 : 2;
-      const deltaPenalty = scoring === "major" ? 3 : 4;
-      
-      const pointsDropped = (charlies * charliePenalty) + (deltas * deltaPenalty) + (mikes * 10) + (noShoots * 10);
-      const equivalentTime = (pointsDropped / hitFactor).toFixed(2);
-      
-      document.getElementById("pointsDropped").textContent = pointsDropped;
-      document.getElementById("equivalentTime").textContent = equivalentTime;
-      document.getElementById("timeLossText").textContent = equivalentTime;
-      
-      result.style.display = "block";
-      saveInputState('penalty');
+      inputHistory[tab].current = currentState;
+      inputHistory[tab].future = [];
     }
 
-    // Advanced HF Calculator
-    document.getElementById("advCalcBtn").addEventListener("click", calculateAdvancedHF);
-    
-    function calculateAdvancedHF() {
-      const scoring = document.getElementById("scoring").value;
-      const alphaPoints = 5;
-      const charliePoints = scoring === "major" ? 4 : 3;
-      const deltaPoints = scoring === "major" ? 2 : 1;
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const authModal = document.getElementById('authModal');
       
-      const alpha = parseInt(document.getElementById("alpha").value) || 0;
-      const charlie = parseInt(document.getElementById("charlie").value) || 0;
-      const delta = parseInt(document.getElementById("delta").value) || 0;
-      const miss = parseInt(document.getElementById("miss").value) || 0;
-      const penalty = parseInt(document.getElementById("penalty").value) || 0;
-      const advTime = parseFloat(document.getElementById("advTime").value) || 1;
-      const result = document.getElementById("advResult");
-      
-      const points = (alpha * alphaPoints) + (charlie * charliePoints) + (delta * deltaPoints) - (miss * 10) - (penalty * 10);
-      const hitFactor = (points / advTime).toFixed(2);
-      
-      document.getElementById("calculatedHF").textContent = hitFactor;
-      document.getElementById("hfEvaluation").textContent = getHFEvaluation(hitFactor);
-      
-      result.style.display = "block";
-      saveInputState('calculator');
-    }
-
-    // Helper Functions
-    function validateInputs(hhf, rounds) {
-      if (rounds < 1 || hhf < 0) {
-        showToast("Please enter valid numbers", "exclamation-triangle");
-        return false;
+      if (event.target === authModal) {
+        closeAuthModal();
       }
-      return true;
     }
-
-    function getHFEvaluation(hf) {
-      hf = parseFloat(hf);
-      if (hf >= 8) return "Excellent hit factor!";
-      if (hf >= 5) return "Good hit factor";
-      if (hf >= 3) return "Average hit factor";
-      return "Low hit factor - focus on speed or accuracy";
-    }
-
-    // Initialize first tab and load any URL parameters
-    document.addEventListener('DOMContentLoaded', () => {
-      const params = new URLSearchParams(window.location.search);
-      const tabParam = params.get('tab');
-      
-      if (tabParam && document.querySelector(`.tab[data-tab="${tabParam}"]`)) {
-        document.querySelector(`.tab[data-tab="${tabParam}"]`).click();
-      } else {
-        document.querySelector('.tab.active').click();
-      }
-    });
   </script>
 </body>
 </html>
